@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository hosts a collection of HTML-based instructional materials focused on **engineering design and responsible AI usage** for students ranging from **7th grade through sophomore-level college coursework**.
+This repository hosts a collection of instructional materials focused on **engineering design and responsible AI usage** for students ranging from **7th grade through sophomore-level college coursework**.
 
 The purpose of this repository is to provide structured, accessible digital content that supports engineering thinking, problem solving, and ethical integration of artificial intelligence into the design process.
 
@@ -24,7 +24,7 @@ Content complexity increases progressively to match student developmental levels
 
 ## What This Repository Contains
 
-All materials are organized as standalone **HTML documents**, which may include:
+All material overviews are organized as **HTML documents**, which may include:
 
 * Engineering design challenges
 * Structured design process documentation
@@ -57,7 +57,7 @@ The materials in this repository are built around the following principles:
 
 1. Download or clone the repository.
 2. Open any `.html` file in a web browser.
-3. Adapt or embed the content into your learning management system if desired.
+4. Adapt or embed the content into your learning management system if desired.
 
 No additional software or frameworks are required.
 
