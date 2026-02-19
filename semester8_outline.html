@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Engineering Pathway | Semester 8 — 10th Grade Spring</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0f1117;--surface:#181c27;--surface2:#1f2435;--border:#2a3050;
+    --accent:#e8506a;--accent-bright:#f07a8e;--accent2:#5b8dee;
+    --accent3:#4ecdc4;--accent4:#a07ee0;--accent5:#f5a623;
+    --text:#e8eaf0;--muted:#7a8099;--tag-bg:#252d45;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 55% 35% at 88% 6%,rgba(232,80,106,.07) 0%,transparent 60%),radial-gradient(ellipse 40% 28% at 6% 88%,rgba(91,141,238,.05) 0%,transparent 50%);pointer-events:none;z-index:0}
+  .wrapper{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:48px 24px 80px}
+  .header{margin-bottom:48px;animation:fadeDown .6s ease both}
+  .breadcrumb{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px}
+  .breadcrumb span{color:var(--accent-bright)}
+  h1{font-family:'DM Serif Display',serif;font-size:clamp(32px,5vw,52px);line-height:1.1;color:var(--text);margin-bottom:12px}
+  h1 em{font-style:italic;color:var(--accent-bright)}
+  .subtitle{color:var(--muted);font-size:15px;max-width:580px;line-height:1.7}
+  .meta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+  .meta-chip{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:5px 12px;font-size:12px;font-family:'DM Mono',monospace;color:var(--muted)}
+  .meta-chip strong{color:var(--text)}
+  .skill-stack{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 22px;margin-bottom:24px;animation:fadeDown .5s .05s ease both}
+  .ssl{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px}
+  .skill-pills{display:flex;flex-wrap:wrap;gap:8px}
+  .sp{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:500;font-family:'DM Sans',sans-serif}
+  .done{background:rgba(78,205,196,.1);border:1px solid rgba(78,205,196,.25);color:var(--accent3)}
+  .new{background:rgba(232,80,106,.1);border:1px solid rgba(232,80,106,.3);color:var(--accent-bright)}
+  .new::before{content:'★ ';font-size:9px}
+  .callout{border-radius:10px;padding:14px 18px;margin-bottom:18px;font-size:13px;display:flex;gap:10px;align-items:flex-start;animation:fadeDown .5s .08s ease both;line-height:1.6}
+  .c-red{background:rgba(232,80,106,.07);border:1px solid rgba(232,80,106,.25);color:var(--accent-bright)}
+  .c-blue{background:rgba(91,141,238,.07);border:1px solid rgba(91,141,238,.25);color:var(--accent2)}
+  .c-gold{background:rgba(245,166,35,.07);border:1px solid rgba(245,166,35,.25);color:var(--accent5)}
+  .arc-bar{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 22px;margin-bottom:36px;animation:fadeDown .5s .1s ease both}
+  .arc-label{font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
+  .arc-track{display:flex;gap:3px}
+  .seg{height:5px;border-radius:3px;flex:1}
+  .seg.done{opacity:.45}.seg.active{opacity:1}.seg.future{opacity:.12}
+  .arc-names{display:flex;margin-top:7px}
+  .an{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;text-align:center;flex:1}
+  .an.active{color:var(--accent-bright);font-weight:600}
+  .an.done{color:var(--accent3)}
+  .unit{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:18px;overflow:hidden;animation:fadeUp .5s ease both;transition:border-color .25s}
+  .unit:hover{border-color:#363d5c}
+  .unit:nth-child(1){animation-delay:.12s}.unit:nth-child(2){animation-delay:.2s}.unit:nth-child(3){animation-delay:.28s}.unit:nth-child(4){animation-delay:.36s}.unit:nth-child(5){animation-delay:.44s}
+  .uh{display:flex;align-items:center;gap:16px;padding:20px 24px;cursor:pointer;user-select:none}
+  .un{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);min-width:32px}
+  .ui{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  .uinfo{flex:1}
+  .ut{font-family:'DM Serif Display',serif;font-size:18px;color:var(--text);margin-bottom:4px}
+  .um{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace}
+  .utog{color:var(--muted);font-size:20px;transition:transform .3s;flex-shrink:0}
+  .unit.open .utog{transform:rotate(180deg)}
+  .unit-body{display:none;padding:0 24px 24px;border-top:1px solid var(--border)}
+  .unit.open .unit-body{display:block}
+  .lg{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+  .lesson{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px 18px;cursor:pointer;transition:border-color .2s,background .2s}
+  .lesson:hover{border-color:#363d5c;background:#232840}
+  .lt{display:flex;align-items:flex-start;gap:12px}
+  .ld{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);min-width:52px;padding-top:2px}
+  .lti{font-size:14px;font-weight:500;color:var(--text);flex:1;line-height:1.4}
+  .ltype{font-size:10px;font-family:'DM Mono',monospace;padding:3px 8px;border-radius:4px;flex-shrink:0;margin-top:1px}
+  .ti{background:rgba(91,141,238,.15);color:var(--accent2)}
+  .ts{background:rgba(78,205,196,.15);color:var(--accent3)}
+  .tp{background:rgba(245,166,35,.15);color:var(--accent5)}
+  .ta{background:rgba(232,80,106,.15);color:var(--accent-bright)}
+  .tstudio{background:rgba(160,126,224,.15);color:var(--accent4)}
+  .ldet{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+  .lesson.open .ldet{display:block}
+  .ldesc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:14px}
+  .ds{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:580px){.ds{grid-template-columns:1fr}}
+  .db{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+  .dbl{font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+  .st{display:inline-block;background:var(--tag-bg);border:1px solid var(--border);border-radius:4px;padding:2px 7px;font-size:10px;font-family:'DM Mono',monospace;color:var(--accent2);margin:2px 2px 2px 0}
+  .st.n{color:var(--accent-bright);border-color:rgba(232,80,106,.4);background:rgba(232,80,106,.07)}
+  .se{font-size:11px;color:var(--muted);line-height:1.55;margin-top:6px}
+  .rr{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+  .rl{font-size:11px;color:var(--text)}
+  .dl{display:flex;gap:4px}
+  .dot{width:7px;height:7px;border-radius:50%}
+  .dot.f{background:var(--accent)}.dot.p{background:var(--accent5)}.dot.s{background:var(--accent3)}.dot.e{background:var(--accent2)}
+  .rs{display:flex;gap:10px;margin-top:8px;padding-top:7px;border-top:1px solid var(--border);flex-wrap:wrap}
+  .rsi{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted)}
+  .ib{background:#0a0c12;border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-top:10px;font-size:11px;color:var(--muted);line-height:1.7}
+  .ibl{font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+  .ir{display:flex;gap:10px;margin-bottom:5px;align-items:flex-start}
+  .inum{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:9px;flex-shrink:0;margin-top:1px}
+  .nr{background:rgba(232,80,106,.15);color:var(--accent-bright)}
+  .nb{background:rgba(91,141,238,.15);color:var(--accent2)}
+  .nt{background:rgba(78,205,196,.15);color:var(--accent3)}
+  .ng{background:rgba(245,166,35,.15);color:var(--accent5)}
+  .np{background:rgba(160,126,224,.15);color:var(--accent4)}
+  /* timeline strip */
+  .timeline{display:flex;gap:0;margin:20px 0;overflow-x:auto;padding-bottom:4px}
+  .tphase{flex:1;min-width:90px;text-align:center;padding:10px 8px;font-size:10px;font-family:'DM Mono',monospace;border-radius:8px;margin:0 3px;line-height:1.5}
+  .tp1{background:rgba(91,141,238,.1);border:1px solid rgba(91,141,238,.3);color:var(--accent2)}
+  .tp2{background:rgba(78,205,196,.1);border:1px solid rgba(78,205,196,.3);color:var(--accent3)}
+  .tp3{background:rgba(160,126,224,.1);border:1px solid rgba(160,126,224,.3);color:var(--accent4)}
+  .tp4{background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.3);color:var(--accent5)}
+  .tp5{background:rgba(232,80,106,.1);border:1px solid rgba(232,80,106,.3);color:var(--accent-bright)}
+  .tp-label{font-size:11px;font-weight:600;margin-bottom:3px}
+  .tp-days{font-size:9px;opacity:.7}
+  .sl{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-top:28px;animation:fadeUp .5s .5s ease both}
+  .slt{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px}
+  .slg{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:8px}
+  .sli{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 13px}
+  .slc{font-family:'DM Mono',monospace;font-size:10px;color:var(--accent2);margin-bottom:4px}
+  .slc.n{color:var(--accent-bright)}
+  .sld{font-size:11px;color:var(--muted);line-height:1.45}
+  .review-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(15,17,23,.96);border-top:1px solid var(--border);backdrop-filter:blur(14px);padding:13px 24px;display:flex;align-items:center;justify-content:space-between;z-index:100;gap:14px;flex-wrap:wrap}
+  .rt{font-size:12px;color:var(--muted)}
+  .rt strong{color:var(--text)}
+  .rb{background:var(--accent-bright);color:#0f1117;border:none;border-radius:8px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:opacity .2s;white-space:nowrap}
+  .rb:hover{opacity:.85}
+  .ci1{background:rgba(91,141,238,.12)}.ci2{background:rgba(78,205,196,.12)}.ci3{background:rgba(160,126,224,.12)}.ci4{background:rgba(245,166,35,.10)}.ci5{background:rgba(232,80,106,.10)}
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <div class="breadcrumb">Engineering Pathway · <span>Year 4 of 8</span> · Semester 8</div>
+    <h1>10th Grade <em>Spring</em><br>The Major Integrated Project — Research-Driven Design at Scale</h1>
+    <p class="subtitle">Semester 8 is the most ambitious semester of the program so far. Students spend the entire semester executing a single research-grounded project of their own design, using the full stack: Python data analysis, SolidWorks advanced modeling, Arduino electronics, JavaScript UI, and the complete HCD cycle from validated HMW to tested prototype. This semester is the direct dress rehearsal for the Sophomore capstone.</p>
+    <div class="meta-row">
+      <div class="meta-chip"><strong>Grade:</strong> 10th</div>
+      <div class="meta-chip"><strong>Semester:</strong> Spring (8 of 16)</div>
+      <div class="meta-chip"><strong>Schedule:</strong> A/B Block · 45–50 min</div>
+      <div class="meta-chip"><strong>~20 class days</strong></div>
+      <div class="meta-chip"><strong>Format:</strong> Single Full-Semester Project</div>
+      <div class="meta-chip"><strong>Milestone:</strong> Year 4 Complete · Capstone Preview</div>
+    </div>
+  </div>
+
+  <div class="callout c-red">
+    <span>🎯</span>
+    <span><strong>What makes Semester 8 different from every previous semester:</strong> There are no skill-building units. The entire semester is a single project. Students apply all prior skills in service of a self-chosen problem grounded in their Semester 7 user research. The teacher role shifts from instructor to design coach. Peer critique replaces teacher-led instruction as the primary feedback mechanism.</span>
+  </div>
+  <div class="callout c-blue">
+    <span>🔗</span>
+    <span><strong>Semester 7 Bridge:</strong> Students arrive with validated HMW statements from their multi-person affinity map. Those HMW statements are the project brief — not assigned by the teacher, but earned through prior research. This is the first semester where the starting point for the project is something the student created, not something they received.</span>
+  </div>
+  <div class="callout c-gold">
+    <span>⚠️</span>
+    <span><strong>Teacher note — scope management is the hardest part:</strong> Students will consistently over-scope. Build formal scope review into Days 3 and 8. A project that is 80% complete and well-documented is dramatically better than a project that is 20% complete and ambitious. Coach students to cut features, not corners.</span>
+  </div>
+
+  <!-- Progress Arc -->
+  <div class="arc-bar">
+    <div class="arc-label">8-Year Pathway — Semester 8 of 16</div>
+    <div class="arc-track">
+      <div class="seg done" style="background:#4ecdc4"></div>
+      <div class="seg done" style="background:#4ecdc4"></div>
+      <div class="seg done" style="background:#4ecdc4"></div>
+      <div class="seg done" style="background:#4ecdc4"></div>
+      <div class="seg done" style="background:#4ecdc4"></div>
+      <div class="seg done" style="background:#4ecdc4"></div>
+      <div class="seg done" style="background:#bda0f0"></div>
+      <div class="seg active" style="background:#f07a8e"></div>
+      <div class="seg future" style="background:#f5a623"></div>
+      <div class="seg future" style="background:#f5a623"></div>
+      <div class="seg future" style="background:#f5a623"></div>
+      <div class="seg future" style="background:#f5a623"></div>
+      <div class="seg future" style="background:#5b8dee"></div>
+      <div class="seg future" style="background:#5b8dee"></div>
+      <div class="seg future" style="background:#5b8dee"></div>
+      <div class="seg future" style="background:#5b8dee"></div>
+    </div>
+    <div class="arc-names">
+      <div class="an done">7F</div><div class="an done">7S</div>
+      <div class="an done">8F</div><div class="an done">8S</div>
+      <div class="an done">9F</div><div class="an done">9S</div>
+      <div class="an done">10F</div>
+      <div class="an active">10S ←</div>
+      <div class="an">11F</div><div class="an">11S</div>
+      <div class="an">12F</div><div class="an">12S</div>
+      <div class="an">FrF</div><div class="an">FrS</div>
+      <div class="an">SoF</div><div class="an">SoS</div>
+    </div>
+  </div>
+
+  <!-- Skill Stack -->
+  <div class="skill-stack">
+    <div class="ssl">Full Skill Stack — All Prior Skills in Play This Semester</div>
+    <div class="skill-pills">
+      <span class="sp done">EDP + HCD Frameworks</span>
+      <span class="sp done">SolidWorks Advanced (Loft/Sweep/Shell/FEA)</span>
+      <span class="sp done">3D Printing + Tolerance Iteration</span>
+      <span class="sp done">JavaScript + DOM</span>
+      <span class="sp done">Python + matplotlib + CSV analysis</span>
+      <span class="sp done">AI Fact-Checking (JS + Python)</span>
+      <span class="sp done">Arduino C++ Multi-Sensor + millis()</span>
+      <span class="sp done">I²C Protocols + Motor Control</span>
+      <span class="sp done">Full Ideation Toolkit (SCAMPER, morph chart, Pugh)</span>
+      <span class="sp done">Multi-Person User Research + Affinity Map</span>
+      <span class="sp done">Engineering Report Writing</span>
+      <span class="sp new">Project Management (Gantt + milestones)</span>
+      <span class="sp new">Peer Design Critique (structured)</span>
+      <span class="sp new">Design Brief Writing</span>
+      <span class="sp new">Final Capstone-Format Presentation</span>
+    </div>
+  </div>
+
+  <!-- Semester Timeline Strip -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 22px;margin-bottom:28px;animation:fadeDown .5s .12s ease both">
+    <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">Semester Arc — 20 Days at a Glance</div>
+    <div class="timeline">
+      <div class="tphase tp1"><div class="tp-label">Define</div><div class="tp-days">Days 1–3</div>Brief, scope, Gantt</div>
+      <div class="tphase tp2"><div class="tp-label">Ideate</div><div class="tp-days">Days 4–5</div>SCAMPER → morph chart → Pugh</div>
+      <div class="tphase tp3"><div class="tp-label">CAD</div><div class="tp-days">Days 6–9</div>Model, draw, print</div>
+      <div class="tphase" style="background:rgba(232,80,106,.1);border:1px solid rgba(232,80,106,.3);color:var(--accent-bright)"><div class="tp-label">Build</div><div class="tp-days">Days 10–13</div>Electronics + code</div>
+      <div class="tphase tp4"><div class="tp-label">Test</div><div class="tp-days">Days 14–15</div>User test + iterate</div>
+      <div class="tphase tp1"><div class="tp-label">Document</div><div class="tp-days">Days 16–17</div>Report + portfolio</div>
+      <div class="tphase tp5"><div class="tp-label">Present</div><div class="tp-days">Days 18–20</div>Final showcase</div>
+    </div>
+  </div>
+
+  <!-- UNIT 1: DEFINE -->
+  <div class="unit" id="unit1">
+    <div class="uh" onclick="toggleUnit('unit1')">
+      <div class="un">01</div>
+      <div class="ui ci1">📋</div>
+      <div class="uinfo">
+        <div class="ut">Define — Brief, Scope & Project Plan</div>
+        <div class="um">Days 1–3 · ~3 class sessions · Project Launch</div>
+      </div>
+      <div class="utog">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lg">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lt">
+            <div class="ld">Day 1</div>
+            <div class="lti">Design Brief — Translating HMW Into a Buildable Specification</div>
+            <div class="ltype ti">Intro</div>
+          </div>
+          <div class="ldet">
+            <div class="ldesc">Students arrive with their Semester 7 HMW statements. Today's work is writing a Design Brief — a 1-page document that translates the HMW into a buildable specification. A Design Brief has five sections: (1) Problem Statement — who is this for and what is the core need; (2) Constraints — what limits must the design respect (size, budget ~$15, materials available in the makerspace, timeline); (3) Success Criteria — how will you know if the design works? List at least 3 measurable criteria; (4) Technical Layer — what domains will this project require (CAD only? Electronics? Code? Python analysis? All of the above?); (5) Out of Scope — what would be in v2 but is explicitly not in this semester's build. The "Out of Scope" section is the most important — it forces students to cut before they start. Teacher reviews all briefs before Day 2.</div>
+            <div class="ds">
+              <div class="db">
+                <div class="dbl">Indiana Standards</div>
+                <span class="st">CTE-TE 3.1</span>
+                <span class="st">CTE-TE 4.1</span>
+                <span class="st">CTE-TE 8.2</span>
+                <span class="st">CTE-TE 9.2</span>
+                <span class="st">IAS-ELA 9-10.W</span>
+                <div class="se">The Design Brief is the most formal technical writing assignment in the program to date — it must be precise enough that a reader can evaluate feasibility without talking to the author. CTE-TE 4.1 (technical communication) is the primary standard; the success criteria section also fulfills IAS-ELA 9-10.W for professional purpose-driven writing.</div>
+              </div>
+              <div class="db">
+                <div class="dbl">Design Brief Rubric (Formal)</div>
+                <div class="rr"><div class="rl">Problem statement is specific + HMW-grounded</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">≥3 measurable success criteria</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Constraints are realistic</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Out of Scope section present</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lt">
+            <div class="ld">Day 2</div>
+            <div class="lti">Project Planning — Gantt Chart, Milestones & Contingency</div>
+            <div class="ltype ts">Skill</div>
+          </div>
+          <div class="ldet">
+            <div class="ldesc">Students build their first Gantt chart — a timeline showing which tasks happen in which weeks, with explicit milestone markers (lo-fi test, CAD print submission, electronics working, report draft). Teacher introduces the concept of contingency: every project plan should include at least one buffer period, because something always takes longer than expected. Students identify the single riskiest task in their project (the one most likely to blow the schedule) and note it explicitly. Gantt is built on paper or in a simple spreadsheet — not complex software. The lesson closes with a peer review: swap plans with a partner and give one piece of feedback on scope or timeline realism.</div>
+            <div class="ds">
+              <div class="db">
+                <div class="dbl">Indiana Standards</div>
+                <span class="st">CTE-TE 3.1</span>
+                <span class="st n">CTE-TE 4.3</span>
+                <span class="st">IAS-Math 9-10.A</span>
+                <div class="se"><strong>CTE-TE 4.3 (NEW):</strong> Apply project management strategies in engineering contexts. The Gantt chart with milestone markers and explicit risk identification is the first formal project management deliverable in the program — a skill used in every professional engineering context.</div>
+              </div>
+              <div class="db">
+                <div class="dbl">Gantt Rubric (Formal)</div>
+                <div class="rr"><div class="rl">All major tasks listed</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Milestones marked</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Buffer period included</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Risk task identified</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rs">
+                  <div class="rsi"><div class="dot f"></div> Beginning</div>
+                  <div class="rsi"><div class="dot p"></div> Developing</div>
+                  <div class="rsi"><div class="dot s"></div> Proficient</div>
+                  <div class="rsi"><div class="dot e"></div> Exemplary</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lt">
+            <div class="ld">Day 3</div>
+            <div class="lti">Design Review Gate #1 — Teacher Brief Review + Scope Adjustment</div>
+            <div class="ltype ta">Gate</div>
+          </div>
+          <div class="ldet">
+            <div class="ldesc">Each student has a 5-minute individual design review with the teacher. The teacher evaluates: Is the project feasible in 20 class days? Is the technical complexity appropriate (not too simple, not impossibly ambitious)? Is the scope specific enough to deliver a testable prototype? Students who pass the review receive a "green light" notation in their notebook. Students who need revision receive written teacher notes and have until the start of Day 4 to revise. No student begins ideation or CAD until they have a green light. This gate mirrors professional project approval — work does not proceed to execution without review and sign-off.</div>
+            <div class="ds">
+              <div class="db">
+                <div class="dbl">Indiana Standards</div>
+                <span class="st">CTE-TE 3.1</span>
+                <span class="st">CTE-TE 4.1</span>
+                <span class="st">CTE-TE 4.3</span>
+              </div>
+              <div class="db">
+                <div class="dbl">Green Light Criteria</div>
+                <div class="ib">
+                  <div class="ibl" style="color:var(--accent3)">Teacher Review Checklist</div>
+                  <div class="ir"><div class="inum nt">✓</div><span>Feasible in 20 class days</span></div>
+                  <div class="ir"><div class="inum nt">✓</div><span>Uses ≥2 domains (CAD / electronics / code / data)</span></div>
+                  <div class="ir"><div class="inum nt">✓</div><span>Grounded in a real human need (HMW traceable)</span></div>
+                  <div class="ir"><div class="inum nt">✓</div><span>At least 1 testable success criterion</span></div>
+                  <div class="ir"><div class="inum nt">✓</div><span>Out of Scope section is meaningful, not empty</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- UNIT 2: IDEATE + CAD -->
+  <div class="unit" id="unit2">
+    <div class="uh" onclick="toggleUnit('unit2')">
+      <div class="un">02</div>
+      <div class="ui ci2">🔷</div>
+      <div class="uinfo">
+        <div class="ut">Ideate + Model — Concepts, CAD & Print</div>
+        <div class="um">Days 4–9 · ~6 class sessions · Design + Fabrication</div>
+      </div>
+      <div class="utog">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lg">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lt">
+            <div class="ld">Days 4–5</div>
+            <div class="lti">Rapid Ideation Sprint — Full Toolkit Applied to Brief</div>
+            <div class="ltype tstudio">Studio</div>
+          </div>
+          <div class="ldet">
+            <div class="ldesc">Students apply their full ideation toolkit in two focused studio sessions: SCAMPER applied to the HMW statement (Day 4, 20 minutes) → Crazy 8s to generate 8 rapid sketches (Day 4, 10 minutes) → morphological chart with ≥4 sub-functions and 3 options each (Day 4, remaining time) → concept screening matrix evaluating 3 combinations from the morph chart (Day 5, 30 minutes) → lo-fi prototype of selected concept in remaining time (Day 5). The pace is faster than Semester 6 because this is the second time through the full toolkit — fluency is expected. By end of Day 5 every student has a selected concept, a rationale, and a lo-fi prototype to test with a partner.</div>
+            <div class="ds">
+              <div class="db">
+                <div class="dbl">Indiana Standards</div>
+                <span class="st">CTE-TE 3.1</span>
+                <span class="st">CTE-TE 3.3</span>
+                <span class="st">CTE-TE 3.4</span>
+                <span class="st">IAS-Math 9-10.A</span>
+                <div class="se">This is the second full pass through the Semester 6 ideation toolkit — the fluency expectation is higher and the pace is appropriately faster. CTE-TE 3.3 and 3.4 are now assumed skills applied in service of a more complex, self-directed problem.</div>
+              </div>
+              <div class="db">
+                <div class="dbl">Ideation Sprint Rubric (Informal)</div>
+                <div class="rr"><div class="rl">≥10 distinct concepts generated</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Morph chart complete (4×3 min)</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Concept selected with rationale</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Lo-fi prototype built + tested</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lt">
+            <div class="ld">Days 6–7</div>
+            <div class="lti">Peer Design Critique — Gallery Walk & Structured Feedback</div>
+            <div class="ltype ts">Skill</div>
+          </div>
+          <div class="ldet">
+            <div class="ldesc">Before committing to CAD, every student participates in a structured peer design critique — the most rigorous feedback session in the program so far. Each student posts their lo-fi prototype, design brief, and concept selection rationale at a station. During a 20-minute gallery walk, every classmate visits every station and leaves sticky-note feedback using the "I Like / I Wonder / What If" framework: "I Like" (something genuinely strong), "I Wonder" (a question about feasibility, user need, or scope), "What If" (a specific alternative idea). Each student returns to their station, reads all feedback, and writes a 5-sentence "Critique Response" — what they are keeping, what they are changing, and what feedback they are consciously rejecting (and why). Rejecting feedback with a clear reason is as valid as accepting it.</div>
+            <div class="ds">
+              <div class="db">
+                <div class="dbl">Indiana Standards</div>
+                <span class="st">CTE-TE 4.1</span>
+                <span class="st n">CTE-TE 9.3</span>
+                <span class="st">CTE-TE 9.1</span>
+                <span class="st">IAS-ELA 9-10.SL</span>
+                <div class="se"><strong>CTE-TE 9.3 (NEW):</strong> Demonstrate professional and ethical practices in engineering contexts — giving and receiving critique respectfully, grounding feedback in evidence, and articulating design decisions with reasoning. Peer critique is a professional engineering practice that the program begins formalizing here.</div>
+              </div>
+              <div class="db">
+                <div class="dbl">Critique Response Rubric (Formal)</div>
+                <div class="rr"><div class="rl">Feedback received and read (all stations)</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Critique response written (5 sentences)</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Changes and rejections both justified</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lt">
+            <div class="ld">Days 8–9</div>
+            <div class="lti">CAD Studio + Print Submission — Build the Physical Form</div>
+            <div class="ltype tstudio">Studio</div>
+          </div>
+          <div class="ldet">
+            <div class="ldesc">Two full CAD studio sessions with the same planning gate as Semester 6: no CAD software opens on Day 8 until the student has a notebook sketch with orthographic views, a feature strategy, and a note addressing any critique feedback that affected the form. Teacher holds rolling 3-minute check-ins. By end of Day 9, all parts must be modeled and submitted to the print queue with a full SolidWorks drawing package (dimensioned, title block, BOM if applicable). Students who are not print-ready receive a documented "v1 hold." Parts that require a reprint due to a modeling error — not a design change — are noted as learning events in the notebook: "What did I model incorrectly and how did I catch it?"</div>
+            <div class="ds">
+              <div class="db">
+                <div class="dbl">Indiana Standards</div>
+                <span class="st">CTE-TE 5.1</span>
+                <span class="st">CTE-TE 5.2</span>
+                <span class="st">CTE-TE 6.1</span>
+                <span class="st">CTE-TE 6.2</span>
+                <span class="st">CTE-TE 6.3</span>
+                <span class="st">IAS-Math 9-10.G</span>
+              </div>
+              <div class="db">
+                <div class="dbl">Drawing Package Rubric (Formal)</div>
+                <div class="rr"><div class="rl">All parts fully dimensioned</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Title block complete</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">BOM present (if multi-part)</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Critique feedback addressed in model</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- UNIT 3: BUILD -->
+  <div class="unit" id="unit3">
+    <div class="uh" onclick="toggleUnit('unit3')">
+      <div class="un">03</div>
+      <div class="ui ci3">⚡</div>
+      <div class="uinfo">
+        <div class="ut">Build — Electronics, Code & Integration</div>
+        <div class="um">Days 10–13 · ~4 class sessions · Full-Stack Assembly</div>
+      </div>
+      <div class="utog">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lg">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lt">
+            <div class="ld">Day 10</div>
+            <div class="lti">Electronics + Code Planning — Wiring Diagram & Pseudocode Before Any Build</div>
+            <div class="ltype tp">Project</div>
+          </div>
+          <div class="ldet">
+            <div class="ldesc">While prints are running, students produce complete electronics and software plans before writing a single line of code or connecting a single wire. Required deliverables: (1) full wiring diagram in notebook, (2) pseudocode flowchart covering all major logic branches, (3) Python analysis plan if applicable (what data will be collected, what statistics computed, what the chart will show), (4) AI use plan — which parts will be AI-assisted and what verification steps apply. Teacher reviews each plan in a 3-minute check-in. Students who cannot articulate their plan verbally are not permitted to begin building. This gate enforces the flowchart-first principle that has been introduced since Semester 3.</div>
+            <div class="ds">
+              <div class="db">
+                <div class="dbl">Indiana Standards</div>
+                <span class="st">CTE-TE 7.1</span>
+                <span class="st">CTE-TE 7.2</span>
+                <span class="st">IAS-CS 9-10.AP.1</span>
+                <span class="st">IAS-CS 9-10.DA.1</span>
+              </div>
+              <div class="db">
+                <div class="dbl">Planning Checklist (Gate)</div>
+                <div class="ib">
+                  <div class="ibl" style="color:var(--accent5)">Required Before Building</div>
+                  <div class="ir"><div class="inum ng">✓</div><span>Wiring diagram drawn (all components)</span></div>
+                  <div class="ir"><div class="inum ng">✓</div><span>Pseudocode flowchart all major branches</span></div>
+                  <div class="ir"><div class="inum ng">✓</div><span>Python analysis plan (if applicable)</span></div>
+                  <div class="ir"><div class="inum ng">✓</div><span>AI use plan documented</span></div>
+                  <div class="ir"><div class="inum ng">✓</div><span>Verbally explained to teacher</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lt">
+            <div class="ld">Days 11–12</div>
+            <div class="lti">Build Studio — Full-Stack Assembly & Integration</div>
+            <div class="ltype tstudio">Studio</div>
+          </div>
+          <div class="ldet">
+            <div class="ldesc">Two full build studio sessions. Students wire circuits, write and test code, integrate electronics with printed physical components, and — if applicable — connect the data pipeline to a Python analysis layer. Teacher circulates with rapid check-ins using three questions: "Does your current state match your plan?" "Where are you on the Gantt?" "What's your biggest blocker right now?" Students who are tracking well are challenged to add a second interaction mode or an edge case handler. Students who are behind are asked to identify one feature to cut and move to the "v2" column of their notebook. A mid-Day 12 peer standup (3 minutes per student) has each student state progress, a blocker, and a next step — directly modeling Agile sprint practice.</div>
+            <div class="ds">
+              <div class="db">
+                <div class="dbl">Indiana Standards</div>
+                <span class="st">CTE-TE 7.1</span>
+                <span class="st">CTE-TE 7.2</span>
+                <span class="st">IAS-CS 9-10.AP.1</span>
+                <span class="st">IAS-CS 9-10.AP.2</span>
+                <span class="st">IAS-CS 9-10.AP.3</span>
+                <span class="st">IAS-CS 9-10.DA.1</span>
+                <span class="st">IAS-CS 8.IC.1</span>
+              </div>
+              <div class="db">
+                <div class="dbl">Mid-Build Check-In (Self-Assessment)</div>
+                <div class="rr"><div class="rl">Wiring matches plan</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Code logic matches flowchart</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">On-track with Gantt</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">AI fact-check documented</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lt">
+            <div class="ld">Day 13</div>
+            <div class="lti">Integration Day — Physical + Electronic + Software Working Together</div>
+            <div class="ltype tstudio">Studio</div>
+          </div>
+          <div class="ldet">
+            <div class="ldesc">Day 13 is the target for a complete (if rough) integrated prototype — physical form, electronics, and code all working together, even imperfectly. Students who reach this milestone use remaining time to polish, add secondary features, or begin Python analysis if applicable. Students who have not yet reached integration focus on their single highest-priority blocker. Teacher holds a brief "integration check" at end of class: each student demonstrates that their prototype does something — even one small thing — that combines at least two domains. This ensures nobody enters the user test phase with a completely non-functional prototype.</div>
+            <div class="ds">
+              <div class="db">
+                <div class="dbl">Indiana Standards</div>
+                <span class="st">CTE-TE 3.2</span>
+                <span class="st">CTE-TE 6.1</span>
+                <span class="st">CTE-TE 7.1</span>
+                <span class="st">IAS-CS 9-10.AP.1</span>
+              </div>
+              <div class="db">
+                <div class="dbl">Integration Check (Teacher Demo)</div>
+                <div class="ib">
+                  <div class="ibl" style="color:var(--accent-bright)">By End of Day 13…</div>
+                  <div class="ir"><div class="inum nr">✓</div><span>Prototype combines ≥2 domains</span></div>
+                  <div class="ir"><div class="inum nr">✓</div><span>At least 1 success criterion is demonstrable</span></div>
+                  <div class="ir"><div class="inum nr">✗</div><span>Students who cannot demo get a 1-on-1 triage session with teacher before Day 14</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- UNIT 4: TEST + ITERATE -->
+  <div class="unit" id="unit4">
+    <div class="uh" onclick="toggleUnit('unit4')">
+      <div class="un">04</div>
+      <div class="ui ci4">🔬</div>
+      <div class="uinfo">
+        <div class="ut">Test, Iterate & Document</div>
+        <div class="um">Days 14–17 · ~4 class sessions · Testing + Report</div>
+      </div>
+      <div class="utog">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lg">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lt">
+            <div class="ld">Days 14–15</div>
+            <div class="lti">User Test Against Success Criteria — The Hardest Feedback</div>
+            <div class="ltype ta">Assess</div>
+          </div>
+          <div class="ldet">
+            <div class="ldesc">The most important two days of the semester. Each student conducts a structured user test with a person from (or closely representative of) their original target user group — ideally someone from the Semester 7 multi-person study. The test protocol uses the 3-part framework from Semester 6, now extended: (1) silent observation — give the prototype without explanation and watch; (2) structured task — ask them to accomplish one specific thing using the prototype; (3) success criteria evaluation — for each of the 3+ measurable success criteria from the brief, evaluate pass/fail and document why. The User Test Report is graded on rigor and honesty. A prototype that fails 2 of 3 criteria but has rigorous documentation will score higher than one that passes all criteria but has vague notes.</div>
+            <div class="ds">
+              <div class="db">
+                <div class="dbl">Indiana Standards</div>
+                <span class="st">CTE-TE 3.4</span>
+                <span class="st">CTE-TE 8.1</span>
+                <span class="st">CTE-TE 8.2</span>
+                <span class="st">CTE-TE 9.1</span>
+                <span class="st">CTE-TE 9.2</span>
+                <span class="st">IAS-ELA 9-10.W</span>
+              </div>
+              <div class="db">
+                <div class="dbl">User Test Report Rubric (Formal)</div>
+                <div class="rr"><div class="rl">Success criteria evaluated (pass/fail + why)</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Silent observation notes present</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Task completion documented</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Findings honest + specific</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lt">
+            <div class="ld">Day 15 (cont.)</div>
+            <div class="lti">Iteration Sprint — Prioritize, Fix, Document v2</div>
+            <div class="ltype tstudio">Studio</div>
+          </div>
+          <div class="ldet">
+            <div class="ldesc">Immediately following the user test, students triage findings using a priority matrix: impact (how much does this affect the user's experience?) vs. effort (how long will this take to fix?). High impact, low effort changes are done today. High impact, high effort changes are noted as "v2 priority." Low impact changes are noted but deprioritized. The v2 section of the notebook becomes a living document of everything the student knows would improve the design but did not have time to implement. This is standard professional practice — all shipped products have a v2 backlog — and normalizes honest scope management.</div>
+            <div class="ds">
+              <div class="db">
+                <div class="dbl">Indiana Standards</div>
+                <span class="st">CTE-TE 3.1</span>
+                <span class="st">CTE-TE 3.4</span>
+                <span class="st">CTE-TE 6.1</span>
+                <span class="st">CTE-TE 6.2</span>
+              </div>
+              <div class="db">
+                <div class="dbl">Iteration Documentation (Formal)</div>
+                <div class="rr"><div class="rl">Priority matrix completed</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">≥1 change implemented</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Before/after documented</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">v2 backlog written</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lt">
+            <div class="ld">Days 16–17</div>
+            <div class="lti">Full Engineering Report + Portfolio — Year 4 Complete</div>
+            <div class="ltype tp">Project</div>
+          </div>
+          <div class="ldet">
+            <div class="ldesc">Students produce their most comprehensive Engineering Report to date — 600–900 words plus annotated images. Required sections: (1) Research Foundation — who they interviewed, what themes emerged, how the HMW was selected; (2) Design Process — ideation toolkit applied, key decision at each stage, critique feedback incorporated; (3) Technical Description — CAD model overview, electronics/code architecture, Python analysis pipeline if applicable; (4) Test Results — success criteria evaluation, user test findings; (5) Iteration — what changed, what's in v2 and why; (6) Reflection — "What is the most important thing this project taught me about designing for someone other than myself?" Portfolio update adds all Semester 8 artifacts. The User Research section now spans four semesters — the longitudinal thread from Semester 5 interview to Semester 8 tested prototype is explicitly visible.</div>
+            <div class="ds">
+              <div class="db">
+                <div class="dbl">Indiana Standards</div>
+                <span class="st">CTE-TE 4.1</span>
+                <span class="st">CTE-TE 4.2</span>
+                <span class="st">CTE-TE 4.3</span>
+                <span class="st">IAS-ELA 9-10.W</span>
+              </div>
+              <div class="db">
+                <div class="dbl">Engineering Report Rubric (Formal)</div>
+                <div class="rr"><div class="rl">All 6 sections complete</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Research → Design → Test arc visible</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Technical content accurate</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Reflection substantive + honest</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- UNIT 5: PRESENT -->
+  <div class="unit" id="unit5">
+    <div class="uh" onclick="toggleUnit('unit5')">
+      <div class="un">05</div>
+      <div class="ui ci5">🎤</div>
+      <div class="uinfo">
+        <div class="ut">Final Showcase — Capstone Preview Format</div>
+        <div class="um">Days 18–20 · ~3 class sessions · Year 4 Culmination</div>
+      </div>
+      <div class="utog">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lg">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lt">
+            <div class="ld">Day 18</div>
+            <div class="lti">Presentation Rehearsal — Peer Critique of the Presentation Itself</div>
+            <div class="ltype tstudio">Studio</div>
+          </div>
+          <div class="ldet">
+            <div class="ldesc">Students do a full run-through of their showcase presentation with a partner. The partner uses a structured feedback form specifically for presentations (distinct from the design critique form): timing (did they stay within 5 minutes?), clarity of the person/process/product/data arc, demo effectiveness, and one specific question the presentation didn't answer. Students revise based on feedback and run the presentation once more with the same partner. This dedicated rehearsal day is new — the Sophomore capstone audience will include external guests, and students need to experience presenting under low-stakes conditions before they do it under high-stakes ones.</div>
+            <div class="ds">
+              <div class="db">
+                <div class="dbl">Indiana Standards</div>
+                <span class="st">CTE-TE 4.1</span>
+                <span class="st">CTE-TE 9.1</span>
+                <span class="st">CTE-TE 9.3</span>
+                <span class="st">IAS-ELA 9-10.SL</span>
+              </div>
+              <div class="db">
+                <div class="dbl">Rehearsal Feedback Form</div>
+                <div class="rr"><div class="rl">Within 5-minute time limit</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Research → Design → Test arc clear</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Demo effective</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">1 unanswered question identified</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lt">
+            <div class="ld">Days 19–20</div>
+            <div class="lti">Year 4 Final Showcase — Person · Process · Data · Product</div>
+            <div class="ltype ta">Assess</div>
+          </div>
+          <div class="ldet">
+            <div class="ldesc">The Year 4 Final Showcase uses an expanded four-beat format that previews the Sophomore capstone presentation structure: (1) The Person — who did you design for, what research did you do, what did you learn that surprised you? (2) The Process — one key decision at each stage of the project (ideation, critique, CAD, electronics/code, testing); (3) The Data — show the Python analysis chart or user test results — quantitative evidence about your design; (4) The Product — live demo. Invited audience includes other teachers, parents, and ideally at least one of the people interviewed in the Semester 7 research study. 5 minutes per student. Teacher and peer rubrics both completed. This is the closest the program has come to a professional engineering presentation — and it is explicitly named as the capstone preview. Students are told: "The Sophomore capstone will look like this, with more time, a bigger audience, and work you've been building toward for four years."</div>
+            <div class="ds">
+              <div class="db">
+                <div class="dbl">Indiana Standards</div>
+                <span class="st">CTE-TE 4.1</span>
+                <span class="st">CTE-TE 4.2</span>
+                <span class="st">CTE-TE 8.2</span>
+                <span class="st">CTE-TE 9.1</span>
+                <span class="st">CTE-TE 9.3</span>
+                <span class="st">IAS-ELA 9-10.SL</span>
+                <span class="st">IAS-CS 9-10.DA.1</span>
+              </div>
+              <div class="db">
+                <div class="dbl">Final Showcase Rubric — 4 Beats</div>
+                <div class="rr"><div class="rl">Person — research communicated compellingly</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Process — key decision at each stage</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Data — quantitative evidence shown</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Product — live demo attempted</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rr"><div class="rl">Delivery — clear, confident, 5 min</div><div class="dl"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rs">
+                  <div class="rsi"><div class="dot f"></div> Beginning</div>
+                  <div class="rsi"><div class="dot p"></div> Developing</div>
+                  <div class="rsi"><div class="dot s"></div> Proficient</div>
+                  <div class="rsi"><div class="dot e"></div> Exemplary</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Standards Legend -->
+  <div class="sl">
+    <div class="slt">📋 Indiana Standards Reference — Semester 8 (New ★ + Continued)</div>
+    <div class="slg">
+      <div class="sli">
+        <div class="slc n">CTE-TE 4.3 ★ NEW</div>
+        <div class="sld">Apply project management strategies — the Gantt chart with milestones, contingency, and risk identification is the first formal PM deliverable in the program.</div>
+      </div>
+      <div class="sli">
+        <div class="slc n">CTE-TE 9.3 ★ NEW</div>
+        <div class="sld">Professional and ethical practices — introduced through structured peer critique (I Like / I Wonder / What If) and the critique response that requires reasoning-based justification for decisions made.</div>
+      </div>
+      <div class="sli">
+        <div class="slc">CTE-TE 3.1 / 3.3 / 3.4</div>
+        <div class="sld">Design process, creative thinking, prototype evaluation — applied at higher fluency through a full semester, self-directed project cycle. Assumed skills now used without scaffolding.</div>
+      </div>
+      <div class="sli">
+        <div class="slc">CTE-TE 4.1 / 4.2</div>
+        <div class="sld">Technical communication — Design Brief (new format), Engineering Report (6 sections, 600–900 words), and the four-beat Person/Process/Data/Product showcase.</div>
+      </div>
+      <div class="sli">
+        <div class="slc">CTE-TE 5.1 / 5.2 / 6.1–6.3</div>
+        <div class="sld">Drawing, CAD, fabrication, simulation — applied within a fully self-directed brief for the second time, with peer critique feedback influencing modeling decisions.</div>
+      </div>
+      <div class="sli">
+        <div class="slc">CTE-TE 7.1 / 7.2</div>
+        <div class="sld">Electronics and digital communication — Arduino plus I²C/UART protocols applied across the full integrated project. Motor control available for projects requiring actuation.</div>
+      </div>
+      <div class="sli">
+        <div class="slc">CTE-TE 8.1 / 8.2 / 9.1 / 9.2</div>
+        <div class="sld">Human factors, social impact, interpersonal skills, research methods — the entire HCD arc is embodied in a single project from Semester 7 research through Semester 8 tested prototype.</div>
+      </div>
+      <div class="sli">
+        <div class="slc">IAS-CS 9-10.AP.1–3 / DA.1</div>
+        <div class="sld">All CS standards active — flowchart-first planning, Python implementation, systematic testing, AI fact-checking, and full data analysis pipeline if applicable.</div>
+      </div>
+      <div class="sli">
+        <div class="slc">IAS-Math 9-10.A / G / S</div>
+        <div class="sld">Algebra (Gantt proportional planning), Geometry (CAD modeling), Statistics (Python data analysis, user test success rate evaluation).</div>
+      </div>
+      <div class="sli">
+        <div class="slc">IAS-ELA 9-10.W / 9-10.SL</div>
+        <div class="sld">Writing (Design Brief, 6-section Engineering Report, Reflection) and Speaking &amp; Listening (rehearsed 5-minute four-beat presentation with external audience).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Year 4 Complete Banner -->
+  <div style="background:rgba(232,80,106,.07);border:1px solid rgba(232,80,106,.25);border-radius:12px;padding:20px 24px;margin-top:20px;animation:fadeUp .5s .6s ease both">
+    <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--accent-bright);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">★ Year 4 Complete — Cumulative Skill Stack</div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.7">Students exit 10th grade as multi-domain, research-grounded engineers. They can take a human need from interview to affinity map to HMW to design brief to ideation to CAD to electronics to code to Python analysis to user test to iteration to engineering report to 5-minute external presentation — and document every step. The Sophomore capstone, now 6 semesters away, is the same cycle at larger scale and higher stakes. Everything from here builds on this foundation.<br><br><strong style="color:var(--text)">Coming in Year 5 (11th Grade):</strong> Advanced Python (NumPy, pandas, data science intro), Raspberry Pi (Linux + Python on hardware), object-oriented programming, deeper HCD (persona development, journey mapping), and the first substantial team-based project.</div>
+  </div>
+
+</div>
+
+<div class="review-bar">
+  <div class="rt"><strong>Semester 8 — 10th Grade Spring</strong> · 5 phases · 20 class days · Year 4 Complete ✓</div>
+  <button class="rb" onclick="alert('Approved! Tell Claude to continue to Semester 9 — 11th Grade Fall.')">✅ Approve & Continue to Semester 9 →</button>
+</div>
+
+<script>
+  function toggleUnit(id){document.getElementById(id).classList.toggle('open')}
+  function toggleLesson(el){el.classList.toggle('open')}
+  document.getElementById('unit1').classList.add('open')
+</script>
+</body>
+</html>

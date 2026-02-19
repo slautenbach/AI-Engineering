@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Engineering Pathway | Semester 7 — 10th Grade Fall</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0f1117;--surface:#181c27;--surface2:#1f2435;--border:#2a3050;
+    --accent:#a07ee0;--accent-bright:#bda0f0;--accent2:#5b8dee;
+    --accent3:#4ecdc4;--accent4:#e8506a;--accent5:#f5a623;
+    --text:#e8eaf0;--muted:#7a8099;--tag-bg:#252d45;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 55% 35% at 88% 6%,rgba(160,126,224,.08) 0%,transparent 60%),radial-gradient(ellipse 40% 28% at 6% 88%,rgba(91,141,238,.05) 0%,transparent 50%);pointer-events:none;z-index:0}
+  .wrapper{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:48px 24px 80px}
+  .header{margin-bottom:48px;animation:fadeDown .6s ease both}
+  .breadcrumb{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px}
+  .breadcrumb span{color:var(--accent-bright)}
+  h1{font-family:'DM Serif Display',serif;font-size:clamp(32px,5vw,52px);line-height:1.1;color:var(--text);margin-bottom:12px}
+  h1 em{font-style:italic;color:var(--accent-bright)}
+  .subtitle{color:var(--muted);font-size:15px;max-width:580px;line-height:1.7}
+  .meta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+  .meta-chip{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:5px 12px;font-size:12px;font-family:'DM Mono',monospace;color:var(--muted)}
+  .meta-chip strong{color:var(--text)}
+  .skill-stack{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 22px;margin-bottom:24px;animation:fadeDown .5s .05s ease both}
+  .skill-stack-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px}
+  .skill-pills{display:flex;flex-wrap:wrap;gap:8px}
+  .skill-pill{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:500;font-family:'DM Sans',sans-serif}
+  .pill-done{background:rgba(78,205,196,.1);border:1px solid rgba(78,205,196,.25);color:var(--accent3)}
+  .pill-new{background:rgba(160,126,224,.12);border:1px solid rgba(160,126,224,.35);color:var(--accent-bright)}
+  .pill-new::before{content:'★ ';font-size:9px}
+  .callout{border-radius:10px;padding:14px 18px;margin-bottom:18px;font-size:13px;display:flex;gap:10px;align-items:flex-start;animation:fadeDown .5s .08s ease both;line-height:1.6}
+  .callout-purple{background:rgba(160,126,224,.07);border:1px solid rgba(160,126,224,.25);color:var(--accent-bright)}
+  .callout-blue{background:rgba(91,141,238,.07);border:1px solid rgba(91,141,238,.25);color:var(--accent2)}
+  .arc-bar{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 22px;margin-bottom:36px;animation:fadeDown .5s .1s ease both}
+  .arc-label{font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
+  .arc-track{display:flex;gap:3px}
+  .arc-seg{height:5px;border-radius:3px;flex:1}
+  .arc-seg.done{opacity:.45}.arc-seg.active{opacity:1}.arc-seg.future{opacity:.12}
+  .arc-names{display:flex;margin-top:7px}
+  .arc-name{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;text-align:center;flex:1}
+  .arc-name.active{color:var(--accent-bright);font-weight:600}
+  .arc-name.done{color:var(--accent3)}
+  .unit{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:18px;overflow:hidden;animation:fadeUp .5s ease both;transition:border-color .25s}
+  .unit:hover{border-color:#363d5c}
+  .unit:nth-child(1){animation-delay:.12s}.unit:nth-child(2){animation-delay:.2s}.unit:nth-child(3){animation-delay:.28s}.unit:nth-child(4){animation-delay:.36s}
+  .unit-header{display:flex;align-items:center;gap:16px;padding:20px 24px;cursor:pointer;user-select:none}
+  .unit-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);min-width:32px}
+  .unit-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  .unit-info{flex:1}
+  .unit-title{font-family:'DM Serif Display',serif;font-size:18px;color:var(--text);margin-bottom:4px}
+  .unit-meta{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace}
+  .unit-toggle{color:var(--muted);font-size:20px;transition:transform .3s;flex-shrink:0}
+  .unit.open .unit-toggle{transform:rotate(180deg)}
+  .unit-body{display:none;padding:0 24px 24px;border-top:1px solid var(--border)}
+  .unit.open .unit-body{display:block}
+  .lessons-grid{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+  .lesson{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px 18px;cursor:pointer;transition:border-color .2s,background .2s}
+  .lesson:hover{border-color:#363d5c;background:#232840}
+  .lesson-top{display:flex;align-items:flex-start;gap:12px}
+  .lesson-day{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);min-width:52px;padding-top:2px}
+  .lesson-title{font-size:14px;font-weight:500;color:var(--text);flex:1;line-height:1.4}
+  .lesson-type{font-size:10px;font-family:'DM Mono',monospace;padding:3px 8px;border-radius:4px;flex-shrink:0;margin-top:1px}
+  .type-intro{background:rgba(91,141,238,.15);color:var(--accent2)}
+  .type-skill{background:rgba(78,205,196,.15);color:var(--accent3)}
+  .type-project{background:rgba(245,166,35,.15);color:var(--accent5)}
+  .type-assess{background:rgba(232,80,106,.15);color:var(--accent4)}
+  .type-studio{background:rgba(160,126,224,.15);color:var(--accent-bright)}
+  .lesson-detail{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+  .lesson.open .lesson-detail{display:block}
+  .lesson-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:14px}
+  .detail-sections{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:580px){.detail-sections{grid-template-columns:1fr}}
+  .detail-box{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+  .detail-box-label{font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+  .standard-tag{display:inline-block;background:var(--tag-bg);border:1px solid var(--border);border-radius:4px;padding:2px 7px;font-size:10px;font-family:'DM Mono',monospace;color:var(--accent2);margin:2px 2px 2px 0}
+  .standard-tag.new-std{color:var(--accent-bright);border-color:rgba(160,126,224,.4);background:rgba(160,126,224,.07)}
+  .standard-explain{font-size:11px;color:var(--muted);line-height:1.55;margin-top:6px}
+  .rubric-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+  .rubric-label{font-size:11px;color:var(--text)}
+  .dot-legend{display:flex;gap:4px}
+  .dot{width:7px;height:7px;border-radius:50%}
+  .dot.f{background:var(--accent4)}.dot.p{background:var(--accent5)}.dot.s{background:var(--accent3)}.dot.e{background:var(--accent2)}
+  .rubric-scale{display:flex;gap:10px;margin-top:8px;padding-top:7px;border-top:1px solid var(--border);flex-wrap:wrap}
+  .rubric-scale-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted)}
+  .inset-box{background:#0a0c12;border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-top:10px;font-size:11px;color:var(--muted);line-height:1.7}
+  .inset-label{font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+  .inset-row{display:flex;gap:10px;margin-bottom:5px;align-items:flex-start}
+  .inset-num{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:9px;flex-shrink:0;margin-top:1px}
+  .n-purple{background:rgba(160,126,224,.15);color:var(--accent-bright)}
+  .n-blue{background:rgba(91,141,238,.15);color:var(--accent2)}
+  .n-teal{background:rgba(78,205,196,.15);color:var(--accent3)}
+  .n-gold{background:rgba(245,166,35,.15);color:var(--accent5)}
+  .code-preview{background:#0a0c12;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-family:'DM Mono',monospace;font-size:11px;color:#8b9fc5;margin-top:10px;line-height:1.8}
+  .kw{color:var(--accent-bright)}.fn{color:var(--accent3)}.str{color:var(--accent5)}.cm{color:#3a4260}.num{color:var(--accent2)}
+  .standards-legend{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-top:28px;animation:fadeUp .5s .5s ease both}
+  .legend-title{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px}
+  .legend-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:8px}
+  .legend-item{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 13px}
+  .legend-code{font-family:'DM Mono',monospace;font-size:10px;color:var(--accent2);margin-bottom:4px}
+  .legend-code.new{color:var(--accent-bright)}
+  .legend-desc{font-size:11px;color:var(--muted);line-height:1.45}
+  .review-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(15,17,23,.96);border-top:1px solid var(--border);backdrop-filter:blur(14px);padding:13px 24px;display:flex;align-items:center;justify-content:space-between;z-index:100;gap:14px;flex-wrap:wrap}
+  .review-text{font-size:12px;color:var(--muted)}
+  .review-text strong{color:var(--text)}
+  .review-btn{background:var(--accent-bright);color:#0f1117;border:none;border-radius:8px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:opacity .2s;white-space:nowrap}
+  .review-btn:hover{opacity:.85}
+  .c1{background:rgba(160,126,224,.12)}.c2{background:rgba(91,141,238,.12)}.c3{background:rgba(78,205,196,.12)}.c4{background:rgba(245,166,35,.10)}.c5{background:rgba(232,80,106,.10)}
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <div class="breadcrumb">Engineering Pathway · <span>Year 4 of 8</span> · Semester 7</div>
+    <h1>10th Grade <em>Fall</em><br>Python, Advanced Electronics & Deeper User Research</h1>
+    <p class="subtitle">Year 4 opens with three parallel expansions: Python as a second programming language (introduced through direct comparison with JS), a significant hardware step-up to I²C communication protocols and motor control, and a shift from single-person interviews to multi-person research synthesis. All three converge in the semester's integration project and set the stage for the most ambitious integrated project of the program so far — Semester 8.</p>
+    <div class="meta-row">
+      <div class="meta-chip"><strong>Grade:</strong> 10th</div>
+      <div class="meta-chip"><strong>Semester:</strong> Fall (7 of 16)</div>
+      <div class="meta-chip"><strong>Schedule:</strong> A/B Block · 45–50 min</div>
+      <div class="meta-chip"><strong>~20 class days</strong></div>
+      <div class="meta-chip"><strong>New Language:</strong> Python</div>
+      <div class="meta-chip"><strong>New Hardware:</strong> I²C sensors, servos, DC motors</div>
+    </div>
+  </div>
+
+  <div class="callout callout-purple">
+    <span>🐍</span>
+    <span><strong>Why Python now?</strong> Students have genuine JS fluency by 10th grade. Python is introduced as a second language — not a replacement — through side-by-side comparison that reinforces the idea that programming concepts are universal and syntax is just dialect. Python also opens the door to data science, matplotlib, and eventually machine learning in later semesters.</span>
+  </div>
+  <div class="callout callout-blue">
+    <span>🔗</span>
+    <span><strong>Semester 6 Bridge:</strong> Students arrive with the full integrated project cycle, Engineering Report writing, Person/Process/Product showcase format, and a complete ideation toolkit. All of these are assumed fluencies that are deepened this semester — not re-taught.</span>
+  </div>
+
+  <div class="arc-bar">
+    <div class="arc-label">8-Year Pathway — Semester 7 of 16</div>
+    <div class="arc-track">
+      <div class="arc-seg done" style="background:#4ecdc4"></div>
+      <div class="arc-seg done" style="background:#4ecdc4"></div>
+      <div class="arc-seg done" style="background:#4ecdc4"></div>
+      <div class="arc-seg done" style="background:#4ecdc4"></div>
+      <div class="arc-seg done" style="background:#4ecdc4"></div>
+      <div class="arc-seg done" style="background:#4ecdc4"></div>
+      <div class="arc-seg active" style="background:#bda0f0"></div>
+      <div class="arc-seg future" style="background:#bda0f0"></div>
+      <div class="arc-seg future" style="background:#f5a623"></div>
+      <div class="arc-seg future" style="background:#f5a623"></div>
+      <div class="arc-seg future" style="background:#f5a623"></div>
+      <div class="arc-seg future" style="background:#f5a623"></div>
+      <div class="arc-seg future" style="background:#5b8dee"></div>
+      <div class="arc-seg future" style="background:#5b8dee"></div>
+      <div class="arc-seg future" style="background:#5b8dee"></div>
+      <div class="arc-seg future" style="background:#5b8dee"></div>
+    </div>
+    <div class="arc-names">
+      <div class="arc-name done">7F</div><div class="arc-name done">7S</div>
+      <div class="arc-name done">8F</div><div class="arc-name done">8S</div>
+      <div class="arc-name done">9F</div><div class="arc-name done">9S</div>
+      <div class="arc-name active">10F ←</div>
+      <div class="arc-name">10S</div>
+      <div class="arc-name">11F</div><div class="arc-name">11S</div>
+      <div class="arc-name">12F</div><div class="arc-name">12S</div>
+      <div class="arc-name">FrF</div><div class="arc-name">FrS</div>
+      <div class="arc-name">SoF</div><div class="arc-name">SoS</div>
+    </div>
+  </div>
+
+  <div class="skill-stack">
+    <div class="skill-stack-label">Cumulative Skill Stack — Incoming + New This Semester</div>
+    <div class="skill-pills">
+      <span class="skill-pill pill-done">EDP + HCD Frameworks</span>
+      <span class="skill-pill pill-done">Inventor + SolidWorks Advanced</span>
+      <span class="skill-pill pill-done">FEA Simulation</span>
+      <span class="skill-pill pill-done">3D Printing + Inspection</span>
+      <span class="skill-pill pill-done">JavaScript + DOM</span>
+      <span class="skill-pill pill-done">AI Fact-Checking Framework</span>
+      <span class="skill-pill pill-done">Multi-Sensor Arduino (C++)</span>
+      <span class="skill-pill pill-done">Full Ideation Toolkit</span>
+      <span class="skill-pill pill-done">Integrated Project Cycle + Engineering Report</span>
+      <span class="skill-pill pill-new">Python Fundamentals</span>
+      <span class="skill-pill pill-new">Python File I/O + CSV Analysis</span>
+      <span class="skill-pill pill-new">matplotlib Visualization</span>
+      <span class="skill-pill pill-new">I²C / SPI / UART Protocols</span>
+      <span class="skill-pill pill-new">Servo + DC Motor Control</span>
+      <span class="skill-pill pill-new">Multi-Person User Research</span>
+      <span class="skill-pill pill-new">Affinity Mapping</span>
+    </div>
+  </div>
+
+  <!-- UNIT 1 -->
+  <div class="unit" id="unit1">
+    <div class="unit-header" onclick="toggleUnit('unit1')">
+      <div class="unit-num">01</div>
+      <div class="unit-icon c1">🐍</div>
+      <div class="unit-info">
+        <div class="unit-title">Python Fundamentals — A Second Language Through Comparison</div>
+        <div class="unit-meta">Days 1–6 · ~6 class sessions · New Language Track</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 1</div>
+            <div class="lesson-title">Python vs JavaScript — Same Logic, Different Dialect</div>
+            <div class="lesson-type type-intro">Intro</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Teacher opens with identical programs written in both JavaScript and Python — a volume calculator function, a for loop printing a table, an if/else classifier. Students identify what is the same (logic, structure, variable concept, function concept) and what differs (indentation vs braces, print vs console.log, no semicolons, snake_case vs camelCase). Key message: you already know how to program. You are learning a new dialect. Students set up Python (IDLE, VS Code, or browser-based repl.it) and write their first Python lines interactively in the shell.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag new-std">IAS-CS 9-10.AP.2</span>
+                <span class="standard-tag">IAS-CS 9-10.AP.1</span>
+                <div class="standard-explain"><strong>IAS-CS 9-10.AP.2 (NEW):</strong> Create clearly named variables, define functions, and use data structures to store and manipulate data. Python's readable syntax makes this standard especially concrete — naming conventions and structure are language-enforced.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Side-by-Side Preview</div>
+                <div class="code-preview">
+<span class="cm"># Python</span><br>
+<span class="kw">def</span> <span class="fn">calc_volume</span>(l, w, h):<br>
+&nbsp;&nbsp;<span class="kw">return</span> l * w * h<br>
+<span class="fn">print</span>(<span class="fn">calc_volume</span>(<span class="num">4</span>, <span class="num">3</span>, <span class="num">2</span>))<br>
+<br>
+<span class="cm">// JavaScript equivalent</span><br>
+<span class="kw">function</span> <span class="fn">calcVolume</span>(l, w, h) {<br>
+&nbsp;&nbsp;<span class="kw">return</span> l * w * h;<br>
+}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 2</div>
+            <div class="lesson-title">Lists, Dictionaries & Loops — Python's Data Structures</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students learn Python's list and dictionary types — more expressive equivalents of JavaScript arrays and objects. Engineering contexts: a list of sensor readings to be averaged, a dictionary representing a part spec (name, material, dimensions, mass). Students use for loops to iterate both structures and encounter list comprehensions as a Python-specific shorthand. A translation worksheet asks them to convert 4 JS snippets into Python — reinforcing that logic transfers, syntax is learned.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">IAS-CS 9-10.AP.2</span>
+                <span class="standard-tag">IAS-CS 9-10.AP.1</span>
+                <span class="standard-tag">IAS-Math 9-10.S</span>
+                <div class="standard-explain"><strong>IAS-Math 9-10.S:</strong> Computing list averages, min, max from sensor readings applies statistics in a live programming context.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">JS→Python translations correct</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">List average calculated correctly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Dictionary accessed correctly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-scale">
+                  <div class="rubric-scale-item"><div class="dot f"></div> Beginning</div>
+                  <div class="rubric-scale-item"><div class="dot p"></div> Developing</div>
+                  <div class="rubric-scale-item"><div class="dot s"></div> Proficient</div>
+                  <div class="rubric-scale-item"><div class="dot e"></div> Exemplary</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 3</div>
+            <div class="lesson-title">File I/O and CSV — Reading and Writing Real Data</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students use Python's built-in csv module to read the sensor log CSV files they produced in Semester 5 — putting their own real data to work in a new language. They write a script that reads the file, computes statistics (min, max, mean), flags readings outside a defined threshold, and writes a summary report to a .txt file. This is the first time students write a program that reads from and writes to persistent files — a foundation for the data-intensive capstone work ahead.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">IAS-CS 9-10.AP.2</span>
+                <span class="standard-tag new-std">IAS-CS 9-10.DA.1</span>
+                <span class="standard-tag">IAS-Math 9-10.S</span>
+                <div class="standard-explain"><strong>IAS-CS 9-10.DA.1 (NEW):</strong> Transform data and use computational tools to analyze it. Reading CSV → computing statistics → writing a summary report is a complete data analysis pipeline that directly fulfills this standard.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Code Concept Preview</div>
+                <div class="code-preview">
+<span class="kw">import</span> csv<br>
+readings = []<br>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">'sensors.csv'</span>) <span class="kw">as</span> f:<br>
+&nbsp;&nbsp;<span class="kw">for</span> row <span class="kw">in</span> csv.<span class="fn">reader</span>(f):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;readings.<span class="fn">append</span>(<span class="fn">float</span>(row[<span class="num">1</span>]))<br>
+mean = <span class="fn">sum</span>(readings)/<span class="fn">len</span>(readings)<br>
+<span class="fn">print</span>(<span class="str">f"Mean: {mean:.2f}"</span>)
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 4</div>
+            <div class="lesson-title">matplotlib — Generating Charts Programmatically</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students install and use matplotlib to generate line and bar charts from their CSV sensor data — producing the same graphs they made in a spreadsheet in Semester 5, now generated by a dozen lines of code. They add titles, axis labels, grid lines, and threshold reference lines. Students compare the two approaches in their notebooks: what does code-generated visualization offer that a spreadsheet does not? (Automation, reproducibility, scaling to large datasets, integration into a larger pipeline.) This comparison seeds the data science thinking that deepens in later semesters.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">IAS-CS 9-10.DA.1</span>
+                <span class="standard-tag">IAS-CS 9-10.AP.2</span>
+                <span class="standard-tag">IAS-Math 9-10.S</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Chart renders from CSV data</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Axes labeled + title present</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Threshold reference line added</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 5</div>
+            <div class="lesson-title">AI-Assisted Python — Fact-Checking in an Unfamiliar Language</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students revisit the 5-step AI fact-checking framework in the Python context — noting what transfers (logic tracing, edge case testing, run-and-verify) and what requires extra vigilance (Python idioms students don't yet recognize: generators, context managers, walrus operators). They apply the framework to 3 AI-generated Python snippets of increasing complexity. One intentional error is a Python-specific idiom that works differently than its JS equivalent — students must catch it. The lesson reinforces that the verification mindset is language-agnostic and that unfamiliarity with a language demands more rigor, not less.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">IAS-CS 9-10.AP.1</span>
+                <span class="standard-tag new-std">IAS-CS 9-10.AP.3</span>
+                <span class="standard-tag">IAS-CS 8.IC.1</span>
+                <div class="standard-explain"><strong>IAS-CS 9-10.AP.3 (NEW):</strong> Systematically test and refine programs. Applying the fact-check framework to Python — where students are less fluent — is a more demanding test of genuine systematic verification than applying it to familiar JS code.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Framework applied to all 3 snippets</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Python-specific error caught</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Correction written + explained</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 6</div>
+            <div class="lesson-title">Python Assessment — Data Analysis Script From a Spec</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Formal assessment: students receive a CSV file of provided sensor data and a written spec — read the file, calculate statistics, flag out-of-range values, generate a matplotlib chart, and write a summary to a .txt file. No AI tools. Graded on: script runs without errors, all outputs produced correctly, code readability, meaningful naming. This establishes a clean Python baseline before AI-assisted Python is permitted in later units — the same gate used before AI-assisted JS was introduced in Semester 4.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">IAS-CS 9-10.AP.1</span>
+                <span class="standard-tag">IAS-CS 9-10.AP.2</span>
+                <span class="standard-tag">IAS-CS 9-10.AP.3</span>
+                <span class="standard-tag">IAS-CS 9-10.DA.1</span>
+                <span class="standard-tag">IAS-Math 9-10.S</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Formal Python Rubric</div>
+                <div class="rubric-row"><div class="rubric-label">Script runs without errors</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">All outputs produced correctly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Readable + well-commented code</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Meaningful variable/function names</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- UNIT 2 -->
+  <div class="unit" id="unit2">
+    <div class="unit-header" onclick="toggleUnit('unit2')">
+      <div class="unit-num">02</div>
+      <div class="unit-icon c2">⚙️</div>
+      <div class="unit-info">
+        <div class="unit-title">Advanced Electronics — I²C Protocols, Servos & Motor Control</div>
+        <div class="unit-meta">Days 7–11 · ~5 class sessions · Hardware Depth</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 7</div>
+            <div class="lesson-title">Communication Protocols — Why Devices Need Rules to Share a Bus</div>
+            <div class="lesson-type type-intro">Intro</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students learn why communication protocols exist: multiple sensors sharing a single connection need rules for taking turns and identifying themselves. Teacher introduces I²C (two-wire, 7-bit device addresses, multi-device bus), SPI (faster, dedicated chip-select), and UART (the Serial port they already know, now understood at the protocol level). Students focus on I²C: they wire an I²C OLED display or LCD and run an I²C Scanner sketch to discover device addresses on the bus. The scanner is their first hardware debugging experience at the protocol level — "the address 0x3C is present" is both a result and a diagnostic tool.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 7.1</span>
+                <span class="standard-tag new-std">CTE-TE 7.2</span>
+                <span class="standard-tag">IAS-Sci 9-10.PS</span>
+                <div class="standard-explain"><strong>CTE-TE 7.2 (NEW):</strong> Analyze and apply digital communication systems in engineering designs. I²C, SPI, and UART are the three foundational standards — this new standard anchors all multi-device electronics work from here forward through the capstone.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Vocabulary</div>
+                <span class="standard-tag">I²C</span>
+                <span class="standard-tag">SPI</span>
+                <span class="standard-tag">UART</span>
+                <span class="standard-tag">bus</span>
+                <span class="standard-tag">device address</span>
+                <span class="standard-tag">SDA / SCL</span>
+                <span class="standard-tag">pull-up resistor</span>
+                <span class="standard-tag">MOSI / MISO</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 8</div>
+            <div class="lesson-title">I²C Sensor Integration — Three Readings, Two Wires</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students wire a BME280 (or similar I²C environmental sensor) and use its Arduino library to read temperature, pressure, and humidity from a single two-wire connection. They compare this to their Semester 5 DHT11 — same data, dramatically simpler wiring. Students log all three readings as CSV and pipe the output file directly into their Day 3 Python analysis script — the first time two units within a semester feed each other deliberately. They write a 3-sentence analysis: what changed in the environment during the 10-minute log?</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 7.1</span>
+                <span class="standard-tag">CTE-TE 7.2</span>
+                <span class="standard-tag">IAS-CS 9-10.DA.1</span>
+                <span class="standard-tag">IAS-Math 9-10.S</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">I²C sensor wired + reading</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">CSV piped into Python script</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">3-sentence analysis written</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 9</div>
+            <div class="lesson-title">Servo Motor Control — Precise Angular Positioning + Printed Bracket</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students wire a servo motor and use the Arduino Servo library to command angular positions 0°–180°. They write a sketch mapping potentiometer input to servo angle using map() — reapplying Semester 4 knowledge in a new mechanical context. They then design a simple printed bracket in SolidWorks to mount the servo at a fixed orientation and print it. This mini-project reinforces the CAD→print→electronics integration cycle while introducing a new mechanical actuator. Notebook entry: wiring diagram plus SolidWorks sketch of the bracket with labeled dimensions.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 7.1</span>
+                <span class="standard-tag">CTE-TE 7.2</span>
+                <span class="standard-tag">CTE-TE 6.2</span>
+                <span class="standard-tag">IAS-Sci 9-10.PS</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Mini-Project Rubric</div>
+                <div class="rubric-row"><div class="rubric-label">Servo responds to pot input</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">map() used correctly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Bracket modeled + printed</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 10</div>
+            <div class="lesson-title">DC Motor Control — H-Bridge, PWM Speed & Bidirectional Drive</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students move from precise positioning (servo) to variable-speed bidirectional motion (DC motor via L298N H-bridge). They learn why motors cannot be driven directly from a microcontroller pin — current requirements exceed what a GPIO can supply — and how the H-bridge solves this. They write a sketch controlling speed via PWM analogWrite() and direction via logic pins. Students connect this to real applications: fans, conveyor belts, wheeled robots. A gear-reduction sketch in their notebook begins conceptually scoping the autonomous vehicle projects that appear in later semesters.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 7.1</span>
+                <span class="standard-tag">CTE-TE 7.2</span>
+                <span class="standard-tag">IAS-Sci 9-10.PS</span>
+                <span class="standard-tag">IAS-Math 9-10.A</span>
+                <div class="standard-explain">PWM duty cycle as a percentage is a direct IAS-Math 9-10.A proportional reasoning exercise — 50% duty cycle = 50% of maximum voltage to the motor. H-bridge operation applies IAS-Sci 9-10.PS electromagnetic force and current analysis.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Motor runs at variable speeds</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Direction reversal works</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">H-bridge wiring correct</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 11</div>
+            <div class="lesson-title">Electronics Assessment — Sensor-Actuator System From Spec</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Formal timed assessment: students receive a written behavioral spec (e.g., "Build a system that reads distance with an I²C sensor and drives a servo to point toward the nearest detected object — closer = larger angle — while logging readings to Serial every 2 seconds"). Must be wired, coded from scratch, and demonstrated. No AI tools. Graded on: I²C initialization, servo response accuracy, serial log format, wiring correctness, and code readability. Wiring diagram drawn in notebook before powering the circuit — required, not optional.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 7.1</span>
+                <span class="standard-tag">CTE-TE 7.2</span>
+                <span class="standard-tag">IAS-CS 9-10.AP.1</span>
+                <span class="standard-tag">IAS-CS 9-10.AP.3</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Formal Electronics Rubric</div>
+                <div class="rubric-row"><div class="rubric-label">I²C sensor reading correctly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Servo responds to sensor input</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Serial log every 2 seconds</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Wiring diagram in notebook</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- UNIT 3 -->
+  <div class="unit" id="unit3">
+    <div class="unit-header" onclick="toggleUnit('unit3')">
+      <div class="unit-num">03</div>
+      <div class="unit-icon c3">🧭</div>
+      <div class="unit-info">
+        <div class="unit-title">Deeper User Research — Multi-Person Studies & Affinity Mapping</div>
+        <div class="unit-meta">Days 12–15 · ~4 class sessions · HCD Research Depth</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 12</div>
+            <div class="lesson-title">Why One Interview Is Not Enough — Research Validity & Planning</div>
+            <div class="lesson-type type-intro">Intro</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Teacher challenges students to reflect on their Semester 5 single interview: "How confident are you that one person's experience represents the problem broadly?" Introduction to research validity — design decisions must be grounded in patterns across multiple people, not a single anecdote. Case studies of products that failed because they were designed for one person's preferences (often the designer's). Discussion: how many interviews before patterns emerge? (In HCD practice: approximately 5.) Students write a Research Plan — target user group, 5 interview questions, schedule — to be executed before Day 15. These HMW statements become the Semester 8 project brief.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 8.2</span>
+                <span class="standard-tag">CTE-TE 9.1</span>
+                <span class="standard-tag new-std">CTE-TE 9.2</span>
+                <span class="standard-tag">IAS-Math 9-10.S</span>
+                <div class="standard-explain"><strong>CTE-TE 9.2 (NEW):</strong> Apply research methods to inform and evaluate engineering designs. Students move from anecdotal single-person interviews to systematic multi-person methodology — this standard formally enters the curriculum here and anchors all future user research through the capstone.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Research Plan Checklist</div>
+                <div class="inset-box">
+                  <div class="inset-label" style="color:var(--accent3)">Student Research Plan (Notebook)</div>
+                  <div class="inset-row"><div class="inset-num n-teal">1</div><span>Target user group identified (3–5 people)</span></div>
+                  <div class="inset-row"><div class="inset-num n-teal">2</div><span>5 open-ended interview questions written</span></div>
+                  <div class="inset-row"><div class="inset-num n-teal">3</div><span>Interview schedule (who, when, where)</span></div>
+                  <div class="inset-row"><div class="inset-num n-teal">4</div><span>Hypothesis: what patterns are you expecting?</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Days 12–14</div>
+            <div class="lesson-title">Field Research Period — Conduct 3–5 Interviews Outside Class</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students conduct their multi-person research study between Days 12 and 14, with all notes due by the start of Day 15. Each student interviews 3–5 people from their target user group using the interview plan from Day 12. Structured notes must capture observations, direct quotes, workarounds noticed, and emotional reactions. Students are encouraged to photograph context — the environment where the problem occurs — with permission. This is the most substantive user research assignment in the program to date and directly seeds the Semester 8 integrated project.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 8.2</span>
+                <span class="standard-tag">CTE-TE 9.1</span>
+                <span class="standard-tag">CTE-TE 9.2</span>
+                <span class="standard-tag">IAS-ELA 9-10.W</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Field Research Rubric (Formal)</div>
+                <div class="rubric-row"><div class="rubric-label">3–5 interviews conducted</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Structured notes for each interview</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Direct quotes captured</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Workarounds documented</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 15</div>
+            <div class="lesson-title">Affinity Mapping — Synthesizing Multiple Interviews Into Design Themes</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students learn affinity mapping: each distinct observation, quote, or finding is written on a separate sticky note. Notes are grouped by emergent theme — categories arise from the data, not from predetermined labels. Students identify 3–5 major themes and name them. From those themes, they write a refined set of "How Might We" statements — more grounded and specific than Semester 5 because they are based on patterns across 3–5 real people. These HMW statements are formally submitted and become the brief for the Semester 8 integrated project. The stakes of this assignment are made explicit: the quality of your research determines the relevance of your design.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <span class="standard-tag">CTE-TE 8.2</span>
+                <span class="standard-tag">CTE-TE 9.2</span>
+                <span class="standard-tag">IAS-Math 9-10.S</span>
+                <div class="standard-explain">Affinity mapping is qualitative data synthesis — organizing unstructured observations into meaningful patterns. IAS-Math 9-10.S extends to qualitative research: finding clusters and themes in interview data is pattern recognition, a core statistical thinking skill applied beyond numerical contexts.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Affinity Map Rubric (Formal)</div>
+                <div class="rubric-row"><div class="rubric-label">All interviews represented</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Themes emerge from data (not imposed)</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">3–5 themes identified + named</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Refined HMW statements submitted</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- UNIT 4 -->
+  <div class="unit" id="unit4">
+    <div class="unit-header" onclick="toggleUnit('unit4')">
+      <div class="unit-num">04</div>
+      <div class="unit-icon c4">🔗</div>
+      <div class="unit-info">
+        <div class="unit-title">Semester Integration — Python + Electronics + Research Converge</div>
+        <div class="unit-meta">Days 16–20 · ~5 class sessions · Synthesis + Portfolio + Showcase</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Days 16–17</div>
+            <div class="lesson-title">Integration Mini-Project — Sensor System With Python Analysis Layer</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students build a small integration project that connects their new electronics and Python skills: an Arduino collects I²C sensor data and logs via Serial; a Python script reads the log, computes analysis, and generates a matplotlib report. The project must relate (loosely) to a theme from their user research — so the data being collected is conceptually connected to a human need they identified. This is not a full integrated project (that comes in Semester 8) — it is a technical feasibility proof-of-concept for skills they will need. AI assistance permitted with full documentation.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 7.1</span>
+                <span class="standard-tag">CTE-TE 7.2</span>
+                <span class="standard-tag">IAS-CS 9-10.AP.1</span>
+                <span class="standard-tag">IAS-CS 9-10.DA.1</span>
+                <span class="standard-tag">IAS-Math 9-10.S</span>
+                <span class="standard-tag">CTE-TE 9.2</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Mini-Project Rubric (Formal)</div>
+                <div class="rubric-row"><div class="rubric-label">Arduino collects + logs I²C data</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Python script reads + analyzes</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">matplotlib chart generated</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Connection to user research noted</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 18</div>
+            <div class="lesson-title">Portfolio Update — Research Evolution Across Three Semesters</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students update their portfolio with all Semester 7 artifacts: Python analysis script, matplotlib chart, I²C sensor wiring reference card, servo bracket photo, integration mini-project, affinity map photo, and the refined HMW statements. The "User Research" section of the portfolio now spans three semesters (5, 6, 7) showing clear progression: single interview → empathy map → multi-person synthesis → affinity-mapped themes. Students write a "Research Evolution" caption comparing their Semester 5 HMW to their Semester 7 HMW and explaining what changed and why.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 4.1</span>
+                <span class="standard-tag">CTE-TE 4.2</span>
+                <span class="standard-tag">IAS-ELA 9-10.W</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Portfolio Checklist</div>
+                <div class="rubric-row"><div class="rubric-label">All semester artifacts present</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Research evolution caption written</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">HMW statements formally submitted</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Days 19–20</div>
+            <div class="lesson-title">Semester Showcase — Research + Technical + Connection</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students present in a three-beat format adapted for this semester's dual focus: (1) The Research — present affinity map, key themes, and refined HMW statements; (2) The Technical — demo the integration mini-project (Arduino logging → Python analysis → chart); (3) The Connection — explain one specific way their technical learning this semester could serve a user need from their research. The Connection beat is new and deliberately challenging — students must articulate the bridge between what they learned and who they are designing for. It is explicit preparation for the Semester 8 brief.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 4.1</span>
+                <span class="standard-tag">CTE-TE 4.2</span>
+                <span class="standard-tag">CTE-TE 8.2</span>
+                <span class="standard-tag">CTE-TE 9.2</span>
+                <span class="standard-tag">IAS-ELA 9-10.SL</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Showcase Rubric — Research / Technical / Connection</div>
+                <div class="rubric-row"><div class="rubric-label">Research — affinity map + themes clear</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Technical — live system demo works</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Connection — bridge clearly articulated</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Delivery — clear, confident, on time</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Standards Legend -->
+  <div class="standards-legend">
+    <div class="legend-title">📋 Indiana Standards Reference — Semester 7 (New ★ + Continued)</div>
+    <div class="legend-grid">
+      <div class="legend-item">
+        <div class="legend-code new">IAS-CS 9-10.AP.2 ★ NEW</div>
+        <div class="legend-desc">Create clearly named variables, define functions, use data structures — Python lists, dicts, and functions. Python's readable syntax makes this especially concrete.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code new">IAS-CS 9-10.AP.3 ★ NEW</div>
+        <div class="legend-desc">Systematically test and refine programs — the AI fact-check framework applied to Python where students are less fluent, demanding genuine verification not pattern-matching.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code new">IAS-CS 9-10.DA.1 ★ NEW</div>
+        <div class="legend-desc">Transform and computationally analyze data — Python CSV → statistics → matplotlib chart is a complete data analysis pipeline fulfilling this standard end-to-end.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code new">CTE-TE 7.2 ★ NEW</div>
+        <div class="legend-desc">Digital communication systems — I²C, SPI, and UART protocols. Anchors all multi-device electronics work from this semester through the Sophomore capstone.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code new">CTE-TE 9.2 ★ NEW</div>
+        <div class="legend-desc">Apply research methods to inform designs — multi-person interviews, affinity mapping, and theme-based HMW synthesis. Systematic HCD research methodology enters formally.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-CS 9-10.AP.1</div>
+        <div class="legend-desc">Design algorithms — now in Python as well as C++ and JS. Flowchart-first planning required for all integration project code.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-Math 9-10.S</div>
+        <div class="legend-desc">Statistics — Python computes numerical sensor statistics; affinity mapping applies pattern recognition as qualitative statistical thinking.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 7.1</div>
+        <div class="legend-desc">Electronics — deepened through I²C bus protocols, servo PWM positioning, and H-bridge DC motor control with current analysis.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 8.2 / 9.1</div>
+        <div class="legend-desc">Social impact and interpersonal skills — multi-person user research requires sustained respectful engagement with real people outside of school.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-Sci 9-10.PS</div>
+        <div class="legend-desc">Physical Science — electromagnetic forces in servo and DC motor control; I²C signal logic levels; H-bridge current requirements.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 4.1 / 4.2</div>
+        <div class="legend-desc">Technical communication — portfolio "Research Evolution" caption; the new Research/Technical/Connection showcase format.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-ELA 9-10.W / 9-10.SL</div>
+        <div class="legend-desc">Writing (interview notes, affinity map analysis) and Speaking &amp; Listening (showcase with the new "Connection" beat).</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="review-bar">
+  <div class="review-text"><strong>Semester 7 — 10th Grade Fall</strong> · 4 units · 20 class days · Awaiting your review</div>
+  <button class="review-btn" onclick="alert('Approved! Tell Claude to continue to Semester 8.')">✅ Approve & Continue to Semester 8 →</button>
+</div>
+
+<script>
+  function toggleUnit(id){document.getElementById(id).classList.toggle('open')}
+  function toggleLesson(el){el.classList.toggle('open')}
+  document.getElementById('unit1').classList.add('open')
+</script>
+</body>
+</html>
