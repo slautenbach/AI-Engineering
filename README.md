@@ -1,87 +1,133 @@
-# Engineering Design & AI Curriculum Repository
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Engineering Design & AI Pathway</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-## Overview
+<style>
+  body {
+    margin: 0;
+    background: #0f1117;
+    color: #e8eaf0;
+    font-family: 'DM Sans', sans-serif;
+  }
 
-This repository hosts a collection of instructional materials focused on **engineering design and responsible AI usage** for students ranging from **7th grade through sophomore-level college coursework**.
+  .wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 24px;
+  }
 
-The purpose of this repository is to provide structured, accessible digital content that supports engineering thinking, problem solving, and ethical integration of artificial intelligence into the design process.
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
 
-These materials are designed for classroom implementation, instructional support, and curriculum development.
+  .subtitle {
+    color: #7a8099;
+    margin-bottom: 48px;
+    line-height: 1.6;
+  }
 
----
+  .section-title {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #5b8dee;
+  }
 
-## Intended Audience
+  .card {
+    background: #181c27;
+    border: 1px solid #2a3050;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    transition: 0.2s;
+  }
 
-The resources in this repository are structured for:
+  .card:hover {
+    border-color: #5b8dee;
+    transform: translateY(-2px);
+  }
 
-* Middle school engineering and technology courses (Grades 7–8)
-* High school pre-engineering or STEM programs
-* Introductory college-level engineering or technology education courses
+  a {
+    text-decoration: none;
+    color: #e8eaf0;
+    font-weight: 500;
+  }
 
-Content complexity increases progressively to match student developmental levels.
+  .grade {
+    font-size: 13px;
+    color: #7a8099;
+    margin-top: 4px;
+  }
+</style>
+</head>
 
----
+<body>
 
-## What This Repository Contains
+<div class="wrapper">
 
-All material overviews are organized as **HTML documents**, which may include:
+  <h1>Engineering Design & AI Pathway</h1>
+  <div class="subtitle">
+    A structured engineering curriculum spanning 7th through 10th grade,
+    integrating design thinking, systems engineering, and responsible AI usage.
+  </div>
 
-* Engineering design challenges
-* Structured design process documentation
-* AI integration activities
-* Guided reflection prompts
-* Problem-solving case studies
-* Prototype analysis exercises
-* Ethical discussions related to AI in engineering
+  <div class="section-title">7th Grade</div>
 
-Each HTML document is designed to function as:
+  <div class="card">
+    <a href="semester1_outline.html">Semester 1 — Fall</a>
+    <div class="grade">Foundations of Engineering Design</div>
+  </div>
 
-* A student-facing assignment
-* A guided instructional resource
-* Or a structured digital activity
+  <div class="card">
+    <a href="semester2_outline.html">Semester 2 — Spring</a>
+    <div class="grade">Design Application & Introduction to AI Tools</div>
+  </div>
 
----
+  <div class="section-title">8th Grade</div>
 
-## Instructional Philosophy
+  <div class="card">
+    <a href="semester3_outline.html">Semester 3 — Fall</a>
+    <div class="grade">Systems Thinking & Iterative Design</div>
+  </div>
 
-The materials in this repository are built around the following principles:
+  <div class="card">
+    <a href="semester4_outline.html">Semester 4 — Spring</a>
+    <div class="grade">AI-Assisted Engineering Projects</div>
+  </div>
 
-* **Engineering Design Process First** – AI is introduced as a tool within structured problem solving, not as a shortcut.
-* **Scaffolded Complexity** – Concepts evolve from foundational design thinking to advanced analytical reasoning.
-* **Ethical AI Integration** – Students are taught to question, verify, and responsibly apply AI-generated content.
-* **Process Over Product** – Emphasis is placed on documentation, iteration, and reflective thinking.
+  <div class="section-title">9th Grade</div>
 
----
+  <div class="card">
+    <a href="semester5_outline.html">Semester 5 — Fall</a>
+    <div class="grade">Technical Modeling & Analytical Design</div>
+  </div>
 
-## How to Use the Materials
+  <div class="card">
+    <a href="semester6_outline.html">Semester 6 — Spring</a>
+    <div class="grade">Advanced Design Challenges & Data Integration</div>
+  </div>
 
-1. Download or clone the repository.
-2. Open any `.html` file in a web browser.
-4. Adapt or embed the content into your learning management system if desired.
+  <div class="section-title">10th Grade</div>
 
-No additional software or frameworks are required.
+  <div class="card">
+    <a href="semester7_outline.html">Semester 7 — Fall</a>
+    <div class="grade">Engineering Systems & AI Evaluation</div>
+  </div>
 
----
+  <div class="card">
+    <a href="semester8_outline.html">Semester 8 — Spring</a>
+    <div class="grade">Capstone-Level Integrated Design</div>
+  </div>
 
-## Purpose of This Repository
+</div>
 
-This repository serves as:
-
-* A structured engineering design curriculum archive
-* A model for integrating AI into STEM education
-* A teaching portfolio resource
-* A foundation for further curriculum development
-
----
-
-## Author
-
-Sam Lautenbach
-Engineering Technology Education
-
----
-
-## Usage
-
-Materials are shared for educational purposes.
-Please credit appropriately if adapting or redistributing content.
+</body>
+</html>
