@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Engineering Pathway | Semester 3 — 8th Grade Fall</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #13161f;
+    --surface2: #191d2a;
+    --border: #252b40;
+    --accent: #7c5cbf;
+    --accent-bright: #a07ee0;
+    --accent2: #3dd68c;
+    --accent3: #f0b429;
+    --accent4: #e05252;
+    --accent5: #4cb8ff;
+    --text: #dde1ef;
+    --muted: #6b7291;
+    --tag-bg: #1e2236;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 80% 10%, rgba(124,92,191,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 30% at 10% 80%, rgba(61,214,140,0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* Header */
+  .header { margin-bottom: 48px; animation: fadeDown 0.6s ease both; }
+
+  .breadcrumb {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .breadcrumb .sep { color: var(--border); }
+  .breadcrumb .current { color: var(--accent-bright); }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    font-size: clamp(32px, 5vw, 52px);
+    line-height: 1.05;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+  h1 .grade { color: var(--accent-bright); }
+  h1 .sem { color: var(--accent2); }
+
+  .subtitle { color: var(--muted); font-size: 14px; max-width: 580px; line-height: 1.7; }
+
+  .meta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+  .meta-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+  }
+  .meta-chip strong { color: var(--text); }
+
+  /* Skill stack banner */
+  .skill-stack {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 28px;
+    animation: fadeDown 0.5s 0.05s ease both;
+  }
+  .skill-stack-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 12px;
+  }
+  .skill-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .skill-pill {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;  }
+  .pill-done { background: rgba(61,214,140,0.1); border: 1px solid rgba(61,214,140,0.3); color: var(--accent2); }
+  .pill-new { background: rgba(124,92,191,0.15); border: 1px solid rgba(124,92,191,0.4); color: var(--accent-bright); }
+  .pill-new::before { content: '★ '; font-size: 9px; }
+
+  /* Progress arc */
+  .arc-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 36px;
+    animation: fadeDown 0.5s 0.1s ease both;
+  }
+  .arc-label { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+  .arc-track { display: flex; gap: 3px; }
+  .arc-seg { height: 5px; border-radius: 3px; flex: 1; }
+  .arc-seg.done { opacity: 0.45; }
+  .arc-seg.active { opacity: 1; }
+  .arc-seg.future { opacity: 0.12; }
+  .arc-names { display: flex; margin-top: 7px; }
+  .arc-name { font-size: 9px; color: var(--muted); font-family: 'DM Mono', monospace; text-align: center; flex: 1; }
+  .arc-name.active { color: var(--accent-bright); font-weight: 600; }
+  .arc-name.done { color: var(--accent2); }
+
+  /* Units */
+  .unit {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 18px;
+    overflow: hidden;
+    animation: fadeUp 0.5s ease both;
+    transition: border-color 0.25s;
+  }
+  .unit:hover { border-color: #363d5c; }
+  .unit:nth-child(1) { animation-delay: 0.12s; }
+  .unit:nth-child(2) { animation-delay: 0.2s; }
+  .unit:nth-child(3) { animation-delay: 0.28s; }
+  .unit:nth-child(4) { animation-delay: 0.36s; }
+  .unit:nth-child(5) { animation-delay: 0.44s; }
+
+  .unit-header { display: flex; align-items: center; gap: 14px; padding: 18px 22px; cursor: pointer; user-select: none; }
+  .unit-num { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); min-width: 28px; }
+  .unit-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+  .unit-info { flex: 1; }
+  .unit-title { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--text); margin-bottom: 3px; }
+  .unit-meta { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; }
+  .unit-toggle { color: var(--muted); font-size: 18px; transition: transform 0.3s; flex-shrink: 0; }
+  .unit.open .unit-toggle { transform: rotate(180deg); }
+  .unit-body { display: none; padding: 0 22px 22px; border-top: 1px solid var(--border); }
+  .unit.open .unit-body { display: block; }
+
+  /* Lessons */
+  .lessons-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+
+  .lesson {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .lesson:hover { border-color: #363d5c; background: #1f2438; }
+
+  .lesson-top { display: flex; align-items: flex-start; gap: 10px; }
+  .lesson-day { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); min-width: 46px; padding-top: 2px; }
+  .lesson-title { font-size: 13px; font-weight: 500; color: var(--text); flex: 1; line-height: 1.4; }
+  .lesson-type { font-size: 10px; font-family: 'DM Mono', monospace; padding: 2px 8px; border-radius: 4px; flex-shrink: 0; margin-top: 1px; }
+
+  .type-intro { background: rgba(76,184,255,0.12); color: var(--accent5); }
+  .type-skill { background: rgba(61,214,140,0.12); color: var(--accent2); }
+  .type-project { background: rgba(240,180,41,0.12); color: var(--accent3); }
+  .type-assess { background: rgba(224,82,82,0.12); color: var(--accent4); }
+
+  .lesson-detail { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .lesson.open .lesson-detail { display: block; }
+  .lesson-desc { font-size: 12.5px; color: var(--muted); line-height: 1.7; margin-bottom: 14px; }
+
+  .detail-sections { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 580px) { .detail-sections { grid-template-columns: 1fr; } }
+
+  .detail-box { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 13px; }
+  .detail-box-label { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+
+  .standard-tag { display: inline-block; background: var(--tag-bg); border: 1px solid var(--border); border-radius: 4px; padding: 2px 7px; font-size: 10px; font-family: 'DM Mono', monospace; color: var(--accent5); margin: 2px 2px 2px 0; }
+  .standard-tag.new-std { color: var(--accent-bright); border-color: rgba(124,92,191,0.4); background: rgba(124,92,191,0.08); }
+  .standard-explain { font-size: 11px; color: var(--muted); line-height: 1.55; margin-top: 6px; }
+
+  .rubric-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+  .rubric-label { font-size: 11px; color: var(--text); }
+  .dot-legend { display: flex; gap: 4px; align-items: center; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); }
+  .dot.f { background: var(--accent4); }
+  .dot.p { background: var(--accent3); }
+  .dot.s { background: var(--accent2); }
+  .dot.e { background: var(--accent-bright); }
+  .rubric-scale { display: flex; gap: 10px; margin-top: 8px; padding-top: 7px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .rubric-scale-item { display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--muted); }
+
+  /* Code snippet preview */
+  .code-preview {
+    background: #0a0c12;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: #8b9fc5;
+    margin-top: 10px;
+    line-height: 1.7;
+  }
+  .code-preview .kw { color: var(--accent-bright); }
+  .code-preview .fn { color: var(--accent2); }
+  .code-preview .str { color: var(--accent3); }
+  .code-preview .cm { color: #485270; }
+
+  /* Standards legend */
+  .standards-legend {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin-top: 28px;
+    animation: fadeUp 0.5s 0.5s ease both;
+  }
+  .legend-title { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; }
+  .legend-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 8px; }
+  .legend-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 13px; }
+  .legend-code { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent5); margin-bottom: 4px; }
+  .legend-code.new { color: var(--accent-bright); }
+  .legend-desc { font-size: 11px; color: var(--muted); line-height: 1.45; }
+
+  /* Review bar */
+  .review-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(13,15,20,0.96);
+    border-top: 1px solid var(--border);
+    backdrop-filter: blur(14px);
+    padding: 13px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .review-text { font-size: 12px; color: var(--muted); }
+  .review-text strong { color: var(--text); }
+  .review-btn {
+    background: var(--accent-bright);
+    color: #0d0f14;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+  }
+  .review-btn:hover { opacity: 0.85; }
+
+  .c1 { background: rgba(124,92,191,0.12); }
+  .c2 { background: rgba(61,214,140,0.1); }
+  .c3 { background: rgba(240,180,41,0.1); }
+  .c4 { background: rgba(76,184,255,0.1); }
+  .c5 { background: rgba(224,82,82,0.1); }
+
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="breadcrumb">
+      Engineering Pathway <span class="sep">·</span> Year 2 of 8 <span class="sep">·</span> <span class="current">Semester 3</span>
+    </div>
+    <h1><span class="grade">8th Grade Fall</span> —<br><span class="sem">Advanced CAD, SolidWorks & JavaScript Foundations</span></h1>
+    <p class="subtitle">Students deepen their Inventor skills with assemblies and advanced features, are introduced to SolidWorks as a second industry-standard platform, and begin their first steps in JavaScript — setting the stage for interactive electronics and AI-assisted coding ahead.</p>
+    <div class="meta-row">
+      <div class="meta-chip"><strong>Grade:</strong> 8th</div>
+      <div class="meta-chip"><strong>Semester:</strong> Fall (3 of 16)</div>
+      <div class="meta-chip"><strong>Schedule:</strong> A/B Block · 45–50 min</div>
+      <div class="meta-chip"><strong>~20 class days</strong></div>
+      <div class="meta-chip"><strong>Software:</strong> Inventor + SolidWorks</div>
+      <div class="meta-chip"><strong>New:</strong> JavaScript (browser)</div>
+    </div>
+  </div>
+
+  <!-- Skill Stack -->
+  <div class="skill-stack">
+    <div class="skill-stack-label">Cumulative Skill Stack — What students bring in + what's new this semester</div>
+    <div class="skill-pills">
+      <span class="skill-pill pill-done">EDP Framework</span>
+      <span class="skill-pill pill-done">Isometric Drawing</span>
+      <span class="skill-pill pill-done">Orthographic Drawing</span>
+      <span class="skill-pill pill-done">Inventor Part Modeling</span>
+      <span class="skill-pill pill-done">3D Printing</span>
+      <span class="skill-pill pill-done">Engineering Notebook</span>
+      <span class="skill-pill pill-done">Digital Portfolio</span>
+      <span class="skill-pill pill-new">Inventor Assemblies</span>
+      <span class="skill-pill pill-new">SolidWorks Intro</span>
+      <span class="skill-pill pill-new">JavaScript Basics</span>
+      <span class="skill-pill pill-new">Variables & Functions</span>
+      <span class="skill-pill pill-new">DOM Manipulation</span>
+    </div>
+  </div>
+
+  <!-- Progress Arc -->
+  <div class="arc-bar">
+    <div class="arc-label">8-Year Pathway — Semester 3 of 16</div>
+    <div class="arc-track">
+      <div class="arc-seg done" style="background:#3dd68c;"></div>
+      <div class="arc-seg done" style="background:#3dd68c;"></div>
+      <div class="arc-seg active" style="background:#a07ee0;"></div>
+      <div class="arc-seg future" style="background:#a07ee0;"></div>
+      <div class="arc-seg future" style="background:#4cb8ff;"></div>
+      <div class="arc-seg future" style="background:#4cb8ff;"></div>
+      <div class="arc-seg future" style="background:#4cb8ff;"></div>
+      <div class="arc-seg future" style="background:#4cb8ff;"></div>
+      <div class="arc-seg future" style="background:#f0b429;"></div>
+      <div class="arc-seg future" style="background:#f0b429;"></div>
+      <div class="arc-seg future" style="background:#f0b429;"></div>
+      <div class="arc-seg future" style="background:#f0b429;"></div>
+      <div class="arc-seg future" style="background:#e05252;"></div>
+      <div class="arc-seg future" style="background:#e05252;"></div>
+      <div class="arc-seg future" style="background:#e05252;"></div>
+      <div class="arc-seg future" style="background:#e05252;"></div>
+    </div>
+    <div class="arc-names">
+      <div class="arc-name done">7F</div>
+      <div class="arc-name done">7S</div>
+      <div class="arc-name active">8F ←</div>
+      <div class="arc-name">8S</div>
+      <div class="arc-name">9F</div>
+      <div class="arc-name">9S</div>
+      <div class="arc-name">10F</div>
+      <div class="arc-name">10S</div>
+      <div class="arc-name">11F</div>
+      <div class="arc-name">11S</div>
+      <div class="arc-name">12F</div>
+      <div class="arc-name">12S</div>
+      <div class="arc-name">FrF</div>
+      <div class="arc-name">FrS</div>
+      <div class="arc-name">SoF</div>
+      <div class="arc-name">SoS</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ UNIT 1 ═══════════════════════════════ -->
+  <div class="unit" id="unit1">
+    <div class="unit-header" onclick="toggleUnit('unit1')">
+      <div class="unit-num">01</div>
+      <div class="unit-icon c1">⚙️</div>
+      <div class="unit-info">
+        <div class="unit-title">Inventor Assemblies — Putting Parts Together</div>
+        <div class="unit-meta">Days 1–5 · ~5 class sessions · Advanced Inventor</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 1</div>
+            <div class="lesson-title">Assembly Concepts — Constraints, Mates & the Assembly File</div>
+            <div class="lesson-type type-intro">Intro</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students learn what an Assembly (.iam) file is and how it differs from a Part (.ipt) file. Teacher introduces assembly constraints (Mate, Flush, Insert, Angle) using a pre-built sample assembly of simple blocks. Key concept: degrees of freedom — how each constraint removes motion from a part. Students practice adding and removing constraints on the sample file to observe how parts move.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag new-std">CTE-TE 6.1</span>
+                <span class="standard-tag new-std">CTE-TE 5.2</span>
+                <div class="standard-explain"><strong>CTE-TE 6.1:</strong> Digital tools to model solutions — assemblies represent multi-part systems. <strong>CTE-TE 5.2:</strong> Interpreting a multi-part model mirrors reading a technical assembly drawing.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Vocabulary</div>
+                <span class="standard-tag">assembly</span>
+                <span class="standard-tag">mate constraint</span>
+                <span class="standard-tag">degrees of freedom</span>
+                <span class="standard-tag">grounded part</span>
+                <span class="standard-tag">Bill of Materials</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 2</div>
+            <div class="lesson-title">Building a Simple Hinge Assembly — Two Parts, One Joint</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students model two provided simple parts (a pin and a clevis bracket) and assemble them using Mate and Insert constraints. They animate the assembly's rotation to verify it behaves correctly. Teacher introduces the Bill of Materials (BOM) panel — students see how CAD systems track parts automatically. Notebook entry: sketch the assembly and label each constraint type used.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <span class="standard-tag">CTE-TE 3.2</span>
+                <span class="standard-tag">IAS-Sci 8.PS</span>
+                <div class="standard-explain"><strong>IAS-Sci 8.PS (Physical Science):</strong> Forces and motion — a pinned joint has one rotational degree of freedom; students connect assembly behavior to physics concepts of motion and force transmission.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Assembly moves correctly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Constraints fully applied</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Notebook sketch labeled</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 3</div>
+            <div class="lesson-title">Assembly Drawing — Exploded View & Parts List</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students generate an exploded view of their hinge assembly using Inventor's Presentation (.ipn) environment, then create a Drawing file showing the exploded view with balloon callouts and a Parts List (BOM table). This is the standard format for assembly instructions used in manufacturing. Students compare their drawing to an IKEA-style instruction sheet to see real-world parallels.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 5.1</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">CTE-TE 4.2</span>
+                <div class="standard-explain">An exploded assembly drawing is a professional communication document (CTE-TE 4.2) that must follow drawing standards (CTE-TE 5.1) and represent the model accurately (CTE-TE 5.2).</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Exploded view readable</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">BOM table present</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Balloon callouts correct</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 4</div>
+            <div class="lesson-title">Mini-Assembly Project — Design & Assemble a 3-Part Device</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students design and model a simple 3-part assembly of their choice from a provided prompt list (examples: a simple clamp, a spring-loaded latch concept, a swivel base). All parts are modeled from scratch, assembled with full constraints, and documented with an exploded drawing + BOM. Students add this to their portfolio. This is the first time students manage a multi-part CAD project independently.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <span class="standard-tag">CTE-TE 5.1</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <span class="standard-tag">IAS-Math 8.G</span>
+                <div class="standard-explain"><strong>IAS-Math 8.G:</strong> Understand congruence, similarity, and geometric transformations. Assembly constraints are spatial transformations — rotating and mating parts connects directly to 8th grade geometry.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Project Rubric (Formal)</div>
+                <div class="rubric-row"><div class="rubric-label">3 parts fully modeled</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Assembly fully constrained</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Exploded drawing + BOM</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Added to portfolio</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 5</div>
+            <div class="lesson-title">Assembly Assessment & Reflection</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students receive a set of 3 provided part files and must assemble them correctly in a timed assessment (one class period). They also produce an exploded view drawing. Reflection prompt in notebook: "How does thinking about assembly change the way you design individual parts?" This metacognitive question previews the concept of design intent that will deepen throughout the program.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <span class="standard-tag">IAS-ELA 8.W</span>
+                <div class="standard-explain"><strong>IAS-ELA 8.W:</strong> Write explanatory texts to examine a topic — the notebook reflection fulfills 8th grade informative writing while connecting to engineering metacognition.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Formal Rubric</div>
+                <div class="rubric-row"><div class="rubric-label">Assembly correct</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Drawing complete</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Reflection written</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-scale">
+                  <div class="rubric-scale-item"><div class="dot f"></div> Beginning</div>
+                  <div class="rubric-scale-item"><div class="dot p"></div> Developing</div>
+                  <div class="rubric-scale-item"><div class="dot s"></div> Proficient</div>
+                  <div class="rubric-scale-item"><div class="dot e"></div> Exemplary</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ UNIT 2 ═══════════════════════════════ -->
+  <div class="unit" id="unit2">
+    <div class="unit-header" onclick="toggleUnit('unit2')">
+      <div class="unit-num">02</div>
+      <div class="unit-icon c2">🔷</div>
+      <div class="unit-info">
+        <div class="unit-title">Introduction to SolidWorks — A Second CAD Language</div>
+        <div class="unit-meta">Days 6–11 · ~6 class sessions · New Platform</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 6</div>
+            <div class="lesson-title">Why Two CAD Platforms? — Industry Context & Interface Comparison</div>
+            <div class="lesson-type type-intro">Intro</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Teacher introduces why engineers need to be fluent in multiple CAD tools (Inventor is common in manufacturing/education; SolidWorks dominates product design, aerospace, and medical device industries). Students open SolidWorks for the first time and compare the interface to Inventor side-by-side: FeatureManager Design Tree vs. Browser Bar, CommandManager vs. Ribbon, Mate vs. Constraint terminology. Goal: leverage prior knowledge, don't start from zero.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag new-std">CTE-TE 6.1</span>
+                <span class="standard-tag">CTE-TE 2.1</span>
+                <div class="standard-explain"><strong>CTE-TE 2.1:</strong> Influence of technology on history and society — students discuss how SolidWorks shaped the product design industry and why platform fluency is a professional skill.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Comparison Activity</div>
+                <div class="standard-explain">Students fill out a two-column "CAD Rosetta Stone" chart in their notebook mapping Inventor terms to their SolidWorks equivalents (sketch → sketch, extrude → boss-extrude, cut → cut-extrude, etc.).</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 7</div>
+            <div class="lesson-title">SolidWorks Sketching — Same Concepts, New Commands</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students recreate their Inventor Day 3 L-shape sketch in SolidWorks using Smart Dimension and sketch relations. Focus is on transfer of knowledge: students discover that the underlying concepts (fully defined sketch, geometric relations, parametric dimensions) are identical — only the interface differs. Teacher emphasizes: "You already know how to think in CAD. You're just learning a new dialect."</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <span class="standard-tag">CTE-TE 5.1</span>
+                <span class="standard-tag">IAS-Math 8.G</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Sketch fully defined</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Dimensions match spec</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 8</div>
+            <div class="lesson-title">Boss-Extrude, Cut-Extrude & Fillets in SolidWorks</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students work through a SolidWorks version of their Semester 2 part modeling exercises (extrude, cut, fillet) using a step-by-step tutorial sheet. Emphasis on the FeatureManager tree: understanding the order of features and how suppressing/unsuppressing a feature changes the model. Students model the same block-with-pocket they made in Inventor and compare the two files side by side.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <span class="standard-tag">IAS-Math 8.G</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Features match Inventor version</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">FeatureManager organized</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 9</div>
+            <div class="lesson-title">SolidWorks Drawings & eDrawings Export</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students generate a SolidWorks Drawing (.slddrw) of their part, placing standard 3-view orthographic layout with dimensions. Introduction to eDrawings — SolidWorks' lightweight viewer format used to share models with clients or manufacturers who don't have SolidWorks. Students export their drawing as a PDF and an eDrawing and add both to their portfolio, now showing the same design documented in two CAD platforms.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 5.1</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">CTE-TE 4.2</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">3-view drawing correct</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">PDF + eDrawing exported</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 10</div>
+            <div class="lesson-title">SolidWorks Independent Design Challenge</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students design an original part in SolidWorks with no tutorial guidance — only a written prompt (e.g., "Design a small tool holder that mounts to the edge of a desk"). They must produce the part, a drawing, and a 3-sentence design rationale in their notebook. This is their first fully independent SolidWorks deliverable and goes directly into the portfolio.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">CTE-TE 6.1</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Project Rubric (Formal)</div>
+                <div class="rubric-row"><div class="rubric-label">Part fully modeled</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Drawing complete + titled</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Design rationale written</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 11</div>
+            <div class="lesson-title">SolidWorks Assessment — Read a Drawing, Build the Part</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Formal timed assessment: students receive a fully dimensioned orthographic drawing and must produce a correct SolidWorks model in one class period. Graded on dimensional accuracy, sketch constraints, feature organization, and file naming. This mirrors a real engineering "print reading" task and directly assesses both drawing interpretation and CAD execution.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 5.1</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <span class="standard-tag">IAS-Math 8.G</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Formal Rubric</div>
+                <div class="rubric-row"><div class="rubric-label">Dimensional accuracy (±0.5mm)</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">All features present</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Sketches fully defined</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">File organization</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ UNIT 3 ═══════════════════════════════ -->
+  <div class="unit" id="unit3">
+    <div class="unit-header" onclick="toggleUnit('unit3')">
+      <div class="unit-num">03</div>
+      <div class="unit-icon c4">💻</div>
+      <div class="unit-info">
+        <div class="unit-title">JavaScript Foundations — Your First Lines of Code</div>
+        <div class="unit-meta">Days 12–17 · ~6 class sessions · New Skill Track</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 12</div>
+            <div class="lesson-title">Why Code? — Connecting Programming to Engineering</div>
+            <div class="lesson-type type-intro">Intro</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Teacher bridges from physical design to software: "Every product you'll make in this program will eventually need code — to control motors, read sensors, or display data." Introduction to JavaScript as the first language: runs in any browser, immediate visual feedback, the language of the web and many microcontrollers. Students open browser DevTools console and type their first lines: alert(), console.log(), and basic math expressions. No setup required.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag new-std">IAS-CS 8.AP.1</span>
+                <span class="standard-tag new-std">IAS-CS 8.AP.2</span>
+                <div class="standard-explain"><strong>IAS-CS 8.AP.1:</strong> Create programs that include sequences, selections, and repetitions. <strong>IAS-CS 8.AP.2:</strong> Use variables and assignments to store and access data. These Computer Science standards anchor all JavaScript work in this and future semesters.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">First Console Exercises</div>
+                <div class="code-preview">
+                  <span class="cm">// Try these in the browser console:</span><br>
+                  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Hello, Engineer!"</span>);<br>
+                  <span class="fn">alert</span>(<span class="str">"My first popup"</span>);<br>
+                  <span class="kw">let</span> x = <span class="str">5</span> + <span class="str">3</span>;<br>
+                  <span class="fn">console</span>.<span class="fn">log</span>(x);
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 13</div>
+            <div class="lesson-title">Variables, Data Types & Operators</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students learn let, const, and var declarations; string, number, and boolean data types; arithmetic and comparison operators. They complete a guided worksheet: declare variables for a "product spec" (name, width, height, weight, inStock) and write expressions that calculate area and check if the product fits in a box. Engineering context is deliberate — variables mirror the parametric dimensions they already use in CAD.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">IAS-CS 8.AP.2</span>
+                <span class="standard-tag">IAS-Math 8.EE</span>
+                <div class="standard-explain"><strong>IAS-Math 8.EE (Expressions & Equations):</strong> Work with radicals and integer exponents, linear equations. Variables in JavaScript directly mirror algebraic variables — students see the same logic they use in math class applied in code.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Variables correctly declared</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Area calculation outputs correctly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 14</div>
+            <div class="lesson-title">Functions — Reusable Instructions</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students learn to write and call functions with parameters and return values. Engineering framing: "A function is like a reusable machine — you feed it inputs, it produces outputs." Exercises include: a function that calculates the volume of a rectangular prism (given length, width, height), a function that checks if a dimension is within tolerance, and a function that returns a material recommendation based on weight. Students document each function with a comment block above it.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">IAS-CS 8.AP.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.2</span>
+                <span class="standard-tag">IAS-Math 8.F</span>
+                <div class="standard-explain"><strong>IAS-Math 8.F (Functions):</strong> Define, evaluate, and compare functions. A JavaScript function is a direct computational analog of a mathematical function — same input→output logic. This cross-curricular connection is explicitly discussed.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Code Snippet Preview</div>
+                <div class="code-preview">
+                  <span class="cm">// Volume calculator function</span><br>
+                  <span class="kw">function</span> <span class="fn">calcVolume</span>(l, w, h) {<br>
+                  &nbsp;&nbsp;<span class="kw">return</span> l * w * h;<br>
+                  }<br>
+                  <span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">calcVolume</span>(4, 3, 2));
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 15</div>
+            <div class="lesson-title">Conditionals & Loops — Making Decisions & Repeating Tasks</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students learn if/else statements and for loops. Engineering contexts: an if/else that classifies a material as "lightweight," "medium," or "heavy" based on density input; a for loop that prints a multiplication table for drill bit sizes. Students also encounter their first logic bug — teacher intentionally introduces a broken loop and students practice debugging using console.log() to trace values. Debugging is framed as iteration — the same mindset as the EDP.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">IAS-CS 8.AP.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.3</span>
+                <span class="standard-tag">IAS-Math 8.EE</span>
+                <div class="standard-explain"><strong>IAS-CS 8.AP.3:</strong> Identify and fix errors in algorithms and programs. Debugging directly fulfills this standard — students learn systematic error-tracing using console output.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Conditional logic correct</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Loop runs correct iterations</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Bug identified & fixed</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 16</div>
+            <div class="lesson-title">DOM Manipulation — Making a Webpage React to Input</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students write their first interactive HTML+JS page: a simple "Part Spec Calculator" where a user enters length, width, and height into input boxes and clicks a button to calculate and display volume, surface area, and a weight estimate (given a density). Students use document.getElementById(), addEventListener(), and innerHTML. This is their first full input→process→output program — the core pattern for all future sensor/display projects.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">IAS-CS 8.AP.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.2</span>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <div class="standard-explain">The DOM calculator is a digital tool that models an engineering calculation (CTE-TE 6.1), built with sequences, functions, and events (IAS-CS 8.AP.1 & 8.AP.2).</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Button triggers calculation</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Output displays on page</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Math is correct</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 17</div>
+            <div class="lesson-title">JavaScript Formal Assessment — Build a Mini-Calculator</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Formal assessment: students independently build a working JavaScript calculator page that takes two dimensions as input and outputs: (1) their product, (2) a pass/fail check against a max value, and (3) a text recommendation. Graded on: correct logic, working DOM interactions, clear variable naming, and at least one function definition. Students submit the .html file. No AI tools permitted on this assessment — establishes baseline coding ability before AI-assisted coding is introduced in Semester 4.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">IAS-CS 8.AP.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.2</span>
+                <span class="standard-tag">IAS-CS 8.AP.3</span>
+                <span class="standard-tag">IAS-Math 8.EE</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Formal JS Rubric</div>
+                <div class="rubric-row"><div class="rubric-label">Logic correct & outputs accurate</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Function defined & called</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">DOM interaction works</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Clear variable naming</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">No reliance on AI tools</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ UNIT 4 ═══════════════════════════════ -->
+  <div class="unit" id="unit4">
+    <div class="unit-header" onclick="toggleUnit('unit4')">
+      <div class="unit-num">04</div>
+      <div class="unit-icon c3">🎯</div>
+      <div class="unit-info">
+        <div class="unit-title">Semester Integration — CAD + Code Mini-Project</div>
+        <div class="unit-meta">Days 18–20 · ~3 class sessions · Synthesis + Portfolio</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 18</div>
+            <div class="lesson-title">Integration Challenge — Design a Part & Write Its Spec Sheet in Code</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students design a small original part in SolidWorks, then build a companion JavaScript webpage that acts as an interactive "spec sheet" for that part: user inputs a desired scale factor and the page recalculates all dimensions, volume, and estimated weight dynamically. The pairing of physical CAD model + interactive digital spec tool previews the kind of integrated product documentation used in real engineering firms.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.2</span>
+                <span class="standard-tag">IAS-Math 8.EE</span>
+                <div class="standard-explain">This project is the first true multi-domain deliverable: EDP thinking, CAD modeling, technical documentation, and programming all converge. It directly previews the Sophomore capstone structure.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Project Rubric (Formal)</div>
+                <div class="rubric-row"><div class="rubric-label">SolidWorks part complete</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">JS spec sheet functional</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Scale calculation correct</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Added to portfolio</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 19</div>
+            <div class="lesson-title">Portfolio Update — Documenting Year 2 Progress</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students update their portfolio with all Semester 3 work: assembly project, SolidWorks independent design, JavaScript calculator, and the integration project. They write a "Skills Gained This Semester" section comparing where they started vs. where they are now. Teacher introduces the portfolio evaluation rubric that will be used at the end of every year — students self-assess for the first time.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 4.1</span>
+                <span class="standard-tag">CTE-TE 4.2</span>
+                <span class="standard-tag">IAS-ELA 8.W</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Portfolio Checklist</div>
+                <div class="rubric-row"><div class="rubric-label">All semester artifacts present</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Skills narrative written</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Self-assessment completed</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 20</div>
+            <div class="lesson-title">Semester Showcase & Preview of Semester 4</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students present their integration project (2–3 min) — showing both the SolidWorks model and the live JavaScript spec sheet. Peer feedback forms completed. Teacher closes with a preview of Semester 4: "You've now got two CAD platforms and the building blocks of code. Next semester we'll learn how to use AI to help us write and fact-check JavaScript — and we'll add our first electronics with Arduino."</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 4.1</span>
+                <span class="standard-tag">CTE-TE 4.2</span>
+                <span class="standard-tag">IAS-ELA 8.SL</span>
+                <div class="standard-explain"><strong>IAS-ELA 8.SL (Speaking & Listening):</strong> Present claims and findings using appropriate media. Students demonstrate a live digital tool during their presentation — fulfilling both the SL standard and CTE-TE 4.2.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Final Semester Grade Components</div>
+                <div class="rubric-row"><div class="rubric-label">Presentation quality</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Integration project completeness</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Portfolio update</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Notebook (full semester)</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Standards Legend -->
+  <div class="standards-legend">
+    <div class="legend-title">📋 Indiana Standards Reference — Semester 3 (New ★ + Continued)</div>
+    <div class="legend-grid">
+      <div class="legend-item">
+        <div class="legend-code new">IAS-CS 8.AP.1 ★ NEW</div>
+        <div class="legend-desc">Create programs that include sequences, selections (if/else), and repetitions (loops).</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code new">IAS-CS 8.AP.2 ★ NEW</div>
+        <div class="legend-desc">Use variables and assignments to store and access data. Core of JavaScript variable work.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code new">IAS-CS 8.AP.3 ★ NEW</div>
+        <div class="legend-desc">Identify and fix errors (bugs) in algorithms and programs. Applied via debugging exercises.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code new">IAS-Math 8.F ★ NEW</div>
+        <div class="legend-desc">Define, evaluate, and compare functions — directly mirrors JavaScript function definitions.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code new">IAS-Sci 8.PS ★ NEW</div>
+        <div class="legend-desc">Forces and motion (Grade 8 Physical Science) — applied during assembly degrees-of-freedom discussion.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code new">IAS-Math 8.EE ★ NEW</div>
+        <div class="legend-desc">Expressions & Equations — JS variables and arithmetic connect directly to algebraic expressions.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 6.1</div>
+        <div class="legend-desc">Digital tools to model solutions — now applied across Inventor assemblies, SolidWorks, and JavaScript.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 5.1 / 5.2</div>
+        <div class="legend-desc">Drawing standards and model creation — continued in SolidWorks drawings and assembly documentation.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 3.1 / 3.2</div>
+        <div class="legend-desc">Design process and modeling — applied to assembly design and the CAD+Code integration project.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 4.1 / 4.2</div>
+        <div class="legend-desc">Technical communication — portfolio updates, showcase presentation with live digital demo.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-Math 8.G</div>
+        <div class="legend-desc">Geometry — spatial transformations applied through assembly constraints and SolidWorks modeling.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-ELA 8.W / 8.SL</div>
+        <div class="legend-desc">Writing (portfolio narrative, reflection) and Speaking & Listening (live showcase presentation).</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Review Bar -->
+<div class="review-bar">
+  <div class="review-text"><strong>Semester 3 — 8th Grade Fall</strong> · 4 units · 20 class days · Awaiting your review</div>
+  <button class="review-btn" onclick="alert('✅ Approved! Tell Claude to continue to Semester 4 — 8th Grade Spring: AI-Assisted Coding + Arduino Intro.')">✅ Approve & Continue to Semester 4 →</button>
+</div>
+
+<script>
+  function toggleUnit(id) { document.getElementById(id).classList.toggle('open'); }
+  function toggleLesson(el) { el.classList.toggle('open'); }
+  document.getElementById('unit1').classList.add('open');
+</script>
+</body>
+</html>

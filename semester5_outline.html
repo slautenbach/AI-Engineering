@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Engineering Pathway | Semester 5 — 9th Grade Fall</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --surface2: #1f2435;
+    --border: #2a3050;
+    --accent: #5b8dee;
+    --accent-bright: #7aaaf5;
+    --accent2: #4ecdc4;
+    --accent3: #f5a623;
+    --accent4: #e8506a;
+    --accent5: #a07ee0;
+    --text: #e8eaf0;
+    --muted: #7a8099;
+    --tag-bg: #252d45;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 85% 8%, rgba(91,141,238,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 30% at 8% 85%, rgba(78,205,196,0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  .header { margin-bottom: 48px; animation: fadeDown 0.6s ease both; }
+
+  .breadcrumb {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .breadcrumb span { color: var(--accent-bright); }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 5vw, 52px);
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  h1 em { font-style: italic; color: var(--accent-bright); }
+
+  .subtitle { color: var(--muted); font-size: 15px; max-width: 580px; line-height: 1.7; }
+
+  .meta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+  .meta-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+  }
+  .meta-chip strong { color: var(--text); }
+
+  /* Skill stack */
+  .skill-stack {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    animation: fadeDown 0.5s 0.05s ease both;
+  }
+  .skill-stack-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 12px;
+  }
+  .skill-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .skill-pill { padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 500; font-family: 'DM Sans', sans-serif; }
+  .pill-done { background: rgba(78,205,196,0.1); border: 1px solid rgba(78,205,196,0.25); color: var(--accent2); }
+  .pill-new { background: rgba(91,141,238,0.12); border: 1px solid rgba(91,141,238,0.35); color: var(--accent-bright); }
+  .pill-new::before { content: '★ '; font-size: 9px; }
+
+  /* Callouts */
+  .callout {
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 18px;
+    font-size: 13px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    animation: fadeDown 0.5s 0.08s ease both;
+  }
+  .callout-blue { background: rgba(91,141,238,0.07); border: 1px solid rgba(91,141,238,0.25); color: var(--accent-bright); }
+  .callout-teal { background: rgba(78,205,196,0.07); border: 1px solid rgba(78,205,196,0.25); color: var(--accent2); }
+
+  /* Progress arc */
+  .arc-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 36px;
+    animation: fadeDown 0.5s 0.1s ease both;
+  }
+  .arc-label { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+  .arc-track { display: flex; gap: 3px; }
+  .arc-seg { height: 5px; border-radius: 3px; flex: 1; }
+  .arc-seg.done { opacity: 0.45; }
+  .arc-seg.active { opacity: 1; }
+  .arc-seg.future { opacity: 0.12; }
+  .arc-names { display: flex; margin-top: 7px; }
+  .arc-name { font-size: 9px; color: var(--muted); font-family: 'DM Mono', monospace; text-align: center; flex: 1; }
+  .arc-name.active { color: var(--accent-bright); font-weight: 600; }
+  .arc-name.done { color: var(--accent2); }
+
+  /* Units */
+  .unit {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 18px;
+    overflow: hidden;
+    animation: fadeUp 0.5s ease both;
+    transition: border-color 0.25s;
+  }
+  .unit:hover { border-color: #363d5c; }
+  .unit:nth-child(1) { animation-delay: 0.12s; }
+  .unit:nth-child(2) { animation-delay: 0.2s; }
+  .unit:nth-child(3) { animation-delay: 0.28s; }
+  .unit:nth-child(4) { animation-delay: 0.36s; }
+  .unit:nth-child(5) { animation-delay: 0.44s; }
+
+  .unit-header { display: flex; align-items: center; gap: 16px; padding: 20px 24px; cursor: pointer; user-select: none; }
+  .unit-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); min-width: 32px; }
+  .unit-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .unit-info { flex: 1; }
+  .unit-title { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--text); margin-bottom: 4px; }
+  .unit-meta { font-size: 12px; color: var(--muted); font-family: 'DM Mono', monospace; }
+  .unit-toggle { color: var(--muted); font-size: 20px; transition: transform 0.3s; flex-shrink: 0; }
+  .unit.open .unit-toggle { transform: rotate(180deg); }
+  .unit-body { display: none; padding: 0 24px 24px; border-top: 1px solid var(--border); }
+  .unit.open .unit-body { display: block; }
+
+  /* Lessons */
+  .lessons-grid { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+  .lesson {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .lesson:hover { border-color: #363d5c; background: #232840; }
+  .lesson-top { display: flex; align-items: flex-start; gap: 12px; }
+  .lesson-day { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); min-width: 52px; padding-top: 2px; }
+  .lesson-title { font-size: 14px; font-weight: 500; color: var(--text); flex: 1; line-height: 1.4; }
+  .lesson-type { font-size: 10px; font-family: 'DM Mono', monospace; padding: 3px 8px; border-radius: 4px; flex-shrink: 0; margin-top: 1px; }
+  .type-intro { background: rgba(91,141,238,0.15); color: var(--accent-bright); }
+  .type-skill { background: rgba(78,205,196,0.15); color: var(--accent2); }
+  .type-project { background: rgba(245,166,35,0.15); color: var(--accent3); }
+  .type-assess { background: rgba(232,80,106,0.15); color: var(--accent4); }
+  .type-field { background: rgba(160,126,224,0.15); color: var(--accent5); }
+
+  .lesson-detail { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .lesson.open .lesson-detail { display: block; }
+  .lesson-desc { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 14px; }
+
+  .detail-sections { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 580px) { .detail-sections { grid-template-columns: 1fr; } }
+
+  .detail-box { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+  .detail-box-label { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+
+  .standard-tag { display: inline-block; background: var(--tag-bg); border: 1px solid var(--border); border-radius: 4px; padding: 2px 7px; font-size: 10px; font-family: 'DM Mono', monospace; color: var(--accent); margin: 2px 2px 2px 0; }
+  .standard-tag.new-std { color: var(--accent-bright); border-color: rgba(91,141,238,0.4); background: rgba(91,141,238,0.08); }
+  .standard-explain { font-size: 11px; color: var(--muted); line-height: 1.55; margin-top: 6px; }
+
+  .rubric-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+  .rubric-label { font-size: 11px; color: var(--text); }
+  .dot-legend { display: flex; gap: 4px; align-items: center; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); }
+  .dot.f { background: var(--accent4); }
+  .dot.p { background: var(--accent3); }
+  .dot.s { background: var(--accent2); }
+  .dot.e { background: var(--accent); }
+  .rubric-scale { display: flex; gap: 10px; margin-top: 8px; padding-top: 7px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .rubric-scale-item { display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--muted); }
+
+  /* Interview framework box */
+  .framework-box {
+    background: #0a0c12;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-top: 10px;
+  }
+  .framework-box-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--accent2);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+  .framework-step {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 6px;
+    font-size: 11px;
+    color: var(--muted);
+    align-items: flex-start;
+    line-height: 1.5;
+  }
+  .framework-num {
+    background: rgba(78,205,196,0.12);
+    color: var(--accent2);
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* Code preview */
+  .code-preview {
+    background: #0a0c12;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: #8b9fc5;
+    margin-top: 10px;
+    line-height: 1.8;
+  }
+  .code-preview .kw { color: var(--accent5); }
+  .code-preview .fn { color: var(--accent2); }
+  .code-preview .str { color: var(--accent3); }
+  .code-preview .cm { color: #3a4260; }
+  .code-preview .num { color: var(--accent-bright); }
+
+  /* Standards legend */
+  .standards-legend {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-top: 28px;
+    animation: fadeUp 0.5s 0.5s ease both;
+  }
+  .legend-title { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; }
+  .legend-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(275px, 1fr)); gap: 8px; }
+  .legend-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 13px; }
+  .legend-code { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent); margin-bottom: 4px; }
+  .legend-code.new { color: var(--accent-bright); }
+  .legend-desc { font-size: 11px; color: var(--muted); line-height: 1.45; }
+
+  /* Review bar */
+  .review-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(15,17,23,0.96);
+    border-top: 1px solid var(--border);
+    backdrop-filter: blur(14px);
+    padding: 13px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .review-text { font-size: 12px; color: var(--muted); }
+  .review-text strong { color: var(--text); }
+  .review-btn {
+    background: var(--accent-bright);
+    color: #0f1117;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+  }
+  .review-btn:hover { opacity: 0.85; }
+
+  .c1 { background: rgba(91,141,238,0.12); }
+  .c2 { background: rgba(78,205,196,0.12); }
+  .c3 { background: rgba(245,166,35,0.1); }
+  .c4 { background: rgba(160,126,224,0.12); }
+  .c5 { background: rgba(232,80,106,0.1); }
+
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <div class="breadcrumb">Engineering Pathway · <span>Year 3 of 8</span> · Semester 5</div>
+    <h1>9th Grade <em>Fall</em><br>Advanced SolidWorks, Sensors & Human-Centered Design</h1>
+    <p class="subtitle">Students deepen SolidWorks with advanced surfacing and simulation, expand their Arduino sensor toolkit, and begin the most important new thread of the program: learning to listen to and design <em>for</em> real people. This is the foundation of their eventual capstone project.</p>
+    <div class="meta-row">
+      <div class="meta-chip"><strong>Grade:</strong> 9th</div>
+      <div class="meta-chip"><strong>Semester:</strong> Fall (5 of 16)</div>
+      <div class="meta-chip"><strong>Schedule:</strong> A/B Block · 45–50 min</div>
+      <div class="meta-chip"><strong>~20 class days</strong></div>
+      <div class="meta-chip"><strong>New:</strong> Loft, Sweep, Simulation</div>
+      <div class="meta-chip"><strong>New:</strong> Human-Centered Design</div>
+    </div>
+  </div>
+
+  <div class="callout callout-blue">
+    <span>🔗</span>
+    <span><strong>Year 3 Shift:</strong> Years 1–2 were primarily about building technical skills. Year 3 adds the human dimension — learning to identify real problems, interview real users, and design solutions grounded in data. This thread runs through every remaining year and culminates in the Sophomore capstone.</span>
+  </div>
+  <div class="callout callout-teal">
+    <span>🧰</span>
+    <span><strong>Semester 4 Bridge:</strong> Students arrive with Inventor assemblies, SolidWorks parts, Arduino wiring + C++ basics, JavaScript DOM work, and the AI fact-checking framework. All of these are deepened and connected to new human-centered design thinking this semester.</span>
+  </div>
+
+  <!-- Progress Arc -->
+  <div class="arc-bar">
+    <div class="arc-label">8-Year Pathway — Semester 5 of 16</div>
+    <div class="arc-track">
+      <div class="arc-seg done" style="background:#4ecdc4;"></div>
+      <div class="arc-seg done" style="background:#4ecdc4;"></div>
+      <div class="arc-seg done" style="background:#4ecdc4;"></div>
+      <div class="arc-seg done" style="background:#4ecdc4;"></div>
+      <div class="arc-seg active" style="background:#7aaaf5;"></div>
+      <div class="arc-seg future" style="background:#7aaaf5;"></div>
+      <div class="arc-seg future" style="background:#7aaaf5;"></div>
+      <div class="arc-seg future" style="background:#7aaaf5;"></div>
+      <div class="arc-seg future" style="background:#f5a623;"></div>
+      <div class="arc-seg future" style="background:#f5a623;"></div>
+      <div class="arc-seg future" style="background:#f5a623;"></div>
+      <div class="arc-seg future" style="background:#f5a623;"></div>
+      <div class="arc-seg future" style="background:#a07ee0;"></div>
+      <div class="arc-seg future" style="background:#a07ee0;"></div>
+      <div class="arc-seg future" style="background:#a07ee0;"></div>
+      <div class="arc-seg future" style="background:#a07ee0;"></div>
+    </div>
+    <div class="arc-names">
+      <div class="arc-name done">7F</div>
+      <div class="arc-name done">7S</div>
+      <div class="arc-name done">8F</div>
+      <div class="arc-name done">8S</div>
+      <div class="arc-name active">9F ←</div>
+      <div class="arc-name">9S</div>
+      <div class="arc-name">10F</div>
+      <div class="arc-name">10S</div>
+      <div class="arc-name">11F</div>
+      <div class="arc-name">11S</div>
+      <div class="arc-name">12F</div>
+      <div class="arc-name">12S</div>
+      <div class="arc-name">FrF</div>
+      <div class="arc-name">FrS</div>
+      <div class="arc-name">SoF</div>
+      <div class="arc-name">SoS</div>
+    </div>
+  </div>
+
+  <!-- Skill Stack -->
+  <div class="skill-stack">
+    <div class="skill-stack-label">Cumulative Skill Stack — Incoming + New This Semester</div>
+    <div class="skill-pills">
+      <span class="skill-pill pill-done">EDP Framework</span>
+      <span class="skill-pill pill-done">Isometric &amp; Ortho Drawing</span>
+      <span class="skill-pill pill-done">Inventor Parts &amp; Assemblies</span>
+      <span class="skill-pill pill-done">SolidWorks Parts &amp; Drawings</span>
+      <span class="skill-pill pill-done">3D Printing + Inspection</span>
+      <span class="skill-pill pill-done">JavaScript + DOM</span>
+      <span class="skill-pill pill-done">AI Fact-Checking</span>
+      <span class="skill-pill pill-done">Arduino + C++ Basics</span>
+      <span class="skill-pill pill-done">Sensors &amp; Actuators</span>
+      <span class="skill-pill pill-new">SolidWorks Loft &amp; Sweep</span>
+      <span class="skill-pill pill-new">FEA Simulation (Intro)</span>
+      <span class="skill-pill pill-new">Multi-Sensor Arduino Systems</span>
+      <span class="skill-pill pill-new">Serial Data Logging</span>
+      <span class="skill-pill pill-new">Human-Centered Design</span>
+      <span class="skill-pill pill-new">User Interviewing</span>
+      <span class="skill-pill pill-new">Empathy Mapping</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════ UNIT 1 ══════════════════════ -->
+  <div class="unit" id="unit1">
+    <div class="unit-header" onclick="toggleUnit('unit1')">
+      <div class="unit-num">01</div>
+      <div class="unit-icon c1">🔷</div>
+      <div class="unit-info">
+        <div class="unit-title">Advanced SolidWorks — Loft, Sweep & Surface Modeling</div>
+        <div class="unit-meta">Days 1–6 · ~6 class sessions · Advanced CAD</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 1</div>
+            <div class="lesson-title">Beyond Extrude — Why Complex Geometry Needs New Tools</div>
+            <div class="lesson-type type-intro">Intro</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students examine real-world products — car fenders, ergonomic grips, medical device housings, consumer electronics — and discuss why none of them can be modeled purely with extrudes and revolves. Teacher introduces the concept of swept and lofted geometry. Students sketch 5 real objects in their notebooks and annotate which surfaces would require Loft or Sweep. This sets purposeful motivation before learning the tools.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <span class="standard-tag new-std">CTE-TE 6.3</span>
+                <div class="standard-explain"><strong>CTE-TE 6.3:</strong> Apply advanced modeling and simulation tools to analyze and optimize designs. This standard anchors all advanced SolidWorks work this semester, including simulation in Unit 2.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Vocabulary</div>
+                <span class="standard-tag">loft</span>
+                <span class="standard-tag">sweep</span>
+                <span class="standard-tag">guide curve</span>
+                <span class="standard-tag">profile</span>
+                <span class="standard-tag">path</span>
+                <span class="standard-tag">surface body</span>
+                <span class="standard-tag">solid body</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 2</div>
+            <div class="lesson-title">Sweep — Extruding a Profile Along a Path</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students learn the Sweep feature: define a 2D profile sketch and a separate 3D path sketch, then sweep the profile along the path. Exercises include: a curved pipe fitting, a hand-grip profile swept along an ergonomic arc, and a decorative molding sweep. Students discover the relationship between path complexity and model stability — a key constraint in advanced modeling. Notebook: sketches of all three profiles and paths, annotated with the feature used.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <span class="standard-tag">CTE-TE 6.3</span>
+                <span class="standard-tag">IAS-Math 9-10.G</span>
+                <div class="standard-explain"><strong>IAS-Math 9-10.G (Geometry):</strong> Apply geometric concepts in modeling situations. Sweep is the computational realization of a geometric solid of revolution along a non-linear axis — a direct high school geometry connection.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Profile &amp; path sketched separately</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Sweep produces valid solid</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">All 3 exercises complete</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-scale">
+                  <div class="rubric-scale-item"><div class="dot f"></div> Beginning</div>
+                  <div class="rubric-scale-item"><div class="dot p"></div> Developing</div>
+                  <div class="rubric-scale-item"><div class="dot s"></div> Proficient</div>
+                  <div class="rubric-scale-item"><div class="dot e"></div> Exemplary</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 3</div>
+            <div class="lesson-title">Loft — Blending Between Profiles</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students learn the Loft feature: define two or more profile sketches on parallel planes and blend between them smoothly. Exercises: a square-to-circle transition (common in ducting), a tapered phone body profile, and a 3-profile wing cross-section. Introduction to guide curves to control the loft shape between profiles. Students compare hand-sketched approximations of each part to the CAD output — reinforcing that CAD enables geometry impossible to draw precisely by hand.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <span class="standard-tag">CTE-TE 6.3</span>
+                <span class="standard-tag">IAS-Math 9-10.G</span>
+                <div class="standard-explain">Loft between profiles is a direct application of cross-sectional geometry (IAS-Math 9-10.G) — the same concept as relating cross-sections of 3D solids to 2D shapes. Students see how math abstractions become engineering tools.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Multiple profiles on parallel planes</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Loft blends smoothly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Guide curve used in ≥1 exercise</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 4</div>
+            <div class="lesson-title">Shell, Rib & Draft — Making Parts Manufacturable</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students learn three fabrication-focused features: Shell (hollow out a solid to a uniform wall thickness — critical for injection molding and 3D printing), Rib (add structural reinforcement fins inside a shell), and Draft (angle walls slightly so a part can be removed from a mold). These features connect directly to the manufacturing context students will encounter in the capstone — real product design always considers how a part will be made, not just what it looks like.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <span class="standard-tag">CTE-TE 6.2</span>
+                <span class="standard-tag">CTE-TE 6.3</span>
+                <div class="standard-explain"><strong>CTE-TE 6.2:</strong> Apply manufacturing and fabrication processes — Shell, Rib, and Draft are design-for-manufacture features that directly address how geometry affects production feasibility. Students begin thinking like manufacturing engineers, not just designers.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Shell wall thickness uniform</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Rib connects correctly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Draft angle applied</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Days 5–6</div>
+            <div class="lesson-title">Advanced Modeling Project — Design an Ergonomic Hand Tool</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students design an ergonomic hand tool of their choice (screwdriver handle, stylus grip, garden trowel handle, etc.) using at least one Sweep or Loft feature plus Shell. The design must demonstrate consideration for the human hand — introducing ergonomics as a design constraint for the first time. Students trace their own hand on paper, identify grip points, and use these measurements to inform their CAD geometry. EDP documentation required. Drawing package produced. Part 3D printed and measured against CAD.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <span class="standard-tag">CTE-TE 6.2</span>
+                <span class="standard-tag">CTE-TE 6.3</span>
+                <span class="standard-tag new-std">CTE-TE 8.1</span>
+                <div class="standard-explain"><strong>CTE-TE 8.1 (NEW):</strong> Apply human factors and ergonomics in design. The hand tool project is the first assignment where ergonomics is a graded criterion — the human body becomes a design constraint, foreshadowing human-centered design in Unit 4.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Project Rubric (Formal)</div>
+                <div class="rubric-row"><div class="rubric-label">Loft or Sweep used</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Shell applied correctly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Ergonomic rationale documented</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Drawing package complete</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">3D print submitted</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════ UNIT 2 ══════════════════════ -->
+  <div class="unit" id="unit2">
+    <div class="unit-header" onclick="toggleUnit('unit2')">
+      <div class="unit-num">02</div>
+      <div class="unit-icon c2">📊</div>
+      <div class="unit-info">
+        <div class="unit-title">Intro to FEA Simulation — Testing Before You Build</div>
+        <div class="unit-meta">Days 7–9 · ~3 class sessions · Analysis Skills</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 7</div>
+            <div class="lesson-title">What is Simulation? — Virtual Testing Before Physical Prototyping</div>
+            <div class="lesson-type type-intro">Intro</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Teacher introduces Finite Element Analysis (FEA) — the computational method that divides a model into thousands of small elements and calculates how stress, strain, and deformation spread through a part under load. Students view industry examples: NASA spacecraft stress maps, car crash simulations, bridge load analysis. Key message: simulation saves time and money by finding failures digitally before building expensive prototypes. Discussion: how does this connect to the EDP's "test" step?</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.2</span>
+                <span class="standard-tag">CTE-TE 6.3</span>
+                <span class="standard-tag">IAS-Sci 9-10.PS</span>
+                <div class="standard-explain"><strong>IAS-Sci 9-10.PS (Physical Science):</strong> Analyze forces, stress, and material behavior. FEA simulation directly visualizes these physics concepts — stress concentration, deformation, and factor of safety are all grounded in 9th/10th grade science.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Vocabulary</div>
+                <span class="standard-tag">FEA</span>
+                <span class="standard-tag">stress</span>
+                <span class="standard-tag">strain</span>
+                <span class="standard-tag">factor of safety</span>
+                <span class="standard-tag">mesh</span>
+                <span class="standard-tag">fixture</span>
+                <span class="standard-tag">load</span>
+                <span class="standard-tag">von Mises stress</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 8</div>
+            <div class="lesson-title">Running a SolidWorks Simulation — Load, Fixture & Mesh</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students open SolidWorks Simulation (or SimulationXpress for student licenses) and run their first static analysis on a simple bracket. Step by step: assign material, define fixtures (where the part is held), apply loads (force in Newtons), mesh the part, run the solver, and interpret the color-coded stress plot. Students identify the highest-stress location and record the factor of safety. They then apply a fillet to the high-stress region and re-run — observing how geometry changes the result.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.2</span>
+                <span class="standard-tag">CTE-TE 6.3</span>
+                <span class="standard-tag">IAS-Sci 9-10.PS</span>
+                <span class="standard-tag">IAS-Math 9-10.A</span>
+                <div class="standard-explain"><strong>IAS-Math 9-10.A (Algebra):</strong> Factor of safety = material strength ÷ applied stress — students perform this calculation and interpret its engineering meaning. Units, significant figures, and order-of-magnitude reasoning are reinforced.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Material assigned correctly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Simulation runs without errors</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Factor of safety calculated</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Fillet improvement documented</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 9</div>
+            <div class="lesson-title">Simulate Your Hand Tool — Stress-Test the Ergonomic Design</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students run a SolidWorks Simulation study on their Unit 1 hand tool design — applying a realistic grip force load (approximately 50N) and identifying any weak points. They must: record the maximum von Mises stress, calculate the factor of safety, identify the failure location on a screenshot, and propose one geometry change to improve it. Results are documented in their notebook and added to the portfolio as a "Simulation Report" — a professional deliverable format they'll use through the capstone.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.2</span>
+                <span class="standard-tag">CTE-TE 6.3</span>
+                <span class="standard-tag">CTE-TE 8.1</span>
+                <span class="standard-tag">IAS-Sci 9-10.PS</span>
+                <span class="standard-tag">IAS-Math 9-10.A</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Formal Simulation Report Rubric</div>
+                <div class="rubric-row"><div class="rubric-label">Simulation setup correct</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Max stress + FOS recorded</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Failure location identified</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Improvement proposal written</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════ UNIT 3 ══════════════════════ -->
+  <div class="unit" id="unit3">
+    <div class="unit-header" onclick="toggleUnit('unit3')">
+      <div class="unit-num">03</div>
+      <div class="unit-icon c3">📡</div>
+      <div class="unit-info">
+        <div class="unit-title">Multi-Sensor Arduino Systems & Data Logging</div>
+        <div class="unit-meta">Days 10–14 · ~5 class sessions · Advanced Electronics</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 10</div>
+            <div class="lesson-title">Sensor Ecosystem — Temperature, Humidity, Ultrasonic & IR</div>
+            <div class="lesson-type type-intro">Intro</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students receive an expanded sensor kit and are introduced to 4 new sensor types: DHT11/22 (temperature + humidity), HC-SR04 (ultrasonic distance), IR receiver, and a soil moisture sensor. For each, they examine the datasheet, identify the communication protocol (digital, analog, or single-wire), and wire + test a basic sketch. The lesson emphasizes reading datasheets — a critical professional skill. Students build a "Sensor Reference Card" in their notebooks with pin diagram, sample code snippet, and typical use cases for each sensor.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 7.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.1</span>
+                <span class="standard-tag">IAS-Sci 9-10.PS</span>
+                <div class="standard-explain">Reading and applying a datasheet is an authentic engineering literacy task (CTE-TE 7.1). Each sensor type connects to a different physics phenomenon (IAS-Sci 9-10.PS): sound waves (ultrasonic), electromagnetic spectrum (IR), thermal energy (temperature).</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Sensor Reference Card</div>
+                <div class="standard-explain">Each entry includes: sensor name, pins (VCC/GND/Signal), wiring diagram, sample sketch, and 2 real-world use cases. This card is used throughout the rest of the semester and becomes a portfolio artifact.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 11</div>
+            <div class="lesson-title">Multi-Sensor Sketches — Reading Two Sensors Simultaneously</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students wire two sensors simultaneously and write a sketch that reads both in the loop() and makes a decision based on combined data (e.g., if temperature is high AND distance is close, blink red LED; otherwise blink green). This requires structuring the loop carefully to avoid blocking delays — introduction to millis()-based timing as a non-blocking alternative to delay(). Students write a flowchart of their logic in their notebook before writing any code, practicing algorithm design before implementation.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 7.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.2</span>
+                <span class="standard-tag new-std">IAS-CS 9-10.AP.1</span>
+                <div class="standard-explain"><strong>IAS-CS 9-10.AP.1:</strong> Design algorithms to solve complex problems. The multi-sensor logic with non-blocking timing is a genuinely complex algorithm — writing the flowchart first fulfills this standard's design-before-code emphasis.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Flowchart written before coding</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Both sensors read correctly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">millis() timing used correctly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 12</div>
+            <div class="lesson-title">Serial Data Logging — Capturing Sensor Data Over Time</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students learn to output structured CSV-format data via Serial.print() (timestamp, sensor1, sensor2) and capture it to a text file using the Arduino IDE Serial Monitor or a simple Python logging script. They then import the CSV into a spreadsheet and create a line graph of the data over time. This is the first time students collect real-world sensor data, visualize it, and draw a conclusion from it — the foundation of data-driven engineering decisions and a preview of the capstone's user research data workflow.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 7.1</span>
+                <span class="standard-tag">IAS-CS 9-10.AP.1</span>
+                <span class="standard-tag">IAS-Math 9-10.S</span>
+                <div class="standard-explain"><strong>IAS-Math 9-10.S (Statistics):</strong> Represent and interpret data. Logging, graphing, and interpreting sensor time-series data directly fulfills this standard — students calculate min, max, and average from their recorded dataset.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Code Concept Preview</div>
+                <div class="code-preview">
+                  <span class="cm">// CSV output via Serial</span><br>
+                  <span class="fn">Serial</span>.<span class="fn">print</span>(<span class="fn">millis</span>());<br>
+                  <span class="fn">Serial</span>.<span class="fn">print</span>(<span class="str">","</span>);<br>
+                  <span class="fn">Serial</span>.<span class="fn">print</span>(tempReading);<br>
+                  <span class="fn">Serial</span>.<span class="fn">print</span>(<span class="str">","</span>);<br>
+                  <span class="fn">Serial</span>.<span class="fn">println</span>(distReading);
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 13</div>
+            <div class="lesson-title">AI-Assisted Multi-Sensor Project — Build an Environment Monitor</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students design and build a simple "environment monitor" using at least 2 sensors of their choice. Requirements: continuous data logging to Serial, at least one conditional response (LED, buzzer, or message), and a 1-page data analysis report showing a graph and 3 observations from the data. AI may be used for code with full fact-check notes. Students choose their own sensor combination and define what "alert conditions" their device monitors — the first fully open-ended hardware project.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <span class="standard-tag">CTE-TE 7.1</span>
+                <span class="standard-tag">IAS-CS 9-10.AP.1</span>
+                <span class="standard-tag">IAS-CS 8.IC.1</span>
+                <span class="standard-tag">IAS-Math 9-10.S</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Project Rubric (Formal)</div>
+                <div class="rubric-row"><div class="rubric-label">≥2 sensors wired + reading</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">CSV data logged correctly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Alert condition works</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Data analysis report submitted</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 14</div>
+            <div class="lesson-title">Electronics Assessment — Multi-Sensor Behavioral Spec</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Formal assessment: students receive a written behavioral spec for a multi-sensor system (e.g., "Build a plant monitor that logs temperature and soil moisture every 5 seconds, lights a green LED when conditions are good, and a red LED when either reading is out of range"). Must be wired, coded, and demonstrated without AI tools. Graded on wiring correctness, logic accuracy, code quality (comments, naming), and Serial output format.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 7.1</span>
+                <span class="standard-tag">IAS-CS 9-10.AP.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.2</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Formal Assessment Rubric</div>
+                <div class="rubric-row"><div class="rubric-label">Both sensors wired &amp; reading</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">LED logic correct</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">5-second logging works</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Code commented &amp; named well</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════ UNIT 4 ══════════════════════ -->
+  <div class="unit" id="unit4">
+    <div class="unit-header" onclick="toggleUnit('unit4')">
+      <div class="unit-num">04</div>
+      <div class="unit-icon c4">🧠</div>
+      <div class="unit-info">
+        <div class="unit-title">Human-Centered Design — Learning to Listen First</div>
+        <div class="unit-meta">Days 15–18 · ~4 class sessions · New Design Thinking Track</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 15</div>
+            <div class="lesson-title">What is Human-Centered Design? — People Before Products</div>
+            <div class="lesson-type type-intro">Intro</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Teacher introduces human-centered design (HCD) as a design philosophy: start with the human experience, not the technology. Case studies: the redesign of a hospital patient room, the evolution of the iPhone keyboard, the OXO Good Grips peeler designed for people with arthritis. Key insight: the best engineers are deeply curious about people. Students discuss: "Think of a product that frustrated you. What did the designers not understand about how you actually use it?" This becomes their first HCD notebook entry.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 8.1</span>
+                <span class="standard-tag new-std">CTE-TE 8.2</span>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <div class="standard-explain"><strong>CTE-TE 8.2 (NEW):</strong> Evaluate the social, cultural, and ethical impacts of designed products and systems. HCD is the primary lens through which students will assess these impacts — design decisions always affect real people.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Vocabulary</div>
+                <span class="standard-tag">human-centered design</span>
+                <span class="standard-tag">empathy</span>
+                <span class="standard-tag">user</span>
+                <span class="standard-tag">stakeholder</span>
+                <span class="standard-tag">pain point</span>
+                <span class="standard-tag">insight</span>
+                <span class="standard-tag">design brief</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 16</div>
+            <div class="lesson-title">The User Interview — How to Ask Questions That Reveal Real Problems</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students learn the core skill of user interviewing: asking open-ended questions, avoiding leading questions, listening for emotions and workarounds, and probing with "why" and "tell me more." Teacher models a bad interview vs. a good interview on video or live demo. Students practice in triads (interviewer, interviewee, observer) using the prompt: "Tell me about a daily task you find frustrating or difficult." Observer gives structured feedback using the interview checklist. This skill will be used directly in the capstone's user research phase.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 8.2</span>
+                <span class="standard-tag">CTE-TE 4.1</span>
+                <span class="standard-tag new-std">CTE-TE 9.1</span>
+                <span class="standard-tag">IAS-ELA 9-10.SL</span>
+                <div class="standard-explain"><strong>CTE-TE 9.1 (NEW):</strong> Apply interpersonal and teamwork skills in engineering contexts. User interviewing is a professional interpersonal skill — listening actively, responding without judgment, and probing for depth. <strong>IAS-ELA 9-10.SL:</strong> Initiate and participate in collaborative discussions.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Interview Checklist (Informal)</div>
+                <div class="framework-box">
+                  <div class="framework-box-label">Good Interview Principles</div>
+                  <div class="framework-step"><div class="framework-num">1</div><span>Ask open-ended questions (no yes/no answers)</span></div>
+                  <div class="framework-step"><div class="framework-num">2</div><span>Never suggest an answer in the question</span></div>
+                  <div class="framework-step"><div class="framework-num">3</div><span>Probe with "why" and "tell me more"</span></div>
+                  <div class="framework-step"><div class="framework-num">4</div><span>Listen for workarounds — they reveal real pain</span></div>
+                  <div class="framework-step"><div class="framework-num">5</div><span>Take notes without judging what you hear</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 17</div>
+            <div class="lesson-title">Empathy Mapping — Turning Interviews Into Insights</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students learn the Empathy Map framework: a tool for organizing interview data into 4 quadrants (Says, Thinks, Does, Feels). Working from their Day 16 interview notes, each student builds a full empathy map for their interview subject. Then, as a class, students look for patterns across multiple maps and practice writing "How Might We" (HMW) statements — the bridge between observations and design opportunities. Two or three strong HMW statements are the deliverable for the capstone pre-work starting next semester.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 8.1</span>
+                <span class="standard-tag">CTE-TE 8.2</span>
+                <span class="standard-tag">CTE-TE 9.1</span>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <div class="standard-explain">Empathy mapping synthesizes human observation into actionable design direction — the link between CTE-TE 8.2 (social/cultural impact) and CTE-TE 3.1 (design process). HMW statements are the output of this synthesis and a direct input to the EDP's "Define the Problem" step.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Empathy Map Rubric (Formal)</div>
+                <div class="rubric-row"><div class="rubric-label">All 4 quadrants completed</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Based on real interview data</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">≥2 HMW statements written</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">HMWs are open (not solutions)</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 18</div>
+            <div class="lesson-title">HCD Field Assignment — Interview Someone Outside of Class</div>
+            <div class="lesson-type type-field">Field</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students are assigned a real-world interview task: conduct a 10–15 minute user interview with someone outside of school (family member, neighbor, community member, or school staff) about a daily task or challenge in their life. Students use the interview framework from Day 16, take structured notes, and build an empathy map from the conversation. Results are shared in a brief "Insights Presentation" (2 min, Day 19 warm-up) and stored in their portfolio as the first piece of genuine user research — a direct seed for the Sophomore capstone.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 8.2</span>
+                <span class="standard-tag">CTE-TE 9.1</span>
+                <span class="standard-tag">IAS-ELA 9-10.SL</span>
+                <span class="standard-tag">IAS-ELA 9-10.W</span>
+                <div class="standard-explain"><strong>IAS-ELA 9-10.W:</strong> Write routinely for a range of tasks. The structured interview notes and empathy map fulfill this standard as professional writing in an authentic engineering context. Speaking & Listening fulfilled through the insights presentation.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Field Assignment Rubric (Formal)</div>
+                <div class="rubric-row"><div class="rubric-label">Interview conducted (evidence)</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Structured notes submitted</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Empathy map complete</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">HMW statements written</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════ UNIT 5 ══════════════════════ -->
+  <div class="unit" id="unit5">
+    <div class="unit-header" onclick="toggleUnit('unit5')">
+      <div class="unit-num">05</div>
+      <div class="unit-icon c5">🎓</div>
+      <div class="unit-info">
+        <div class="unit-title">Semester Capstone — Integrated Design Challenge</div>
+        <div class="unit-meta">Days 19–20 · ~2 class sessions · Synthesis + Portfolio</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 19</div>
+            <div class="lesson-title">Insights Presentations + Portfolio Update</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students share 2-minute field interview insights with the class (warm-up). Class identifies any common themes across interviews — this is explicitly noted: "These themes might be worth designing for." Students then spend the remainder of the period updating their portfolio with all Semester 5 artifacts: advanced SolidWorks screenshots, simulation report, sensor reference card, environment monitor data analysis, empathy map, and HMW statements. The portfolio now has a dedicated "User Research" section that will grow every semester through the capstone.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 4.1</span>
+                <span class="standard-tag">CTE-TE 4.2</span>
+                <span class="standard-tag">CTE-TE 8.2</span>
+                <span class="standard-tag">IAS-ELA 9-10.SL</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Portfolio Checklist</div>
+                <div class="rubric-row"><div class="rubric-label">All semester artifacts present</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">User Research section created</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Captions explain each item</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 20</div>
+            <div class="lesson-title">Semester Showcase + Preview of Semester 6</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students deliver a 3-minute presentation covering two things: (1) their hand tool — showing the CAD model, simulation report, and printed part; and (2) their field interview empathy map — explaining who they interviewed, what they discovered, and what HMW statements they wrote. This dual presentation format (technical artifact + human research) will be the standard showcase format for the rest of the program. Teacher closes with a preview of Semester 6: "You now design complex forms, simulate them, build sensor systems, and understand the people you're designing for. Next semester, you'll start connecting all of these into a single integrated project for the first time."</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 4.1</span>
+                <span class="standard-tag">CTE-TE 4.2</span>
+                <span class="standard-tag">CTE-TE 8.2</span>
+                <span class="standard-tag">IAS-ELA 9-10.SL</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Final Semester Grade Components</div>
+                <div class="rubric-row"><div class="rubric-label">Technical artifact presentation</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Human research presentation</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Portfolio completeness</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Full-semester notebook</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Standards Legend -->
+  <div class="standards-legend">
+    <div class="legend-title">📋 Indiana Standards Reference — Semester 5 (New ★ + Continued)</div>
+    <div class="legend-grid">
+      <div class="legend-item">
+        <div class="legend-code new">CTE-TE 6.3 ★ NEW</div>
+        <div class="legend-desc">Apply advanced modeling and simulation tools to analyze and optimize designs. Anchors Loft, Sweep, Shell, and FEA simulation work.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code new">CTE-TE 8.1 ★ NEW</div>
+        <div class="legend-desc">Apply human factors and ergonomics in design. First applied in the hand tool project; continues through capstone.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code new">CTE-TE 8.2 ★ NEW</div>
+        <div class="legend-desc">Evaluate social, cultural, and ethical impacts of designed products. Core of Human-Centered Design unit and all future user research.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code new">CTE-TE 9.1 ★ NEW</div>
+        <div class="legend-desc">Apply interpersonal and teamwork skills in engineering contexts. User interviewing, empathy mapping, and collaborative insights analysis.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code new">IAS-CS 9-10.AP.1 ★ NEW</div>
+        <div class="legend-desc">Design algorithms to solve complex problems. Multi-sensor flowchart-first design approach; data logging structured output.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code new">IAS-Math 9-10.G ★ NEW</div>
+        <div class="legend-desc">Apply geometric concepts in modeling — Sweep and Loft as computational geometry of complex solids and cross-sections.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code new">IAS-Math 9-10.A ★ NEW</div>
+        <div class="legend-desc">Algebra — factor of safety calculations (FOS = strength ÷ stress); unit analysis in sensor data.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code new">IAS-Math 9-10.S ★ NEW</div>
+        <div class="legend-desc">Statistics — represent and interpret sensor time-series data; calculate min/max/average from logged dataset.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code new">IAS-Sci 9-10.PS ★ NEW</div>
+        <div class="legend-desc">Physical Science (9-10) — stress, strain, forces in FEA; electromagnetic/acoustic phenomena in sensor types.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code new">IAS-ELA 9-10.SL ★ NEW</div>
+        <div class="legend-desc">Speaking &amp; Listening (9-10) — user interviews, class discussion, 3-minute dual showcase presentation.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code new">IAS-ELA 9-10.W ★ NEW</div>
+        <div class="legend-desc">Writing (9-10) — structured interview notes, empathy map, HMW statements, data analysis report.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 3.1 / 3.2 / 5.2 / 6.1 / 6.2 / 7.1</div>
+        <div class="legend-desc">All continued from prior semesters — applied in advanced SolidWorks, simulation, and multi-sensor projects.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Review Bar -->
+<div class="review-bar">
+  <div class="review-text"><strong>Semester 5 — 9th Grade Fall</strong> · 5 units · 20 class days · Awaiting your review</div>
+  <button class="review-btn" onclick="alert('✅ Approved! Tell Claude to continue to Semester 6 — 9th Grade Spring.')">✅ Approve & Continue to Semester 6 →</button>
+</div>
+
+<script>
+  function toggleUnit(id) { document.getElementById(id).classList.toggle('open'); }
+  function toggleLesson(el) { el.classList.toggle('open'); }
+  document.getElementById('unit1').classList.add('open');
+</script>
+</body>
+</html>

@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Engineering Pathway | Semester 1 — 7th Grade Fall</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --surface2: #1f2435;
+    --border: #2a3050;
+    --accent: #f5a623;
+    --accent2: #5b8dee;
+    --accent3: #4ecdc4;
+    --accent4: #e8506a;
+    --text: #e8eaf0;
+    --muted: #7a8099;
+    --tag-bg: #252d45;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(91,141,238,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(91,141,238,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* Header */
+  .header {
+    margin-bottom: 56px;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .breadcrumb {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .breadcrumb span { color: var(--accent); }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 5vw, 52px);
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 560px;
+    line-height: 1.6;
+  }
+
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .meta-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+  }
+
+  .meta-chip strong { color: var(--text); }
+
+  /* Progress arc */
+  .arc-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 40px;
+    animation: fadeDown 0.6s 0.1s ease both;
+  }
+
+  .arc-label {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+  }
+
+  .arc-track {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .arc-seg {
+    height: 6px;
+    border-radius: 3px;
+    flex: 1;
+    transition: opacity 0.3s;
+  }
+
+  .arc-seg.active { opacity: 1; }
+  .arc-seg.future { opacity: 0.18; }
+
+  .arc-names {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+  }
+
+  .arc-name {
+    font-size: 10px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    text-align: center;
+    flex: 1;
+  }
+
+  .arc-name.active { color: var(--accent); }
+
+  /* Unit cards */
+  .unit {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    animation: fadeUp 0.5s ease both;
+    transition: border-color 0.2s;
+  }
+
+  .unit:hover { border-color: #3a4570; }
+
+  .unit:nth-child(1) { animation-delay: 0.15s; }
+  .unit:nth-child(2) { animation-delay: 0.25s; }
+  .unit:nth-child(3) { animation-delay: 0.35s; }
+  .unit:nth-child(4) { animation-delay: 0.45s; }
+
+  .unit-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .unit-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    min-width: 32px;
+  }
+
+  .unit-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .unit-info { flex: 1; }
+
+  .unit-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .unit-meta {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .unit-toggle {
+    color: var(--muted);
+    font-size: 20px;
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+
+  .unit.open .unit-toggle { transform: rotate(180deg); }
+
+  .unit-body {
+    display: none;
+    padding: 0 24px 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .unit.open .unit-body { display: block; }
+
+  /* Lessons */
+  .lessons-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .lesson {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .lesson:hover { border-color: #3a4570; background: #232840; }
+
+  .lesson-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .lesson-day {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    min-width: 48px;
+    padding-top: 2px;
+  }
+
+  .lesson-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    flex: 1;
+  }
+
+  .lesson-type {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    padding: 3px 8px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .type-intro { background: rgba(91,141,238,0.15); color: var(--accent2); }
+  .type-skill { background: rgba(78,205,196,0.15); color: var(--accent3); }
+  .type-project { background: rgba(245,166,35,0.15); color: var(--accent); }
+  .type-assess { background: rgba(232,80,106,0.15); color: var(--accent4); }
+
+  .lesson-detail {
+    display: none;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .lesson.open .lesson-detail { display: block; }
+
+  .lesson-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 14px;
+  }
+
+  .detail-sections {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  @media (max-width: 600px) { .detail-sections { grid-template-columns: 1fr; } }
+
+  .detail-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+
+  .detail-box-label {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+
+  .standard-tag {
+    display: inline-block;
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    color: var(--accent2);
+    margin: 2px 2px 2px 0;
+  }
+
+  .standard-explain {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-top: 6px;
+  }
+
+  .rubric-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .rubric-label { font-size: 11px; color: var(--text); }
+
+  .rubric-dots {
+    display: flex;
+    gap: 4px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+
+  .dot.f { background: var(--accent4); }
+  .dot.p { background: var(--accent); }
+  .dot.s { background: var(--accent3); }
+  .dot.e { background: var(--accent2); }
+
+  .rubric-scale {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+
+  .rubric-scale-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  /* Standards legend */
+  .standards-legend {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-top: 32px;
+    animation: fadeUp 0.5s 0.55s ease both;
+  }
+
+  .legend-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 14px;
+  }
+
+  .legend-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 10px;
+  }
+
+  .legend-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+  }
+
+  .legend-code {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent2);
+    margin-bottom: 4px;
+  }
+
+  .legend-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* Footer review bar */
+  .review-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(15,17,23,0.95);
+    border-top: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .review-text {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .review-text strong { color: var(--text); }
+
+  .review-btn {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+  }
+
+  .review-btn:hover { opacity: 0.85; }
+
+  /* Animations */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .color-1 { background: rgba(91,141,238,0.15); }
+  .color-2 { background: rgba(78,205,196,0.15); }
+  .color-3 { background: rgba(245,166,35,0.15); }
+  .color-4 { background: rgba(232,80,106,0.15); }
+
+  .dot-legend { display: flex; gap: 4px; align-items: center; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <div class="breadcrumb">Engineering Pathway · <span>Year 1 of 8</span> · Semester 1</div>
+    <h1>7th Grade <em>Fall</em><br>Foundations of Engineering</h1>
+    <p class="subtitle">Students are introduced to the engineering design process, professional vocabulary, hand sketching, and the mindset of an engineer — building the foundation every future skill depends on.</p>
+    <div class="meta-row">
+      <div class="meta-chip"><strong>Grade:</strong> 7th</div>
+      <div class="meta-chip"><strong>Semester:</strong> Fall (1 of 16)</div>
+      <div class="meta-chip"><strong>Schedule:</strong> A/B Block · 45–50 min</div>
+      <div class="meta-chip"><strong>~18 class days</strong></div>
+      <div class="meta-chip"><strong>Students:</strong> 16–25</div>
+      <div class="meta-chip"><strong>Standards:</strong> Indiana CTE · IAS</div>
+    </div>
+  </div>
+
+  <!-- Progress Arc -->
+  <div class="arc-bar">
+    <div class="arc-label">8-Year Pathway Progress</div>
+    <div class="arc-track">
+      <div class="arc-seg active" style="background:var(--accent);"></div>
+      <div class="arc-seg future" style="background:var(--accent2);"></div>
+      <div class="arc-seg future" style="background:var(--accent2);"></div>
+      <div class="arc-seg future" style="background:var(--accent2);"></div>
+      <div class="arc-seg future" style="background:var(--accent3);"></div>
+      <div class="arc-seg future" style="background:var(--accent3);"></div>
+      <div class="arc-seg future" style="background:var(--accent3);"></div>
+      <div class="arc-seg future" style="background:var(--accent3);"></div>
+      <div class="arc-seg future" style="background:#9b59b6;"></div>
+      <div class="arc-seg future" style="background:#9b59b6;"></div>
+      <div class="arc-seg future" style="background:#9b59b6;"></div>
+      <div class="arc-seg future" style="background:#9b59b6;"></div>
+      <div class="arc-seg future" style="background:var(--accent4);"></div>
+      <div class="arc-seg future" style="background:var(--accent4);"></div>
+      <div class="arc-seg future" style="background:var(--accent4);"></div>
+      <div class="arc-seg future" style="background:var(--accent4);"></div>
+    </div>
+    <div class="arc-names">
+      <div class="arc-name active">7th</div>
+      <div class="arc-name active"></div>
+      <div class="arc-name">8th</div>
+      <div class="arc-name"></div>
+      <div class="arc-name">9th</div>
+      <div class="arc-name"></div>
+      <div class="arc-name">10th</div>
+      <div class="arc-name"></div>
+      <div class="arc-name">11th</div>
+      <div class="arc-name"></div>
+      <div class="arc-name">12th</div>
+      <div class="arc-name"></div>
+      <div class="arc-name">Fr.</div>
+      <div class="arc-name"></div>
+      <div class="arc-name">So.</div>
+      <div class="arc-name"></div>
+    </div>
+  </div>
+
+  <!-- Units -->
+
+  <!-- UNIT 1 -->
+  <div class="unit" id="unit1">
+    <div class="unit-header" onclick="toggleUnit('unit1')">
+      <div class="unit-num">01</div>
+      <div class="unit-icon color-1">🧭</div>
+      <div class="unit-info">
+        <div class="unit-title">What is Engineering?</div>
+        <div class="unit-meta">Days 1–4 · ~4 class sessions · Intro + Discussion</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 1</div>
+            <div class="lesson-title">Welcome & Course Overview — What Do Engineers Do?</div>
+            <div class="lesson-type type-intro">Intro</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students explore what engineering really means through video examples, class discussion, and a "fastest bridge from index cards" warm-up challenge. Teacher introduces the 8-year pathway vision and the capstone project concept. Students write a short reflection: "What do I want to make someday?"</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 1.1</span>
+                <span class="standard-tag">CTE-TE 1.2</span>
+                <div class="standard-explain"><strong>CTE-TE 1.1:</strong> Identify the nature and scope of Technology & Engineering. <strong>CTE-TE 1.2:</strong> Describe the core concepts of technology including systems, resources, and processes. Applied here as students categorize real-world engineering fields.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Participation in discussion</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Reflection quality</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-scale">
+                  <div class="rubric-scale-item"><div class="dot f"></div> Beginning</div>
+                  <div class="rubric-scale-item"><div class="dot p"></div> Developing</div>
+                  <div class="rubric-scale-item"><div class="dot s"></div> Proficient</div>
+                  <div class="rubric-scale-item"><div class="dot e"></div> Exemplary</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 2</div>
+            <div class="lesson-title">Fields of Engineering — Exploring the Landscape</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students are assigned an engineering discipline (civil, mechanical, electrical, biomedical, software, etc.) and research it using provided resources. They create a simple 1-page "field card" with key facts, famous engineers, and one real-world example of a problem this field solves.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 1.1</span>
+                <span class="standard-tag">CTE-TE 2.1</span>
+                <div class="standard-explain"><strong>CTE-TE 2.1:</strong> Describe the influence of technology on history and society. Students see how each engineering field shaped modern life.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Field card completeness</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Accuracy of facts</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-scale">
+                  <div class="rubric-scale-item"><div class="dot f"></div> Beginning</div>
+                  <div class="rubric-scale-item"><div class="dot p"></div> Developing</div>
+                  <div class="rubric-scale-item"><div class="dot s"></div> Proficient</div>
+                  <div class="rubric-scale-item"><div class="dot e"></div> Exemplary</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 3</div>
+            <div class="lesson-title">Gallery Walk — Sharing Engineering Fields</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students post their field cards and do a gallery walk, leaving sticky note feedback. Class debrief explores: How do engineers from different fields work together? Introduction to vocabulary: constraint, criteria, iteration, prototype, stakeholder.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 1.2</span>
+                <span class="standard-tag">CTE-TE 4.1</span>
+                <div class="standard-explain"><strong>CTE-TE 4.1:</strong> Apply communication skills in a technical setting. Students practice giving and receiving peer feedback in a structured format.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Vocabulary Focus</div>
+                <span class="standard-tag">constraint</span>
+                <span class="standard-tag">criteria</span>
+                <span class="standard-tag">iteration</span>
+                <span class="standard-tag">prototype</span>
+                <span class="standard-tag">stakeholder</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 4</div>
+            <div class="lesson-title">Engineering Vocabulary Quiz + Notebook Setup</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Short formal vocabulary assessment (matching + short answer). Students also set up their Engineering Notebook — a physical or digital journal they will maintain all semester. Teacher models proper notebook entry format including date, objective, sketches, and reflection sections.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 1.1</span>
+                <span class="standard-tag">CTE-TE 1.2</span>
+                <span class="standard-tag">CTE-TE 4.1</span>
+                <div class="standard-explain">Vocabulary mastery demonstrates understanding of the nature of technology and engineering as defined in CTE-TE 1.1 and 1.2.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Formal)</div>
+                <div class="rubric-row"><div class="rubric-label">Vocabulary quiz (10 terms)</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Notebook setup completeness</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-scale">
+                  <div class="rubric-scale-item"><div class="dot f"></div> &lt;60%</div>
+                  <div class="rubric-scale-item"><div class="dot p"></div> 60–74%</div>
+                  <div class="rubric-scale-item"><div class="dot s"></div> 75–89%</div>
+                  <div class="rubric-scale-item"><div class="dot e"></div> 90–100%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- UNIT 2 -->
+  <div class="unit" id="unit2">
+    <div class="unit-header" onclick="toggleUnit('unit2')">
+      <div class="unit-num">02</div>
+      <div class="unit-icon color-2">🔄</div>
+      <div class="unit-info">
+        <div class="unit-title">The Engineering Design Process</div>
+        <div class="unit-meta">Days 5–10 · ~6 class sessions · Core Skill + Mini-Project</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 5</div>
+            <div class="lesson-title">Introducing the EDP — The 8-Step Framework</div>
+            <div class="lesson-type type-intro">Intro</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Teacher introduces the Engineering Design Process: Define the Problem → Research → Brainstorm → Select Solution → Prototype → Test → Evaluate → Communicate. Students annotate a visual of the EDP and discuss: "Why is it a cycle, not a line?" Real-world case study: How NASA iterated on a Mars rover wheel design.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <span class="standard-tag">CTE-TE 3.2</span>
+                <div class="standard-explain"><strong>CTE-TE 3.1:</strong> Apply the design process to solve a problem. <strong>CTE-TE 3.2:</strong> Use modeling, prototyping, and testing in the design process. These two standards are the backbone of this entire unit.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Notebook Entry</div>
+                <div class="standard-explain">Students diagram the EDP with their own labels and one personal example of a time they "iterated" on something in real life (sports, art, cooking, games).</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 6</div>
+            <div class="lesson-title">Defining Problems — Constraints & Criteria</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Deep dive into Step 1: Define the Problem. Students practice writing problem statements using the format "Design a [solution] that [achieves criteria] within [constraints]." They work in pairs to evaluate poorly written problem statements and rewrite them. Emphasis on specificity, measurability, and user focus.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <span class="standard-tag">IAS-Math 7.EE</span>
+                <div class="standard-explain"><strong>IAS-Math 7.EE:</strong> Solve real-world problems using equations and inequalities. Constraints are often mathematical — students must express them numerically (max weight, max cost, min height).</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Problem statement clarity</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Constraints are measurable</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 7</div>
+            <div class="lesson-title">Brainstorming Techniques — Beyond the First Idea</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students learn and practice structured brainstorming: SCAMPER, mind mapping, and the "crazy 8s" sketch method. A key rule is introduced: all ideas are valid during brainstorming. Students practice on a fun prompt ("redesign a school backpack for a student with limited hand mobility") and fill one full notebook page with sketched ideas.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <span class="standard-tag">CTE-TE 3.3</span>
+                <div class="standard-explain"><strong>CTE-TE 3.3:</strong> Apply creative and critical thinking strategies to engineering problems. SCAMPER and Crazy 8s directly develop creative thinking as a systematic skill.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Notebook Entry</div>
+                <div class="standard-explain">Full-page brainstorm using at least 2 methods. Minimum 8 distinct ideas. Teacher stamps/checks for completion.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 8</div>
+            <div class="lesson-title">Mini-Challenge Launch — The Egg Drop Problem</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students receive the classic egg drop challenge with a twist: it must be completed entirely following the EDP documentation format in their notebook. They define the problem, list constraints (limited materials provided), brainstorm solutions, and select a design — all documented before building begins. Groups of 2–3.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <span class="standard-tag">CTE-TE 3.2</span>
+                <span class="standard-tag">IAS-Sci 7.PS</span>
+                <div class="standard-explain"><strong>IAS-Sci 7.PS (Physical Science):</strong> Analyze and interpret data on properties of matter. Students must understand energy transfer and force to protect the egg — connecting science content to engineering.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Formal — begins Day 9)</div>
+                <div class="rubric-row"><div class="rubric-label">Problem statement written</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Brainstorm documented</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Selection rationale written</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 9</div>
+            <div class="lesson-title">Build & Test Day — Egg Drop</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students build prototypes from their selected design. Teacher circulates to prompt documentation. After a drop test, students record results, identify failures, and complete an "Evaluate & Iterate" section in their notebooks — whether or not their egg survived. The iteration process is as important as the outcome.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.2</span>
+                <span class="standard-tag">IAS-Sci 7.PS</span>
+                <span class="standard-tag">IAS-Sci 7.ETS</span>
+                <div class="standard-explain"><strong>IAS-Sci 7.ETS (Engineering, Technology & Society):</strong> Define criteria and constraints of a design problem with sufficient precision to ensure a successful solution. Students apply this standard directly in their test-evaluate loop.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Formal)</div>
+                <div class="rubric-row"><div class="rubric-label">Test results recorded accurately</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Iteration plan written</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 10</div>
+            <div class="lesson-title">EDP Reflection & Notebook Check #1</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students write a structured reflection answering: (1) What step of the EDP was hardest? (2) What would you change about your design? (3) How is the EDP similar to something you do outside school? Teacher collects notebooks for first formal rubric assessment — scored on organization, completeness, and depth of reflection.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <span class="standard-tag">CTE-TE 4.1</span>
+                <span class="standard-tag">IAS-ELA 7.W</span>
+                <div class="standard-explain"><strong>IAS-ELA 7.W (Writing):</strong> Write informative/explanatory texts to examine a topic. The reflection cross-maps to ELA writing standards, supporting interdisciplinary connections.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Formal Notebook Rubric</div>
+                <div class="rubric-row"><div class="rubric-label">All EDP steps documented</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Sketches present & labeled</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Reflection depth</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Neatness & organization</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- UNIT 3 -->
+  <div class="unit" id="unit3">
+    <div class="unit-header" onclick="toggleUnit('unit3')">
+      <div class="unit-num">03</div>
+      <div class="unit-icon color-3">✏️</div>
+      <div class="unit-info">
+        <div class="unit-title">Introduction to Technical Sketching</div>
+        <div class="unit-meta">Days 11–16 · ~6 class sessions · Skill Development</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 11</div>
+            <div class="lesson-title">Why Engineers Draw — Intro to Technical Sketching</div>
+            <div class="lesson-type type-intro">Intro</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students learn why hand sketching remains essential even in the age of CAD. Teacher demonstrates how engineers use quick sketches to communicate ideas before committing to digital models. Students practice basic line quality — object lines, hidden lines, center lines, and dimension lines — on dot grid paper.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 5.1</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <div class="standard-explain"><strong>CTE-TE 5.1:</strong> Use technical drawing standards and conventions. <strong>CTE-TE 5.2:</strong> Create and interpret technical drawings and models. These standards directly govern sketching and drawing throughout the 8-year pathway.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Materials</div>
+                <div class="standard-explain">Dot grid paper, pencils (HB and 2H), ruler. No compass or protractor yet. Students label each line type on their practice sheet.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 12</div>
+            <div class="lesson-title">Isometric Sketching — Thinking in 3D</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Introduction to isometric drawing using isometric dot paper. Students learn the 30-degree rule and practice drawing simple rectangular prisms, then combine shapes to form basic objects (steps, L-shapes, notched blocks). The focus is on seeing in 3D and transferring that vision to paper using consistent angles.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 5.1</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">IAS-Math 7.G</span>
+                <div class="standard-explain"><strong>IAS-Math 7.G (Geometry):</strong> Solve problems involving 2D and 3D geometric shapes. Isometric drawing directly reinforces spatial geometry concepts — drawing 3D shapes from 2D representations.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Consistent 30° angles</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Shapes readable & proportional</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 13</div>
+            <div class="lesson-title">Isometric Practice — Household Object Sketches</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students select 2 simple objects from a provided set (stapler, phone stand, small box, cup) and sketch each isometrically. Teacher circulates and provides direct instruction to individuals struggling with 3D visualization. Peer review using a provided checklist: consistent angles, proportional faces, visible edges.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">IAS-Math 7.G</span>
+                <div class="standard-explain">Students practice spatial reasoning (IAS-Math 7.G) while applying technical drawing conventions (CTE-TE 5.2). Peer review reinforces CTE-TE 4.1 communication skills.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Peer Checklist (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">3D form is recognizable</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Lines are clean, no smearing</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 14</div>
+            <div class="lesson-title">Intro to Orthographic Projection — 3 Views</div>
+            <div class="lesson-type type-intro">Intro</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students learn the concept of orthographic (multiview) projection: Front, Top, and Right Side views. Teacher models using a physical 3D object (a small block or printed model) and its 3-view drawing. Students practice identifying which view is which using printed reference sets before attempting to draw.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 5.1</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">IAS-Math 7.G</span>
+                <div class="standard-explain">Orthographic projection is the professional standard for technical drawings (CTE-TE 5.1). Visualizing 3D to 2D conversion directly maps to IAS-Math 7.G spatial reasoning standards.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Vocabulary</div>
+                <span class="standard-tag">front view</span>
+                <span class="standard-tag">top view</span>
+                <span class="standard-tag">right side view</span>
+                <span class="standard-tag">projection lines</span>
+                <span class="standard-tag">first-angle vs third-angle</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 15</div>
+            <div class="lesson-title">Orthographic Drawing Practice — Block Problems</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students complete a worksheet of 6 progressively complex orthographic drawing problems (given isometric view → draw 3 orthographic views). Emphasis on alignment, proportional spacing, and consistent line types. Hidden lines are introduced for features not visible from the current view.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 5.1</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">IAS-Math 7.G</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Views correctly aligned</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Hidden lines used correctly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">All 3 views present</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 16</div>
+            <div class="lesson-title">Sketching Formal Assessment — Isometric & Orthographic</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Formal individual sketching assessment. Students receive a physical model and must produce: (1) one isometric sketch, and (2) three-view orthographic drawing, properly labeled and lined. This is graded using the formal rubric below. Students also add both drawings to their Engineering Notebook.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 5.1</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">IAS-Math 7.G</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Formal Sketching Rubric</div>
+                <div class="rubric-row"><div class="rubric-label">Isometric angles correct</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Ortho views aligned</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Line types correct</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Labels & title block</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Overall neatness</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- UNIT 4 -->
+  <div class="unit" id="unit4">
+    <div class="unit-header" onclick="toggleUnit('unit4')">
+      <div class="unit-num">04</div>
+      <div class="unit-icon color-4">🎯</div>
+      <div class="unit-info">
+        <div class="unit-title">Semester Capstone Mini-Project & Reflection</div>
+        <div class="unit-meta">Days 17–18 · ~2 class sessions · Synthesis + Presentation</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 17</div>
+            <div class="lesson-title">Design a Solution — Full EDP + Sketching Applied</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students receive a simple design prompt (e.g., "Design a better pencil holder for our classroom using only materials in the makerspace"). They must complete ALL EDP steps in their notebook AND produce both an isometric and orthographic sketch of their chosen solution. No building required — this is a planning and communication exercise.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <span class="standard-tag">CTE-TE 3.2</span>
+                <span class="standard-tag">CTE-TE 5.1</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">IAS-Math 7.G</span>
+                <div class="standard-explain">This project synthesizes all four units: design process (3.1, 3.2), technical drawing (5.1, 5.2), and geometry (7.G). It serves as a preview of how these skills integrate in real engineering work.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Formal Capstone Rubric</div>
+                <div class="rubric-row"><div class="rubric-label">Complete EDP documented</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Isometric sketch quality</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Orthographic sketch quality</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Constraints clearly defined</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 18</div>
+            <div class="lesson-title">Share-Out + Semester Reflection + Preview of Semester 2</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students do a 2-minute "pitch" of their design to the class (building public speaking skills for the ultimate capstone). Peer feedback is given using a provided form. Teacher collects final notebooks for semester grading. Class closes with a preview of Semester 2: "Next semester you'll take these same sketches and turn them into 3D models in Autodesk Inventor."</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 4.1</span>
+                <span class="standard-tag">CTE-TE 4.2</span>
+                <span class="standard-tag">IAS-ELA 7.SL</span>
+                <div class="standard-explain"><strong>CTE-TE 4.2:</strong> Use presentation and communication technology effectively. <strong>IAS-ELA 7.SL (Speaking & Listening):</strong> Present claims and findings in a focused, coherent manner. The 2-minute pitch directly addresses both standards.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Final Semester Notebook Grade</div>
+                <div class="rubric-row"><div class="rubric-label">Completeness (all entries)</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Growth from Day 1 to Day 18</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Reflection depth</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Standards Legend -->
+  <div class="standards-legend">
+    <div class="legend-title">📋 Indiana Standards Reference — Semester 1</div>
+    <div class="legend-grid">
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 1.1</div>
+        <div class="legend-desc">Identify the nature and scope of Technology & Engineering as a field.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 1.2</div>
+        <div class="legend-desc">Describe core concepts of technology: systems, resources, and processes.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 2.1</div>
+        <div class="legend-desc">Describe the influence of technology on history and society.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 3.1</div>
+        <div class="legend-desc">Apply the engineering design process to solve a problem.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 3.2</div>
+        <div class="legend-desc">Use modeling, prototyping, and testing in the design process.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 3.3</div>
+        <div class="legend-desc">Apply creative and critical thinking to solve engineering problems.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 4.1</div>
+        <div class="legend-desc">Apply communication skills in a technical/professional setting.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 4.2</div>
+        <div class="legend-desc">Use presentation and communication technology effectively.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 5.1</div>
+        <div class="legend-desc">Use technical drawing standards and conventions (line types, title blocks).</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 5.2</div>
+        <div class="legend-desc">Create and interpret technical drawings and models.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-Math 7.G</div>
+        <div class="legend-desc">Indiana Academic Standard — Grade 7 Geometry: 2D/3D shapes, spatial reasoning.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-Math 7.EE</div>
+        <div class="legend-desc">Indiana Academic Standard — Grade 7 Expressions & Equations: real-world problems.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-Sci 7.PS</div>
+        <div class="legend-desc">Indiana Academic Standard — Grade 7 Physical Science: properties of matter, forces.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-Sci 7.ETS</div>
+        <div class="legend-desc">Indiana Academic Standard — Engineering, Technology & Society: design constraints.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-ELA 7.W</div>
+        <div class="legend-desc">Indiana Academic Standard — Grade 7 Writing: informative/explanatory texts.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-ELA 7.SL</div>
+        <div class="legend-desc">Indiana Academic Standard — Grade 7 Speaking & Listening: focused presentations.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Review Bar -->
+<div class="review-bar">
+  <div class="review-text"><strong>Semester 1 — 7th Grade Fall</strong> · 4 units · 18 class days · Ready for your review</div>
+  <button class="review-btn" onclick="alert('✅ Mark this semester as reviewed and ask Claude to continue to Semester 2!')">✅ Approve & Continue to Semester 2 →</button>
+</div>
+
+<script>
+  function toggleUnit(id) {
+    const unit = document.getElementById(id);
+    unit.classList.toggle('open');
+  }
+
+  function toggleLesson(el) {
+    el.classList.toggle('open');
+  }
+
+  // Open unit 1 by default
+  document.getElementById('unit1').classList.add('open');
+</script>
+</body>
+</html>

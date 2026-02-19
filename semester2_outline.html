@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Engineering Pathway | Semester 2 — 7th Grade Spring</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --surface2: #1f2435;
+    --border: #2a3050;
+    --accent: #4ecdc4;
+    --accent2: #5b8dee;
+    --accent3: #f5a623;
+    --accent4: #e8506a;
+    --text: #e8eaf0;
+    --muted: #7a8099;
+    --tag-bg: #252d45;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(78,205,196,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(78,205,196,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  .header { margin-bottom: 56px; animation: fadeDown 0.6s ease both; }
+
+  .breadcrumb {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .breadcrumb span { color: var(--accent); }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 5vw, 52px);
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
+
+  .subtitle { color: var(--muted); font-size: 15px; max-width: 560px; line-height: 1.6; }
+
+  .meta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+  .meta-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+  }
+  .meta-chip strong { color: var(--text); }
+
+  /* Callout banner */
+  .callout {
+    background: rgba(78,205,196,0.07);
+    border: 1px solid rgba(78,205,196,0.25);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 28px;
+    font-size: 13px;
+    color: var(--accent);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    animation: fadeDown 0.6s 0.05s ease both;
+  }
+
+  /* Progress arc */
+  .arc-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 40px;
+    animation: fadeDown 0.6s 0.1s ease both;
+  }
+  .arc-label { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+  .arc-track { display: flex; gap: 4px; align-items: center; }
+  .arc-seg { height: 6px; border-radius: 3px; flex: 1; transition: opacity 0.3s; }
+  .arc-seg.done { opacity: 0.5; }
+  .arc-seg.active { opacity: 1; }
+  .arc-seg.future { opacity: 0.18; }
+  .arc-names { display: flex; justify-content: space-between; margin-top: 8px; }
+  .arc-name { font-size: 10px; color: var(--muted); font-family: 'DM Mono', monospace; text-align: center; flex: 1; }
+  .arc-name.active { color: var(--accent); }
+  .arc-name.done { color: var(--accent3); }
+
+  /* Units */
+  .unit {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    animation: fadeUp 0.5s ease both;
+    transition: border-color 0.2s;
+  }
+  .unit:hover { border-color: #3a4570; }
+  .unit:nth-child(1) { animation-delay: 0.15s; }
+  .unit:nth-child(2) { animation-delay: 0.25s; }
+  .unit:nth-child(3) { animation-delay: 0.35s; }
+  .unit:nth-child(4) { animation-delay: 0.45s; }
+  .unit:nth-child(5) { animation-delay: 0.55s; }
+
+  .unit-header { display: flex; align-items: center; gap: 16px; padding: 20px 24px; cursor: pointer; user-select: none; }
+  .unit-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); min-width: 32px; }
+  .unit-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .unit-info { flex: 1; }
+  .unit-title { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--text); margin-bottom: 4px; }
+  .unit-meta { font-size: 12px; color: var(--muted); font-family: 'DM Mono', monospace; }
+  .unit-toggle { color: var(--muted); font-size: 20px; transition: transform 0.3s; flex-shrink: 0; }
+  .unit.open .unit-toggle { transform: rotate(180deg); }
+  .unit-body { display: none; padding: 0 24px 24px; border-top: 1px solid var(--border); }
+  .unit.open .unit-body { display: block; }
+
+  /* Lessons */
+  .lessons-grid { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+  .lesson {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .lesson:hover { border-color: #3a4570; background: #232840; }
+  .lesson-top { display: flex; align-items: flex-start; gap: 12px; }
+  .lesson-day { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); min-width: 48px; padding-top: 2px; }
+  .lesson-title { font-size: 14px; font-weight: 500; color: var(--text); flex: 1; }
+  .lesson-type { font-size: 10px; font-family: 'DM Mono', monospace; padding: 3px 8px; border-radius: 4px; flex-shrink: 0; }
+  .type-intro { background: rgba(91,141,238,0.15); color: var(--accent2); }
+  .type-skill { background: rgba(78,205,196,0.15); color: var(--accent); }
+  .type-project { background: rgba(245,166,35,0.15); color: var(--accent3); }
+  .type-assess { background: rgba(232,80,106,0.15); color: var(--accent4); }
+  .lesson-detail { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .lesson.open .lesson-detail { display: block; }
+  .lesson-desc { font-size: 13px; color: var(--muted); line-height: 1.65; margin-bottom: 14px; }
+  .detail-sections { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 600px) { .detail-sections { grid-template-columns: 1fr; } }
+  .detail-box { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+  .detail-box-label { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .standard-tag { display: inline-block; background: var(--tag-bg); border: 1px solid var(--border); border-radius: 4px; padding: 3px 8px; font-size: 10px; font-family: 'DM Mono', monospace; color: var(--accent2); margin: 2px 2px 2px 0; }
+  .standard-explain { font-size: 11px; color: var(--muted); line-height: 1.5; margin-top: 6px; }
+  .rubric-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .rubric-label { font-size: 11px; color: var(--text); }
+  .rubric-dots { display: flex; gap: 4px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
+  .dot.f { background: var(--accent4); }
+  .dot.p { background: var(--accent3); }
+  .dot.s { background: var(--accent); }
+  .dot.e { background: var(--accent2); }
+  .rubric-scale { display: flex; gap: 12px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
+  .rubric-scale-item { display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--muted); }
+  .dot-legend { display: flex; gap: 4px; align-items: center; }
+
+  /* Skill progression bar */
+  .skill-bridge {
+    background: var(--surface2);
+    border: 1px solid rgba(78,205,196,0.2);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .skill-bridge strong { color: var(--accent); }
+
+  /* Standards legend */
+  .standards-legend {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-top: 32px;
+    animation: fadeUp 0.5s 0.6s ease both;
+  }
+  .legend-title { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; }
+  .legend-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
+  .legend-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; }
+  .legend-code { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent2); margin-bottom: 4px; }
+  .legend-desc { font-size: 12px; color: var(--muted); line-height: 1.4; }
+
+  /* Review bar */
+  .review-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(15,17,23,0.95);
+    border-top: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .review-text { font-size: 13px; color: var(--muted); }
+  .review-text strong { color: var(--text); }
+  .review-btn {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+  }
+  .review-btn:hover { opacity: 0.85; }
+
+  .color-1 { background: rgba(91,141,238,0.15); }
+  .color-2 { background: rgba(78,205,196,0.15); }
+  .color-3 { background: rgba(245,166,35,0.15); }
+  .color-4 { background: rgba(232,80,106,0.15); }
+  .color-5 { background: rgba(155,89,182,0.15); }
+
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <div class="breadcrumb">Engineering Pathway · <span>Year 1 of 8</span> · Semester 2</div>
+    <h1>7th Grade <em>Spring</em><br>Introduction to CAD — Autodesk Inventor</h1>
+    <p class="subtitle">Students bridge their hand-drawing skills into the digital world, learning parametric 3D modeling in Autodesk Inventor. They rediscover their Semester 1 sketches as CAD blueprints — and produce their first 3D-printed part.</p>
+    <div class="meta-row">
+      <div class="meta-chip"><strong>Grade:</strong> 7th</div>
+      <div class="meta-chip"><strong>Semester:</strong> Spring (2 of 16)</div>
+      <div class="meta-chip"><strong>Schedule:</strong> A/B Block · 45–50 min</div>
+      <div class="meta-chip"><strong>~18 class days</strong></div>
+      <div class="meta-chip"><strong>Software:</strong> Autodesk Inventor</div>
+      <div class="meta-chip"><strong>Standards:</strong> Indiana CTE · IAS</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <span>🔗</span>
+    <span><strong>Semester 1 Bridge:</strong> Students retrieve their Engineering Notebooks and the orthographic/isometric sketches from their Day 17 mini-capstone. Those sketches become the first CAD blueprint this semester. Skills build directly on CTE-TE 5.1 & 5.2 established last semester.</span>
+  </div>
+
+  <!-- Progress Arc -->
+  <div class="arc-bar">
+    <div class="arc-label">8-Year Pathway Progress</div>
+    <div class="arc-track">
+      <div class="arc-seg done"  style="background:var(--accent3);"></div>
+      <div class="arc-seg active" style="background:var(--accent);"></div>
+      <div class="arc-seg future" style="background:var(--accent2);"></div>
+      <div class="arc-seg future" style="background:var(--accent2);"></div>
+      <div class="arc-seg future" style="background:var(--accent2);"></div>
+      <div class="arc-seg future" style="background:var(--accent2);"></div>
+      <div class="arc-seg future" style="background:#9b59b6;"></div>
+      <div class="arc-seg future" style="background:#9b59b6;"></div>
+      <div class="arc-seg future" style="background:#9b59b6;"></div>
+      <div class="arc-seg future" style="background:#9b59b6;"></div>
+      <div class="arc-seg future" style="background:var(--accent4);"></div>
+      <div class="arc-seg future" style="background:var(--accent4);"></div>
+      <div class="arc-seg future" style="background:var(--accent4);"></div>
+      <div class="arc-seg future" style="background:var(--accent4);"></div>
+      <div class="arc-seg future" style="background:#e056d7;"></div>
+      <div class="arc-seg future" style="background:#e056d7;"></div>
+    </div>
+    <div class="arc-names">
+      <div class="arc-name done">7F</div>
+      <div class="arc-name active">7S ←</div>
+      <div class="arc-name">8F</div>
+      <div class="arc-name">8S</div>
+      <div class="arc-name">9F</div>
+      <div class="arc-name">9S</div>
+      <div class="arc-name">10F</div>
+      <div class="arc-name">10S</div>
+      <div class="arc-name">11F</div>
+      <div class="arc-name">11S</div>
+      <div class="arc-name">12F</div>
+      <div class="arc-name">12S</div>
+      <div class="arc-name">FrF</div>
+      <div class="arc-name">FrS</div>
+      <div class="arc-name">SoF</div>
+      <div class="arc-name">SoS</div>
+    </div>
+  </div>
+
+  <!-- UNIT 1 -->
+  <div class="unit" id="unit1">
+    <div class="unit-header" onclick="toggleUnit('unit1')">
+      <div class="unit-num">01</div>
+      <div class="unit-icon color-2">🖥️</div>
+      <div class="unit-info">
+        <div class="unit-title">Welcome to CAD — The Digital Drafting Table</div>
+        <div class="unit-meta">Days 1–3 · ~3 class sessions · Orientation + Interface</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 1</div>
+            <div class="lesson-title">What is CAD? — From Drafting Board to Software</div>
+            <div class="lesson-type type-intro">Intro</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students connect their hand-drawing experience to digital CAD tools. Teacher walks through the history of drafting (T-squares → AutoCAD → parametric modeling) and explains what "parametric" means: dimensions drive geometry, not the other way around. Students explore Inventor's interface: Browser Bar, ViewCube, sketch environment, and ribbon tabs. No drawing yet — just navigation and vocabulary.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 5.1</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <div class="standard-explain"><strong>CTE-TE 6.1:</strong> Select and use digital tools and technologies to design and model solutions. This standard anchors all CAD work for the rest of the pathway. Students begin connecting Sem 1 drawing standards (5.1, 5.2) to digital equivalents.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Vocabulary</div>
+                <span class="standard-tag">parametric</span>
+                <span class="standard-tag">sketch</span>
+                <span class="standard-tag">feature</span>
+                <span class="standard-tag">part file</span>
+                <span class="standard-tag">assembly</span>
+                <span class="standard-tag">constraint</span>
+                <span class="standard-tag">Browser Bar</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 2</div>
+            <div class="lesson-title">Inventor Interface Navigation — Guided Tour</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Teacher-led guided tutorial: students open a provided sample part file and practice orbiting, zooming, panning with mouse and ViewCube, switching between Home/Front/Top views, toggling wireframe vs. shaded display, and reading the model browser. They fill out a labeled interface screenshot in their notebook. Partner activity: one student navigates, one calls out the next action from a direction card.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <div class="standard-explain">Students interpret a technical model (CTE-TE 5.2) using digital tools (CTE-TE 6.1). The ability to read a CAD model corresponds directly to reading a hand drawing.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Interface screenshot labeled</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Can navigate to any view on demand</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-scale">
+                  <div class="rubric-scale-item"><div class="dot f"></div> Beginning</div>
+                  <div class="rubric-scale-item"><div class="dot p"></div> Developing</div>
+                  <div class="rubric-scale-item"><div class="dot s"></div> Proficient</div>
+                  <div class="rubric-scale-item"><div class="dot e"></div> Exemplary</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 3</div>
+            <div class="lesson-title">2D Sketch Fundamentals — Lines, Constraints & Dimensions</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students create their first 2D sketch in Inventor: a simple L-shaped profile. They practice using the Line tool, applying geometric constraints (horizontal, vertical, coincident), and adding parametric dimensions with the Smart Dimension tool. Key concept: a "fully constrained" sketch turns black — students learn why this matters before extruding. They save their file using a teacher-provided naming convention.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 5.1</span>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <span class="standard-tag">IAS-Math 7.G</span>
+                <div class="standard-explain"><strong>IAS-Math 7.G:</strong> Drawing and describing geometric figures. Parametric dimensions in CAD directly reinforce geometric measurement and proportional reasoning from Grade 7 math.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Sketch fully constrained</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Dimensions match given spec</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">File saved correctly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- UNIT 2 -->
+  <div class="unit" id="unit2">
+    <div class="unit-header" onclick="toggleUnit('unit2')">
+      <div class="unit-num">02</div>
+      <div class="unit-icon color-1">🧊</div>
+      <div class="unit-info">
+        <div class="unit-title">3D Part Modeling — Sketch to Solid</div>
+        <div class="unit-meta">Days 4–9 · ~6 class sessions · Core CAD Skills</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 4</div>
+            <div class="lesson-title">Extrude — Giving Sketches a Third Dimension</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students learn the Extrude feature: taking a closed 2D sketch and adding depth. They model a simple rectangular block, then modify the extrusion height and observe how the model updates — the core power of parametric CAD. Teacher introduces the concept of the Feature Tree (Browser Bar) and how features stack. Students model 3 progressive exercises: flat plate, stepped block, and T-profile.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <span class="standard-tag">IAS-Math 7.G</span>
+                <div class="standard-explain">Extruding a 2D sketch into 3D directly connects to IAS-Math 7.G (relating 2D shapes to 3D solids — cross-sections and volume). Students also fulfill CTE-TE 5.2 by creating technical 3D models.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">All 3 exercises completed</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Dimensions accurate</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 5</div>
+            <div class="lesson-title">Cut & Hole Features — Removing Material</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students learn to sketch on the face of an existing solid and use Extrude (Cut) to remove material. They practice creating slots, pockets, and holes. Introduction to the Hole feature tool for standard-diameter holes. Students model a block with a centered rectangular pocket and two through-holes, then compare their model to a provided orthographic drawing — reinforcing Sem 1 drawing interpretation skills.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 5.1</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <div class="standard-explain">Reading the orthographic drawing to verify the model (CTE-TE 5.1 & 5.2) reinforces the connection between hand drawing and CAD. Students interpret technical documentation to check their own work.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Pocket dimensions correct</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Model matches ortho drawing</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 6</div>
+            <div class="lesson-title">Fillet, Chamfer & Revolve — Refining Parts</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students learn edge modification features (Fillet and Chamfer) for rounding and beveling edges — critical for 3D printability and real-world manufacturing. Introduction to the Revolve feature: spinning a 2D profile around an axis to create cylindrical geometry. Students model a simple cylindrical pin and a cup-shaped object using Revolve. Notebook entry: sketch the profile used for each Revolve feature and annotate the axis of revolution.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <span class="standard-tag">IAS-Math 7.G</span>
+                <span class="standard-tag">IAS-Math 8.G</span>
+                <div class="standard-explain"><strong>IAS-Math 8.G:</strong> Understand congruence and similarity using physical models. Revolving a 2D profile to generate a 3D shape is a direct application of rotational geometry — a concept bridging 7th and 8th grade math.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Fillet/chamfer applied correctly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Revolve produces correct shape</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Notebook profile sketched</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 7</div>
+            <div class="lesson-title">Redraw Your Capstone Sketch in CAD</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students retrieve their Day 17 hand sketch from Semester 1 (the pencil holder design). They re-examine their orthographic views and begin building the part in Inventor, using their sketch as a blueprint. Teacher circulates and coaches on feature selection. This is the first time students experience the full Sketch → CAD → Physical pipeline. If the original design is not manufacturable, students iterate their sketch first — documenting the change in their notebook.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <div class="standard-explain">Translating a hand sketch to a CAD model integrates the design process (3.1), technical drawing interpretation (5.2), and digital tool application (6.1) — a true cross-unit synthesis moment.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Notebook Check (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Original sketch retrieved</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Iteration documented if changed</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">CAD progress saved</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 8</div>
+            <div class="lesson-title">Capstone CAD — Finish & Refine the Part</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students complete their CAD model from Day 7. Teacher introduces appearance/material settings (cosmetic only at this stage) so students can visualize their part more realistically. Students also learn to measure their model using Inventor's Measure tool and verify it matches their intended dimensions. Peer review: partner checks model against the original orthographic sketch using a provided checklist.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.2</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <div class="standard-explain"><strong>CTE-TE 3.2:</strong> Use modeling to represent a design solution. The CAD model is itself a prototype — students are fulfilling this standard by creating a digital model of their design before physical fabrication.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Peer Review Checklist (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Model matches sketch intent</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">No open/invalid geometry</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Dimensions verified</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 9</div>
+            <div class="lesson-title">Formal Part Modeling Assessment</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students receive a new orthographic drawing (not their own design) and must produce a completed, accurate CAD part in Inventor from scratch in one class period. The drawing specifies all dimensions, features, and a feature list (e.g., "1 extrude, 1 cut, 2 fillets"). Students are graded on accuracy, feature tree organization, and file management. No peer collaboration during this assessment.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 5.1</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <span class="standard-tag">IAS-Math 7.G</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Formal CAD Rubric</div>
+                <div class="rubric-row"><div class="rubric-label">All features present</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Dimensions accurate (±0.5mm)</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Sketch fully constrained</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">File named & saved correctly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Feature tree organized</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- UNIT 3 -->
+  <div class="unit" id="unit3">
+    <div class="unit-header" onclick="toggleUnit('unit3')">
+      <div class="unit-num">03</div>
+      <div class="unit-icon color-3">📐</div>
+      <div class="unit-info">
+        <div class="unit-title">Drawing Views & Technical Documentation</div>
+        <div class="unit-meta">Days 10–12 · ~3 class sessions · Drawing Package Skills</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="skill-bridge">
+        <strong>Skill Bridge:</strong> Students return to orthographic projection — but now they generate it automatically from their 3D model and learn to annotate it professionally. This reinforces Semester 1 hand-drawing skills in a digital context.
+      </div>
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 10</div>
+            <div class="lesson-title">Inventor Drawing Mode — Auto-Generating Orthographic Views</div>
+            <div class="lesson-type type-intro">Intro</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students learn Inventor's Drawing (.idw) environment. They open their capstone CAD part and generate a drawing sheet with Front, Top, and Right Side views using the Base View and Projected View tools. They see the direct connection to their Semester 1 hand drawings. Teacher introduces the standard drawing sheet format (title block, border, scale, material). Students complete a drawing of their capstone part and annotate it with their name, date, scale, and part name.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 5.1</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <div class="standard-explain">Students fulfill CTE-TE 5.1 (drawing standards and conventions) digitally for the first time. Title blocks, scale notation, and view placement match professional engineering drawing practice.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">3 views correctly generated</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Title block filled in</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 11</div>
+            <div class="lesson-title">Dimensioning a Drawing — Smart Annotations</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students learn to add dimensions to their drawing views using Inventor's Dimension and Hole Note tools. Emphasis on: dimension placement conventions (no crossing dimension lines), when to dimension in each view, and how to notate hole diameters vs. depths. Students fully dimension their capstone drawing and compare it against their original hand-drawn orthographic from Semester 1 — identifying improvements they would make to their original sketch.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 5.1</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">IAS-Math 7.G</span>
+                <div class="standard-explain">Dimension annotation directly applies geometric measurement standards (IAS-Math 7.G) in a professional context. Students also critique their own prior work — a metacognitive learning moment.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Notebook Entry</div>
+                <div class="standard-explain">Students write 3 sentences comparing their digital drawing to their Semester 1 hand sketch: what improved, what they would change, and what they now understand better about orthographic views.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 12</div>
+            <div class="lesson-title">Drawing Package Assessment — Print-Ready Documentation</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students submit a print-ready .idw drawing of their capstone part, fully dimensioned and annotated. Drawing is evaluated against professional standards: view placement, dimension completeness, title block accuracy, and scale. Students also export a PDF of their drawing — their first professional engineering document. This goes into their digital portfolio, which they will build throughout the 8-year program.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 5.1</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">CTE-TE 4.2</span>
+                <div class="standard-explain"><strong>CTE-TE 4.2:</strong> Use presentation and communication technology effectively. A professional drawing package is a core communication artifact in engineering — students begin their portfolio with this document.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Formal Drawing Rubric</div>
+                <div class="rubric-row"><div class="rubric-label">All views present & correct</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Fully dimensioned</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Title block complete</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Professional appearance</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- UNIT 4 -->
+  <div class="unit" id="unit4">
+    <div class="unit-header" onclick="toggleUnit('unit4')">
+      <div class="unit-num">04</div>
+      <div class="unit-icon color-4">🖨️</div>
+      <div class="unit-info">
+        <div class="unit-title">3D Printing — From Digital to Physical</div>
+        <div class="unit-meta">Days 13–16 · ~4 class sessions · Fabrication</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 13</div>
+            <div class="lesson-title">How 3D Printing Works — FDM, Slicing & Print Settings</div>
+            <div class="lesson-type type-intro">Intro</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students learn Fused Deposition Modeling (FDM): how printers build parts layer by layer. Teacher introduces the slicing workflow: export STL from Inventor → open in slicer software → set layer height, infill, supports → send to printer. Discussion: what design choices affect printability? (overhangs, wall thickness, hole orientation). Students evaluate 3 example parts and predict which would print poorly and why.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <span class="standard-tag">CTE-TE 6.2</span>
+                <span class="standard-tag">IAS-Sci 7.PS</span>
+                <div class="standard-explain"><strong>CTE-TE 6.2:</strong> Apply manufacturing and fabrication processes to produce a designed product. FDM printing is the primary fabrication tool this semester. IAS-Sci 7.PS connects here through material properties (PLA thermoplastic behavior).</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Vocabulary</div>
+                <span class="standard-tag">FDM</span>
+                <span class="standard-tag">STL file</span>
+                <span class="standard-tag">layer height</span>
+                <span class="standard-tag">infill</span>
+                <span class="standard-tag">supports</span>
+                <span class="standard-tag">overhang</span>
+                <span class="standard-tag">wall thickness</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 14</div>
+            <div class="lesson-title">Design for Print — Checking & Optimizing Your Model</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students review their capstone CAD part against a "Design for 3D Printing" checklist: minimum wall thickness (1.2mm), no overhangs >45° without supports, holes oriented for accuracy. They make any necessary modifications in Inventor and document changes in their notebook under "Print Iteration." Teacher slices each student's model as a class exercise to show estimated print time and highlight any issues.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <span class="standard-tag">CTE-TE 3.2</span>
+                <span class="standard-tag">CTE-TE 6.2</span>
+                <div class="standard-explain">Modifying the design for manufacture is a direct application of CTE-TE 3.1 and 3.2 — iterating based on real fabrication constraints. This mirrors professional design-for-manufacturing (DFM) practice.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">DFP Checklist (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Wall thickness ≥ 1.2mm</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">No unsupported overhangs</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Iteration documented</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 15</div>
+            <div class="lesson-title">Print Day — Submit Files & Monitor Prints</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students export their STL, slice in slicer software, and submit print jobs. While prints run, students complete a "Print Prediction Sheet" in their notebook: estimated dimensions, expected challenges, and what they will check when the part comes off the printer. Students who finish early begin a second, more complex free-form part of their choice (teacher-approved) to print as a bonus.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 6.2</span>
+                <span class="standard-tag">CTE-TE 3.2</span>
+                <div class="standard-explain">Students fulfill CTE-TE 6.2 (fabrication) and CTE-TE 3.2 (modeling and prototyping) simultaneously. The physical artifact is the prototype predicted by their digital model — a key conceptual milestone.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Print Prediction (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Dimensions predicted</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Challenges identified in advance</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 16</div>
+            <div class="lesson-title">Part Inspection — Measuring & Evaluating the Print</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students receive their printed parts and inspect them using calipers or rulers. They complete a formal "Part Inspection Report" comparing measured dimensions to CAD model dimensions and record % error. They write a short analysis: What caused any deviations? What would they change in their model or print settings? This introduces the concept of manufacturing tolerances. Parts are kept for a future semester assembly project.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.2</span>
+                <span class="standard-tag">CTE-TE 6.2</span>
+                <span class="standard-tag">IAS-Math 7.RP</span>
+                <div class="standard-explain"><strong>IAS-Math 7.RP (Ratios & Proportional Relationships):</strong> Computing % error between measured and nominal dimensions is a direct application of ratio and percent change from Grade 7 math.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Part Inspection Rubric (Formal)</div>
+                <div class="rubric-row"><div class="rubric-label">Measurements recorded</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">% error calculated</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Analysis written</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- UNIT 5 -->
+  <div class="unit" id="unit5">
+    <div class="unit-header" onclick="toggleUnit('unit5')">
+      <div class="unit-num">05</div>
+      <div class="unit-icon color-5">🎓</div>
+      <div class="unit-info">
+        <div class="unit-title">Semester Capstone — Design, Model, Print, Present</div>
+        <div class="unit-meta">Days 17–18 · ~2 class sessions · Synthesis + Portfolio</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 17</div>
+            <div class="lesson-title">Portfolio Assembly — Building Your First Engineering Portfolio Entry</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students compile their first digital portfolio entry combining: (1) their original Sem 1 hand sketch, (2) their Inventor CAD model screenshot, (3) their professional drawing package PDF, (4) a photo of their printed part, and (5) their Part Inspection Report. Teacher introduces a simple portfolio template (Google Slides or PowerPoint) they will use and expand every semester. This artifact is the first page of what will become their senior capstone portfolio.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 4.1</span>
+                <span class="standard-tag">CTE-TE 4.2</span>
+                <span class="standard-tag">IAS-ELA 7.W</span>
+                <div class="standard-explain">Portfolio creation addresses CTE-TE 4.1 & 4.2 (professional communication with technology) and IAS-ELA 7.W (writing to explain a process and its results).</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Portfolio Checklist (Formal)</div>
+                <div class="rubric-row"><div class="rubric-label">All 5 artifacts present</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Captions explain each item</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Layout is professional/clean</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 18</div>
+            <div class="lesson-title">Year 1 Showcase — Presentations & Preview of Year 2</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students deliver a 2–3 minute presentation showing their portfolio entry: explain the design problem, walk through the EDP, show the CAD model and drawing, and hold up or display their printed part. Peer feedback forms are completed. Teacher closes with a preview of 8th Grade: "You now know how to design, model, document, and fabricate. Next year, you'll learn more advanced CAD, add electronics, and start writing code to bring your designs to life."</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 4.1</span>
+                <span class="standard-tag">CTE-TE 4.2</span>
+                <span class="standard-tag">IAS-ELA 7.SL</span>
+                <div class="standard-explain">Students demonstrate mastery of all Year 1 skills through a public presentation — CTE-TE 4.1 & 4.2 and IAS-ELA 7.SL (Speaking & Listening: present findings in a focused, coherent manner with relevant details).</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Final Semester Grade Components</div>
+                <div class="rubric-row"><div class="rubric-label">Presentation clarity</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Portfolio completeness</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Peer feedback quality</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Notebook (full year)</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Standards Legend -->
+  <div class="standards-legend">
+    <div class="legend-title">📋 Indiana Standards Reference — Semester 2 (New + Continued)</div>
+    <div class="legend-grid">
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 6.1 ★ NEW</div>
+        <div class="legend-desc">Select and use digital tools and technologies to design and model solutions. Core CAD standard for all digital work.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 6.2 ★ NEW</div>
+        <div class="legend-desc">Apply manufacturing and fabrication processes to produce a designed product. Governs 3D printing and physical fabrication.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-Math 7.RP ★ NEW</div>
+        <div class="legend-desc">Ratios & Proportional Relationships — % error calculations during part inspection.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-Math 8.G ★ NEW</div>
+        <div class="legend-desc">Grade 8 Geometry preview — rotational solids (Revolve feature) connects to congruence and similarity.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 3.1</div>
+        <div class="legend-desc">Apply the design process — continued from Sem 1, now applied to CAD design decisions.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 3.2</div>
+        <div class="legend-desc">Use modeling, prototyping, and testing — now fulfilled digitally via CAD and physically via 3D printing.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 5.1</div>
+        <div class="legend-desc">Technical drawing standards — now applied in Inventor's Drawing environment (title block, views, dimensions).</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 5.2</div>
+        <div class="legend-desc">Create and interpret technical drawings — CAD drawings generated from 3D models and read for fabrication.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 4.1 / 4.2</div>
+        <div class="legend-desc">Communication in technical settings; use of presentation technology — portfolio and showcase presentation.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-Math 7.G</div>
+        <div class="legend-desc">Geometry — 3D solids, cross-sections; applies throughout parametric modeling and drawing views.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-ELA 7.W / 7.SL</div>
+        <div class="legend-desc">Writing to explain processes (portfolio captions); Speaking & Listening (Year 1 showcase presentation).</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-Sci 7.PS</div>
+        <div class="legend-desc">Physical Science — material properties of PLA, layer adhesion, and heat in FDM printing.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Review Bar -->
+<div class="review-bar">
+  <div class="review-text"><strong>Semester 2 — 7th Grade Spring</strong> · 5 units · 18 class days · Year 1 Complete ✓</div>
+  <button class="review-btn" onclick="alert('✅ Year 1 complete! Tell Claude to continue to Semester 3 — 8th Grade Fall.')">✅ Approve & Continue to Semester 3 →</button>
+</div>
+
+<script>
+  function toggleUnit(id) {
+    document.getElementById(id).classList.toggle('open');
+  }
+  function toggleLesson(el) {
+    el.classList.toggle('open');
+  }
+  document.getElementById('unit1').classList.add('open');
+</script>
+</body>
+</html>

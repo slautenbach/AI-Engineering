@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Engineering Pathway | Semester 6 — 9th Grade Spring</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --surface2: #1f2435;
+    --border: #2a3050;
+    --accent: #f5a623;
+    --accent-bright: #f7bc5a;
+    --accent2: #5b8dee;
+    --accent3: #4ecdc4;
+    --accent4: #e8506a;
+    --accent5: #a07ee0;
+    --text: #e8eaf0;
+    --muted: #7a8099;
+    --tag-bg: #252d45;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 300; min-height: 100vh; overflow-x: hidden; }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: radial-gradient(ellipse 55% 35% at 88% 6%, rgba(245,166,35,0.07) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 28% at 6% 88%, rgba(91,141,238,0.05) 0%, transparent 50%);
+    pointer-events: none; z-index: 0;
+  }
+  .wrapper { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  /* Header */
+  .header { margin-bottom: 48px; animation: fadeDown 0.6s ease both; }
+  .breadcrumb { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px; }
+  .breadcrumb span { color: var(--accent-bright); }
+  h1 { font-family: 'DM Serif Display', serif; font-size: clamp(32px, 5vw, 52px); line-height: 1.1; color: var(--text); margin-bottom: 12px; }
+  h1 em { font-style: italic; color: var(--accent-bright); }
+  .subtitle { color: var(--muted); font-size: 15px; max-width: 580px; line-height: 1.7; }
+  .meta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+  .meta-chip { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px; font-size: 12px; font-family: 'DM Mono', monospace; color: var(--muted); }
+  .meta-chip strong { color: var(--text); }
+
+  /* Skill stack */
+  .skill-stack { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 22px; margin-bottom: 24px; animation: fadeDown 0.5s 0.05s ease both; }
+  .skill-stack-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 12px; }
+  .skill-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .skill-pill { padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 500; font-family: 'DM Sans', sans-serif; }
+  .pill-done { background: rgba(78,205,196,0.1); border: 1px solid rgba(78,205,196,0.25); color: var(--accent3); }
+  .pill-new  { background: rgba(245,166,35,0.1); border: 1px solid rgba(245,166,35,0.3); color: var(--accent-bright); }
+  .pill-new::before { content: '★ '; font-size: 9px; }
+
+  /* Callouts */
+  .callout { border-radius: 10px; padding: 14px 18px; margin-bottom: 18px; font-size: 13px; display: flex; gap: 10px; align-items: flex-start; animation: fadeDown 0.5s 0.08s ease both; line-height: 1.6; }
+  .callout-gold { background: rgba(245,166,35,0.07);  border: 1px solid rgba(245,166,35,0.25);  color: var(--accent-bright); }
+  .callout-blue { background: rgba(91,141,238,0.07);  border: 1px solid rgba(91,141,238,0.25);  color: var(--accent2); }
+
+  /* Progress arc */
+  .arc-bar { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 22px; margin-bottom: 36px; animation: fadeDown 0.5s 0.1s ease both; }
+  .arc-label { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+  .arc-track { display: flex; gap: 3px; }
+  .arc-seg { height: 5px; border-radius: 3px; flex: 1; }
+  .arc-seg.done { opacity: 0.45; } .arc-seg.active { opacity: 1; } .arc-seg.future { opacity: 0.12; }
+  .arc-names { display: flex; margin-top: 7px; }
+  .arc-name { font-size: 9px; color: var(--muted); font-family: 'DM Mono', monospace; text-align: center; flex: 1; }
+  .arc-name.active { color: var(--accent-bright); font-weight: 600; }
+  .arc-name.done   { color: var(--accent3); }
+
+  /* Units */
+  .unit { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 18px; overflow: hidden; animation: fadeUp 0.5s ease both; transition: border-color 0.25s; }
+  .unit:hover { border-color: #363d5c; }
+  .unit:nth-child(1){animation-delay:0.12s} .unit:nth-child(2){animation-delay:0.20s} .unit:nth-child(3){animation-delay:0.28s} .unit:nth-child(4){animation-delay:0.36s} .unit:nth-child(5){animation-delay:0.44s}
+  .unit-header { display: flex; align-items: center; gap: 16px; padding: 20px 24px; cursor: pointer; user-select: none; }
+  .unit-num  { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); min-width: 32px; }
+  .unit-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .unit-info { flex: 1; }
+  .unit-title  { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--text); margin-bottom: 4px; }
+  .unit-meta   { font-size: 12px; color: var(--muted); font-family: 'DM Mono', monospace; }
+  .unit-toggle { color: var(--muted); font-size: 20px; transition: transform 0.3s; flex-shrink: 0; }
+  .unit.open .unit-toggle { transform: rotate(180deg); }
+  .unit-body { display: none; padding: 0 24px 24px; border-top: 1px solid var(--border); }
+  .unit.open .unit-body { display: block; }
+
+  /* Lessons */
+  .lessons-grid { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+  .lesson { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+  .lesson:hover { border-color: #363d5c; background: #232840; }
+  .lesson-top   { display: flex; align-items: flex-start; gap: 12px; }
+  .lesson-day   { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); min-width: 52px; padding-top: 2px; }
+  .lesson-title { font-size: 14px; font-weight: 500; color: var(--text); flex: 1; line-height: 1.4; }
+  .lesson-type  { font-size: 10px; font-family: 'DM Mono', monospace; padding: 3px 8px; border-radius: 4px; flex-shrink: 0; margin-top: 1px; }
+  .type-intro   { background: rgba(91,141,238,0.15);  color: var(--accent2); }
+  .type-skill   { background: rgba(78,205,196,0.15);  color: var(--accent3); }
+  .type-project { background: rgba(245,166,35,0.15);  color: var(--accent-bright); }
+  .type-assess  { background: rgba(232,80,106,0.15);  color: var(--accent4); }
+  .type-studio  { background: rgba(160,126,224,0.15); color: var(--accent5); }
+
+  .lesson-detail { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .lesson.open .lesson-detail { display: block; }
+  .lesson-desc { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 14px; }
+
+  .detail-sections { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 580px) { .detail-sections { grid-template-columns: 1fr; } }
+
+  .detail-box { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+  .detail-box-label { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+
+  .standard-tag { display: inline-block; background: var(--tag-bg); border: 1px solid var(--border); border-radius: 4px; padding: 2px 7px; font-size: 10px; font-family: 'DM Mono', monospace; color: var(--accent2); margin: 2px 2px 2px 0; }
+  .standard-tag.new-std { color: var(--accent-bright); border-color: rgba(245,166,35,0.4); background: rgba(245,166,35,0.07); }
+  .standard-explain { font-size: 11px; color: var(--muted); line-height: 1.55; margin-top: 6px; }
+
+  .rubric-row   { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+  .rubric-label { font-size: 11px; color: var(--text); }
+  .dot-legend   { display: flex; gap: 4px; align-items: center; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); }
+  .dot.f { background: var(--accent4); } .dot.p { background: var(--accent); } .dot.s { background: var(--accent3); } .dot.e { background: var(--accent2); }
+  .rubric-scale { display: flex; gap: 10px; margin-top: 8px; padding-top: 7px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .rubric-scale-item { display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--muted); }
+
+  /* Inset box */
+  .inset-box { background: #0a0c12; border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-top: 10px; font-size: 11px; color: var(--muted); line-height: 1.7; }
+  .inset-box-label { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .inset-row { display: flex; gap: 10px; margin-bottom: 5px; align-items: flex-start; }
+  .inset-bullet { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 9px; flex-shrink: 0; margin-top: 1px; }
+  .bullet-gold   { background: rgba(245,166,35,0.15); color: var(--accent-bright); }
+  .bullet-blue   { background: rgba(91,141,238,0.15); color: var(--accent2); }
+  .bullet-teal   { background: rgba(78,205,196,0.15); color: var(--accent3); }
+
+  /* Standards legend */
+  .standards-legend { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-top: 28px; animation: fadeUp 0.5s 0.5s ease both; }
+  .legend-title { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; }
+  .legend-grid  { display: grid; grid-template-columns: repeat(auto-fill, minmax(275px, 1fr)); gap: 8px; }
+  .legend-item  { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 13px; }
+  .legend-code  { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent2); margin-bottom: 4px; }
+  .legend-code.new { color: var(--accent-bright); }
+  .legend-desc  { font-size: 11px; color: var(--muted); line-height: 1.45; }
+
+  /* Review bar */
+  .review-bar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(15,17,23,0.96); border-top: 1px solid var(--border); backdrop-filter: blur(14px); padding: 13px 24px; display: flex; align-items: center; justify-content: space-between; z-index: 100; gap: 14px; flex-wrap: wrap; }
+  .review-text { font-size: 12px; color: var(--muted); }
+  .review-text strong { color: var(--text); }
+  .review-btn { background: var(--accent-bright); color: #0f1117; border: none; border-radius: 8px; padding: 10px 20px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; white-space: nowrap; }
+  .review-btn:hover { opacity: 0.85; }
+
+  .c1 { background: rgba(245,166,35,0.12); }
+  .c2 { background: rgba(91,141,238,0.12); }
+  .c3 { background: rgba(160,126,224,0.12); }
+  .c4 { background: rgba(78,205,196,0.12); }
+  .c5 { background: rgba(232,80,106,0.1);  }
+
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeUp   { from { opacity:0; transform:translateY(14px);  } to { opacity:1; transform:translateY(0); } }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <div class="breadcrumb">Engineering Pathway · <span>Year 3 of 8</span> · Semester 6</div>
+    <h1>9th Grade <em>Spring</em><br>First Integrated Project, Ideation Methods & Prototyping</h1>
+    <p class="subtitle">For the first time, every skill in the stack — SolidWorks, Arduino, JavaScript, AI-assisted coding, and human-centered research — converges on a single student-driven project. Students also gain structured ideation tools that will carry them through the capstone.</p>
+    <div class="meta-row">
+      <div class="meta-chip"><strong>Grade:</strong> 9th</div>
+      <div class="meta-chip"><strong>Semester:</strong> Spring (6 of 16)</div>
+      <div class="meta-chip"><strong>Schedule:</strong> A/B Block · 45–50 min</div>
+      <div class="meta-chip"><strong>~20 class days</strong></div>
+      <div class="meta-chip"><strong>New:</strong> Structured Ideation Tools</div>
+      <div class="meta-chip"><strong>Milestone:</strong> First Full Integrated Project</div>
+    </div>
+  </div>
+
+  <div class="callout callout-gold">
+    <span>⭐</span>
+    <span><strong>Semester 6 is the first integration semester.</strong> Students stop practicing skills in isolation and start combining all of them toward a single deliverable. The brief is constrained enough to be achievable but open enough that no two projects will look alike. This constrained-brief-plus-student-solution format is the model for every project from here through the Sophomore capstone.</span>
+  </div>
+  <div class="callout callout-blue">
+    <span>🔗</span>
+    <span><strong>Semester 5 Bridge:</strong> Students bring their empathy maps and "How Might We" statements into Unit 1 — user research from last semester immediately feeds design work this semester. The portfolio thread connecting user research → ideation → prototype → test → report is now visible for the first time.</span>
+  </div>
+
+  <!-- Progress Arc -->
+  <div class="arc-bar">
+    <div class="arc-label">8-Year Pathway — Semester 6 of 16</div>
+    <div class="arc-track">
+      <div class="arc-seg done"   style="background:#4ecdc4;"></div>
+      <div class="arc-seg done"   style="background:#4ecdc4;"></div>
+      <div class="arc-seg done"   style="background:#4ecdc4;"></div>
+      <div class="arc-seg done"   style="background:#4ecdc4;"></div>
+      <div class="arc-seg done"   style="background:#4ecdc4;"></div>
+      <div class="arc-seg active" style="background:#f7bc5a;"></div>
+      <div class="arc-seg future" style="background:#f7bc5a;"></div>
+      <div class="arc-seg future" style="background:#f7bc5a;"></div>
+      <div class="arc-seg future" style="background:#a07ee0;"></div>
+      <div class="arc-seg future" style="background:#a07ee0;"></div>
+      <div class="arc-seg future" style="background:#a07ee0;"></div>
+      <div class="arc-seg future" style="background:#a07ee0;"></div>
+      <div class="arc-seg future" style="background:#5b8dee;"></div>
+      <div class="arc-seg future" style="background:#5b8dee;"></div>
+      <div class="arc-seg future" style="background:#5b8dee;"></div>
+      <div class="arc-seg future" style="background:#5b8dee;"></div>
+    </div>
+    <div class="arc-names">
+      <div class="arc-name done">7F</div><div class="arc-name done">7S</div>
+      <div class="arc-name done">8F</div><div class="arc-name done">8S</div>
+      <div class="arc-name done">9F</div>
+      <div class="arc-name active">9S ←</div>
+      <div class="arc-name">10F</div><div class="arc-name">10S</div>
+      <div class="arc-name">11F</div><div class="arc-name">11S</div>
+      <div class="arc-name">12F</div><div class="arc-name">12S</div>
+      <div class="arc-name">FrF</div><div class="arc-name">FrS</div>
+      <div class="arc-name">SoF</div><div class="arc-name">SoS</div>
+    </div>
+  </div>
+
+  <!-- Skill Stack -->
+  <div class="skill-stack">
+    <div class="skill-stack-label">Cumulative Skill Stack — Incoming + New This Semester</div>
+    <div class="skill-pills">
+      <span class="skill-pill pill-done">EDP + HCD Frameworks</span>
+      <span class="skill-pill pill-done">Inventor + SolidWorks Advanced</span>
+      <span class="skill-pill pill-done">FEA Simulation</span>
+      <span class="skill-pill pill-done">3D Printing + Inspection</span>
+      <span class="skill-pill pill-done">JavaScript + DOM</span>
+      <span class="skill-pill pill-done">AI Fact-Checking</span>
+      <span class="skill-pill pill-done">Multi-Sensor Arduino</span>
+      <span class="skill-pill pill-done">User Interviews + Empathy Mapping</span>
+      <span class="skill-pill pill-new">SCAMPER + Crazy 8s Ideation</span>
+      <span class="skill-pill pill-new">Morphological Chart</span>
+      <span class="skill-pill pill-new">Concept Screening Matrix</span>
+      <span class="skill-pill pill-new">Lo-Fi Prototyping</span>
+      <span class="skill-pill pill-new">User Testing Protocol</span>
+      <span class="skill-pill pill-new">Engineering Report Writing</span>
+    </div>
+  </div>
+
+  <!-- ══════════ UNIT 1 ══════════ -->
+  <div class="unit" id="unit1">
+    <div class="unit-header" onclick="toggleUnit('unit1')">
+      <div class="unit-num">01</div>
+      <div class="unit-icon c1">💡</div>
+      <div class="unit-info">
+        <div class="unit-title">Structured Ideation — From "How Might We" to a Chosen Concept</div>
+        <div class="unit-meta">Days 1–5 · ~5 class sessions · Design Thinking</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 1</div>
+            <div class="lesson-title">Revisiting HMW Statements — Choosing a Design Direction</div>
+            <div class="lesson-type type-intro">Intro</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students retrieve their Semester 5 empathy maps and HMW statements from their portfolios. Each student presents their top HMW in 60 seconds. Teacher facilitates discussion on what makes a HMW a good design springboard: specific enough to focus effort, open enough to allow multiple solutions. Students select the HMW they want to pursue this semester — this is their project brief. Students who want to change direction may conduct a short interview today and write a revised HMW by end of period.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <span class="standard-tag">CTE-TE 8.2</span>
+                <span class="standard-tag">CTE-TE 9.1</span>
+                <span class="standard-tag">IAS-ELA 9-10.SL</span>
+                <div class="standard-explain">Presenting and defending a design direction fulfills IAS-ELA 9-10.SL. CTE-TE 3.1 grounds the selection in the EDP's "Define the Problem" phase. Students experience what it means to make a design decision they will live with for a full semester.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">HMW Evaluation Criteria</div>
+                <div class="inset-box">
+                  <div class="inset-box-label" style="color:var(--accent-bright);">A strong HMW statement…</div>
+                  <div class="inset-row"><div class="inset-bullet bullet-gold">1</div><span>Names a real person or group with a real need</span></div>
+                  <div class="inset-row"><div class="inset-bullet bullet-gold">2</div><span>Does not suggest a specific solution</span></div>
+                  <div class="inset-row"><div class="inset-bullet bullet-gold">3</div><span>Is narrow enough to focus on, broad enough for 5+ solutions</span></div>
+                  <div class="inset-row"><div class="inset-bullet bullet-gold">4</div><span>Came from something someone actually said or did</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 2</div>
+            <div class="lesson-title">SCAMPER & Crazy 8s — Generating Ideas Quickly and Widely</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students apply two rapid ideation techniques to their own HMW statement. First: SCAMPER (Substitute, Combine, Adapt, Modify, Put to other uses, Eliminate, Rearrange) — a systematic lens for generating variations on existing approaches. Second: Crazy 8s — 8 rough sketches in 8 minutes, forcing volume over quality. Key lesson: in ideation, quantity comes first; evaluation comes later. Students produce at least 12 distinct concepts. All sketches are taped into their notebooks — no erasing, no discarding.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <span class="standard-tag new-std">CTE-TE 3.3</span>
+                <div class="standard-explain"><strong>CTE-TE 3.3 (Formalized):</strong> Apply creative and critical thinking strategies in the design process. SCAMPER and Crazy 8s are the formal techniques that fulfill this standard — they appear again in every capstone ideation phase.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">≥12 distinct concepts sketched</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">SCAMPER lens applied</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Ideas are meaningfully distinct</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-scale">
+                  <div class="rubric-scale-item"><div class="dot f"></div> Beginning</div>
+                  <div class="rubric-scale-item"><div class="dot p"></div> Developing</div>
+                  <div class="rubric-scale-item"><div class="dot s"></div> Proficient</div>
+                  <div class="rubric-scale-item"><div class="dot e"></div> Exemplary</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 3</div>
+            <div class="lesson-title">Morphological Chart — Systematic Concept Combination</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students build a morphological chart: a grid where each row is a sub-function of their design (e.g., "how it attaches," "how it alerts the user," "what material it uses") and each column is a different option for that sub-function. Drawing one path through the grid — one option per row — generates a unique concept combination. Students build charts with at least 4 rows and 3 options each, then identify 3 promising combinations to develop further. Notebook entry is the chart itself with 3 paths circled and labeled.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <span class="standard-tag">CTE-TE 3.3</span>
+                <span class="standard-tag">IAS-Math 9-10.A</span>
+                <div class="standard-explain"><strong>IAS-Math 9-10.A:</strong> A 4×3 morphological chart generates 3⁴ = 81 possible combinations. Students calculate this and reflect on why structured ideation surfaces options that intuition alone misses. Combinatorics applied to design.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">≥4 sub-functions identified</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">≥3 options per sub-function</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">3 combinations identified</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 4</div>
+            <div class="lesson-title">Concept Screening Matrix — Selecting One Concept to Build</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students evaluate their 3 concept combinations using a Concept Screening Matrix (Pugh Matrix): rows are weighted criteria (addresses user need, feasibility, cost, complexity, novelty), columns are concepts. Each cell gets +, 0, or – relative to a reference. The concept with the most net positives is the recommended choice. Teacher emphasizes the matrix is a thinking tool, not a rule — students must write a "Concept Selection Rationale" paragraph defending their choice, including any case where they deviate from the matrix result.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <span class="standard-tag">CTE-TE 3.3</span>
+                <span class="standard-tag">CTE-TE 4.1</span>
+                <div class="standard-explain">CTE-TE 4.1 (technical communication) is fulfilled through the written Concept Selection Rationale — students must translate a matrix result into a clear, reasoned argument. This mirrors the engineering decision memos used in industry design reviews.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Selection Rubric (Formal)</div>
+                <div class="rubric-row"><div class="rubric-label">Matrix completed correctly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">≥4 criteria evaluated</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Selection rationale written</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Chosen concept is feasible</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 5</div>
+            <div class="lesson-title">Low-Fidelity Prototype — Paper, Cardboard & Tape First</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Before any CAD or code, students build a lo-fi prototype of their chosen concept using paper, cardboard, foam, tape, and markers. The prototype must communicate form and function clearly enough that an unfamiliar observer can understand it. Students bring it to a partner and ask them to "use" it — observing where they hesitate or misunderstand. This is their first user test. Observations go directly into the notebook as "lo-fi test findings," which must inform the CAD model in Unit 2.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.2</span>
+                <span class="standard-tag">CTE-TE 3.3</span>
+                <span class="standard-tag new-std">CTE-TE 3.4</span>
+                <div class="standard-explain"><strong>CTE-TE 3.4 (NEW):</strong> Evaluate prototypes and iterate based on testing results. The lo-fi partner test fulfills this standard for the first time — students experience the prototype → test → learn loop before investing any CAD or fabrication time.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Lo-Fi Documentation (Formal)</div>
+                <div class="rubric-row"><div class="rubric-label">Lo-fi prototype built</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Partner user test conducted</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">≥3 test findings documented</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Findings referenced in CAD plan</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ UNIT 2 ══════════ -->
+  <div class="unit" id="unit2">
+    <div class="unit-header" onclick="toggleUnit('unit2')">
+      <div class="unit-num">02</div>
+      <div class="unit-icon c2">🔷</div>
+      <div class="unit-info">
+        <div class="unit-title">CAD Development — Modeling the Integrated Concept</div>
+        <div class="unit-meta">Days 6–10 · ~5 class sessions · SolidWorks Studio</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 6</div>
+            <div class="lesson-title">CAD Planning Day — No Computers Until the Plan Is Approved</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students do not open CAD software today. Instead they plan: sketching orthographic views of the intended model in their notebook, listing each part, identifying required SolidWorks features, estimating critical dimensions, and documenting how lo-fi test findings changed the design. The planning document is reviewed by the teacher before modeling begins. Students who attempt to skip planning and go straight to CAD are redirected. This gate mirrors a professional design review — work does not proceed to the next phase without sign-off.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <span class="standard-tag">CTE-TE 5.1</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <div class="standard-explain">The planning document is a pre-CAD technical drawing (CTE-TE 5.1 and 5.2) — students must communicate geometry clearly enough for a reviewer to assess feasibility before any digital work begins. This is the industry practice of a design review gate.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Planning Document Checklist</div>
+                <div class="inset-box">
+                  <div class="inset-box-label" style="color:var(--accent2);">Required Before CAD Sign-Off</div>
+                  <div class="inset-row"><div class="inset-bullet bullet-blue">✓</div><span>Orthographic sketches (Front + Top minimum)</span></div>
+                  <div class="inset-row"><div class="inset-bullet bullet-blue">✓</div><span>Part list with estimated dimensions</span></div>
+                  <div class="inset-row"><div class="inset-bullet bullet-blue">✓</div><span>Feature strategy (which SW features needed)</span></div>
+                  <div class="inset-row"><div class="inset-bullet bullet-blue">✓</div><span>Lo-fi test findings addressed</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Days 7–8</div>
+            <div class="lesson-title">Part Modeling Studio — Building the CAD Geometry</div>
+            <div class="lesson-type type-studio">Studio</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Two full studio sessions for students to model their parts in SolidWorks. Teacher circulates with 2–3 minute per-student check-ins. Common review questions: "Is this sketch fully constrained?" "What feature comes next?" "Have you thought about wall thickness for printing?" Students who finish early run a SimulationXpress check on any load-bearing feature. Structured peer review (sticky-note feedback) at mid-Day 8 — every student receives at least 2 pieces of feedback before the session ends.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <span class="standard-tag">CTE-TE 6.2</span>
+                <span class="standard-tag">CTE-TE 6.3</span>
+                <span class="standard-tag">IAS-Math 9-10.G</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Studio Check-In Rubric</div>
+                <div class="rubric-row"><div class="rubric-label">Sketches fully constrained</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Feature tree organized logically</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Print-ready (wall thickness, supports)</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Peer feedback received + noted</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 9</div>
+            <div class="lesson-title">Drawing Package & Print Submission</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students generate a formal SolidWorks drawing package — all parts fully dimensioned, assembly drawing with BOM if multi-part, title block completed, exported as PDF. This drawing package is the print order: it must contain enough information that someone else could build the part without the CAD file. Parts are submitted to the 3D printer queue. Students not print-ready by end of period receive a teacher-signed "v1 hold" — a documented reason for the delay and the specific change required before submission.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 4.2</span>
+                <span class="standard-tag">CTE-TE 5.1</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">CTE-TE 6.2</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Drawing Package Rubric (Formal)</div>
+                <div class="rubric-row"><div class="rubric-label">All parts fully dimensioned</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Title block complete</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">BOM present (if multi-part)</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">PDF exported + submitted</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 10</div>
+            <div class="lesson-title">Electronics & Code Planning — Mapping the Active Layer</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">While prints run, students plan the electronics and software layer of their project. Projects requiring electronics produce a wiring diagram and pseudocode flowchart before writing any code. Purely mechanical projects plan a JavaScript companion page (spec calculator, interactive documentation, or configuration tool). Teacher holds 3-minute individual planning reviews. AI tools are available for code with the standard fact-check requirement. No coding begins until the plan is reviewed — students who write code before planning are asked to write the plan retroactively and evaluate whether their code actually matches it.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 7.1</span>
+                <span class="standard-tag">IAS-CS 9-10.AP.1</span>
+                <span class="standard-tag">IAS-CS 8.IC.1</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Pre-Coding Checklist</div>
+                <div class="inset-box">
+                  <div class="inset-box-label" style="color:var(--accent3);">Required Before Coding</div>
+                  <div class="inset-row"><div class="inset-bullet bullet-teal">✓</div><span>Wiring diagram drawn in notebook</span></div>
+                  <div class="inset-row"><div class="inset-bullet bullet-teal">✓</div><span>Pseudocode flowchart written</span></div>
+                  <div class="inset-row"><div class="inset-bullet bullet-teal">✓</div><span>Sensors + outputs identified</span></div>
+                  <div class="inset-row"><div class="inset-bullet bullet-teal">✓</div><span>AI use plan documented (if using AI)</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ UNIT 3 ══════════ -->
+  <div class="unit" id="unit3">
+    <div class="unit-header" onclick="toggleUnit('unit3')">
+      <div class="unit-num">03</div>
+      <div class="unit-icon c3">⚡</div>
+      <div class="unit-info">
+        <div class="unit-title">Build, Wire & Code — Integrated Project Assembly</div>
+        <div class="unit-meta">Days 11–15 · ~5 class sessions · Fabrication + Electronics + Software</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Days 11–12</div>
+            <div class="lesson-title">Electronics + Code Studio — Building the Active Layer</div>
+            <div class="lesson-type type-studio">Studio</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Two studio sessions for students to wire circuits, write and test code, and begin integrating electronics with printed components. Students with purely mechanical projects build their JavaScript companion pages. Teacher circulates; check-ins focus on "Does your code match your flowchart?" and "Have you run the fact-check framework on any AI sections?" Students who finish early add a second interaction mode or alert condition. At end of Day 12, each student completes a self-assessment check-in rubric.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 7.1</span>
+                <span class="standard-tag">IAS-CS 9-10.AP.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.2</span>
+                <span class="standard-tag">IAS-CS 8.IC.1</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Self-Assessment (Day 12)</div>
+                <div class="rubric-row"><div class="rubric-label">Circuit wired as planned</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Code follows flowchart logic</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">AI fact-check documented</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Physical + electronics integrated</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 13</div>
+            <div class="lesson-title">User Test #2 — Testing the Real Prototype With a Real Person</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students conduct a structured user test of their working prototype with a classmate not involved in their design process. The 3-part protocol: (1) hand the tester the device without explanation and observe; (2) ask 3 open-ended questions about their experience; (3) document findings in a User Test Report. Graded formally — not on whether the prototype works perfectly, but on the quality and honesty of the test and documentation. Students with broken prototypes still conduct the test and document what broke and why. Honest failure documentation scores higher than concealed failure.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.4</span>
+                <span class="standard-tag">CTE-TE 8.1</span>
+                <span class="standard-tag">CTE-TE 8.2</span>
+                <span class="standard-tag">CTE-TE 9.1</span>
+                <span class="standard-tag">IAS-ELA 9-10.W</span>
+                <div class="standard-explain">The emphasis on process quality over product perfection is a deliberate pedagogical signal — grading honest documentation of failure higher than concealed failure teaches students that iteration is the expected outcome of testing, not a sign of poor design.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">User Test Report Rubric (Formal)</div>
+                <div class="rubric-row"><div class="rubric-label">Test protocol followed</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Observations specific + honest</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">3 open-ended questions asked</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Findings clearly documented</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Days 14–15</div>
+            <div class="lesson-title">Iteration Sprint — Refine Based on Test Findings</div>
+            <div class="lesson-type type-studio">Studio</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students triage Day 13 user test findings: what can be fixed in the time remaining vs. what becomes a documented v2 improvement? Students prioritize the single most impactful change and implement it — whether a CAD revision and reprint, a code fix, a wiring adjustment, or a UX change. All changes are documented in the notebook with "before" and "after" states. The iteration sprint reinforces the core lesson: the goal of testing is always learning that leads to change, never validation of what already exists.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <span class="standard-tag">CTE-TE 3.4</span>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <span class="standard-tag">CTE-TE 6.2</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Iteration Documentation (Formal)</div>
+                <div class="rubric-row"><div class="rubric-label">Issue prioritized + justified</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Change implemented</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Before/after documented</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">v2 plan written for remaining issues</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ UNIT 4 ══════════ -->
+  <div class="unit" id="unit4">
+    <div class="unit-header" onclick="toggleUnit('unit4')">
+      <div class="unit-num">04</div>
+      <div class="unit-icon c4">🎤</div>
+      <div class="unit-info">
+        <div class="unit-title">Present, Report & Prepare for Year 4</div>
+        <div class="unit-meta">Days 16–20 · ~5 class sessions · Report + Portfolio + Showcase</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Days 16–17</div>
+            <div class="lesson-title">First Engineering Report — Documenting the Full Project Arc</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students produce their first formal Engineering Report — a structured document covering: problem statement and HMW source, ideation process summary (SCAMPER, Crazy 8s, morphological chart), concept selection rationale, CAD and drawing description, electronics/code description (if applicable), user test results, and iteration summary. Length: 400–600 words plus images with captions. This is the most substantial professional writing produced in the program to date — it mirrors project reports used in industry and academic engineering. AI may assist with drafting but all content must reflect actual work and be in the student's own voice.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 4.1</span>
+                <span class="standard-tag">CTE-TE 4.2</span>
+                <span class="standard-tag">IAS-ELA 9-10.W</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Engineering Report Rubric (Formal)</div>
+                <div class="rubric-row"><div class="rubric-label">All required sections present</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Technical content accurate</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Writing is clear + professional</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Images captioned + referenced</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 18</div>
+            <div class="lesson-title">Portfolio Update — Year 3 Complete</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students finalize their Year 3 portfolio section with all Semester 6 artifacts: lo-fi prototype photo, morphological chart, concept screening matrix, drawing package, user test report, iteration documentation, and the engineering report. The "User Research" section now spans two semesters — Semester 5 empathy map feeding directly into Semester 6 ideation and testing. Students write a "Year 3 Reflection" (half page) answering: "What is the most important thing you learned about design this year that you didn't know at the start of 9th grade?"</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 4.1</span>
+                <span class="standard-tag">CTE-TE 4.2</span>
+                <span class="standard-tag">IAS-ELA 9-10.W</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Portfolio Checklist</div>
+                <div class="rubric-row"><div class="rubric-label">All Semester 6 artifacts present</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Year 3 reflection written</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">User Research thread visible (S5→S6)</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Days 19–20</div>
+            <div class="lesson-title">Year 3 Showcase — Person, Process, Product</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students deliver a 4-minute presentation in three beats: (1) The Person — who did you design for and what did you learn from them? (2) The Process — walk through one key decision at each stage (ideation, CAD, electronics/code, testing, iteration); (3) The Product — live demo of the working prototype. This Person / Process / Product format becomes the permanent showcase template for all future semesters. Peer feedback forms completed. Invited guests (other teachers, parents, administrators) welcome from Day 19 onward. Teacher grade uses the same three-beat rubric.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 4.1</span>
+                <span class="standard-tag">CTE-TE 4.2</span>
+                <span class="standard-tag">CTE-TE 8.2</span>
+                <span class="standard-tag">CTE-TE 9.1</span>
+                <span class="standard-tag">IAS-ELA 9-10.SL</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Showcase Rubric — Person / Process / Product</div>
+                <div class="rubric-row"><div class="rubric-label">Person — human need communicated clearly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Process — key decision at each stage</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Product — live demo attempted</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Delivery — clear, confident, on time</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Standards Legend -->
+  <div class="standards-legend">
+    <div class="legend-title">📋 Indiana Standards Reference — Semester 6 (New ★ + Continued)</div>
+    <div class="legend-grid">
+      <div class="legend-item">
+        <div class="legend-code new">CTE-TE 3.3 ★ Formalized</div>
+        <div class="legend-desc">Creative and critical thinking in design — SCAMPER, Crazy 8s, and morphological chart are the formal deliverables. Previously used informally; now assessed.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code new">CTE-TE 3.4 ★ NEW</div>
+        <div class="legend-desc">Evaluate prototypes and iterate based on testing. First applied in the lo-fi partner test (Day 5) and formalized in the User Test Report (Day 13).</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 3.1 / 3.2</div>
+        <div class="legend-desc">Design process and modeling — now fully self-directed within a student-chosen project for the first time.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 4.1 / 4.2</div>
+        <div class="legend-desc">Technical communication — first formal Engineering Report (400–600 words) and the Person/Process/Product showcase format.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 5.1 / 5.2 / 6.1–6.3 / 7.1</div>
+        <div class="legend-desc">Drawing, digital tools, fabrication, simulation, electronics — all applied within the integrated project cycle.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 8.1 / 8.2 / 9.1</div>
+        <div class="legend-desc">Human factors, social impact, and interpersonal skills — applied across ideation, user testing, and showcase presentation.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-CS 9-10.AP.1 / 8.AP.1–3 / 8.IC.1</div>
+        <div class="legend-desc">All CS standards applied in the project's code layer — planning with flowcharts, implementation, AI fact-checking, and debugging.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-Math 9-10.A / 9-10.G</div>
+        <div class="legend-desc">Algebra (combinatorics in morphological chart — 3⁴ = 81 combinations) and Geometry (SolidWorks advanced modeling).</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-ELA 9-10.W / 9-10.SL</div>
+        <div class="legend-desc">Writing (Engineering Report, Year 3 Reflection) and Speaking &amp; Listening (4-minute Person/Process/Product showcase with live demo).</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="review-bar">
+  <div class="review-text"><strong>Semester 6 — 9th Grade Spring</strong> · 4 units · 20 class days · Year 3 Complete ✓</div>
+  <button class="review-btn" onclick="alert('✅ Approved! Tell Claude to continue to Semester 7 — 10th Grade Fall.')">✅ Approve & Continue to Semester 7 →</button>
+</div>
+
+<script>
+  function toggleUnit(id) { document.getElementById(id).classList.toggle('open'); }
+  function toggleLesson(el) { el.classList.toggle('open'); }
+  document.getElementById('unit1').classList.add('open');
+</script>
+</body>
+</html>

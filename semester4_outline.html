@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Engineering Pathway | Semester 4 — 8th Grade Spring</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --surface2: #1f2435;
+    --border: #2a3050;
+    --accent: #e8506a;
+    --accent-bright: #ef7a90;
+    --accent2: #5b8dee;
+    --accent3: #f5a623;
+    --accent4: #4ecdc4;
+    --accent5: #a07ee0;
+    --text: #e8eaf0;
+    --muted: #7a8099;
+    --tag-bg: #252d45;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 55% 35% at 90% 5%, rgba(232,80,106,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 30% at 5% 90%, rgba(91,141,238,0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* Header */
+  .header { margin-bottom: 48px; animation: fadeDown 0.6s ease both; }
+
+  .breadcrumb {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .breadcrumb span { color: var(--accent-bright); }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 5vw, 52px);
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  h1 em { font-style: italic; color: var(--accent-bright); }
+
+  .subtitle { color: var(--muted); font-size: 15px; max-width: 580px; line-height: 1.7; }
+
+  .meta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+  .meta-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+  }
+  .meta-chip strong { color: var(--text); }
+
+  /* Skill stack */
+  .skill-stack {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    animation: fadeDown 0.5s 0.05s ease both;
+  }
+  .skill-stack-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 12px;
+  }
+  .skill-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .skill-pill { padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 500; font-family: 'DM Sans', sans-serif; }
+  .pill-done { background: rgba(78,205,196,0.1); border: 1px solid rgba(78,205,196,0.25); color: var(--accent4); }
+  .pill-new { background: rgba(232,80,106,0.1); border: 1px solid rgba(232,80,106,0.35); color: var(--accent-bright); }
+  .pill-new::before { content: '★ '; font-size: 9px; }
+
+  /* Callout */
+  .callout {
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    animation: fadeDown 0.5s 0.08s ease both;
+  }
+  .callout-warn {
+    background: rgba(245,166,35,0.07);
+    border: 1px solid rgba(245,166,35,0.25);
+    color: var(--accent3);
+  }
+  .callout-info {
+    background: rgba(91,141,238,0.07);
+    border: 1px solid rgba(91,141,238,0.25);
+    color: var(--accent2);
+  }
+
+  /* Progress arc */
+  .arc-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 36px;
+    animation: fadeDown 0.5s 0.1s ease both;
+  }
+  .arc-label { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+  .arc-track { display: flex; gap: 3px; }
+  .arc-seg { height: 5px; border-radius: 3px; flex: 1; }
+  .arc-seg.done { opacity: 0.45; }
+  .arc-seg.active { opacity: 1; }
+  .arc-seg.future { opacity: 0.12; }
+  .arc-names { display: flex; margin-top: 7px; }
+  .arc-name { font-size: 9px; color: var(--muted); font-family: 'DM Mono', monospace; text-align: center; flex: 1; }
+  .arc-name.active { color: var(--accent-bright); font-weight: 600; }
+  .arc-name.done { color: var(--accent4); }
+
+  /* Units */
+  .unit {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 18px;
+    overflow: hidden;
+    animation: fadeUp 0.5s ease both;
+    transition: border-color 0.25s;
+  }
+  .unit:hover { border-color: #363d5c; }
+  .unit:nth-child(1) { animation-delay: 0.12s; }
+  .unit:nth-child(2) { animation-delay: 0.2s; }
+  .unit:nth-child(3) { animation-delay: 0.28s; }
+  .unit:nth-child(4) { animation-delay: 0.36s; }
+  .unit:nth-child(5) { animation-delay: 0.44s; }
+
+  .unit-header { display: flex; align-items: center; gap: 16px; padding: 20px 24px; cursor: pointer; user-select: none; }
+  .unit-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); min-width: 32px; }
+  .unit-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .unit-info { flex: 1; }
+  .unit-title { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--text); margin-bottom: 4px; }
+  .unit-meta { font-size: 12px; color: var(--muted); font-family: 'DM Mono', monospace; }
+  .unit-toggle { color: var(--muted); font-size: 20px; transition: transform 0.3s; flex-shrink: 0; }
+  .unit.open .unit-toggle { transform: rotate(180deg); }
+  .unit-body { display: none; padding: 0 24px 24px; border-top: 1px solid var(--border); }
+  .unit.open .unit-body { display: block; }
+
+  /* Lessons */
+  .lessons-grid { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+  .lesson {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .lesson:hover { border-color: #363d5c; background: #232840; }
+  .lesson-top { display: flex; align-items: flex-start; gap: 12px; }
+  .lesson-day { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); min-width: 48px; padding-top: 2px; }
+  .lesson-title { font-size: 14px; font-weight: 500; color: var(--text); flex: 1; line-height: 1.4; }
+  .lesson-type { font-size: 10px; font-family: 'DM Mono', monospace; padding: 3px 8px; border-radius: 4px; flex-shrink: 0; margin-top: 1px; }
+  .type-intro { background: rgba(91,141,238,0.15); color: var(--accent2); }
+  .type-skill { background: rgba(78,205,196,0.15); color: var(--accent4); }
+  .type-project { background: rgba(245,166,35,0.15); color: var(--accent3); }
+  .type-assess { background: rgba(232,80,106,0.15); color: var(--accent-bright); }
+
+  .lesson-detail { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .lesson.open .lesson-detail { display: block; }
+  .lesson-desc { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 14px; }
+
+  .detail-sections { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 580px) { .detail-sections { grid-template-columns: 1fr; } }
+
+  .detail-box { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+  .detail-box-label { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+
+  .standard-tag { display: inline-block; background: var(--tag-bg); border: 1px solid var(--border); border-radius: 4px; padding: 2px 7px; font-size: 10px; font-family: 'DM Mono', monospace; color: var(--accent2); margin: 2px 2px 2px 0; }
+  .standard-tag.new-std { color: var(--accent-bright); border-color: rgba(232,80,106,0.35); background: rgba(232,80,106,0.07); }
+  .standard-explain { font-size: 11px; color: var(--muted); line-height: 1.55; margin-top: 6px; }
+
+  .rubric-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+  .rubric-label { font-size: 11px; color: var(--text); }
+  .dot-legend { display: flex; gap: 4px; align-items: center; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); }
+  .dot.f { background: var(--accent); }
+  .dot.p { background: var(--accent3); }
+  .dot.s { background: var(--accent4); }
+  .dot.e { background: var(--accent2); }
+  .rubric-scale { display: flex; gap: 10px; margin-top: 8px; padding-top: 7px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .rubric-scale-item { display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--muted); }
+
+  /* Code preview */
+  .code-preview {
+    background: #0a0c12;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: #8b9fc5;
+    margin-top: 10px;
+    line-height: 1.8;
+  }
+  .code-preview .kw { color: var(--accent5); }
+  .code-preview .fn { color: var(--accent4); }
+  .code-preview .str { color: var(--accent3); }
+  .code-preview .cm { color: #3a4260; }
+  .code-preview .num { color: var(--accent-bright); }
+
+  /* AI fact-check framework */
+  .ai-framework {
+    background: var(--surface2);
+    border: 1px solid rgba(160,126,224,0.3);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-top: 10px;
+  }
+  .ai-framework-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--accent5);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+  .ai-step {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 6px;
+    font-size: 11px;
+    color: var(--muted);
+    align-items: flex-start;
+  }
+  .ai-step-num {
+    background: rgba(160,126,224,0.15);
+    color: var(--accent5);
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* Arduino wiring diagram placeholder */
+  .wiring-diagram {
+    background: #0a0c12;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    margin-top: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 2;
+  }
+  .wire-pin { color: var(--accent3); }
+  .wire-gnd { color: var(--accent); }
+  .wire-vcc { color: var(--accent4); }
+  .wire-sig { color: var(--accent2); }
+
+  /* Standards legend */
+  .standards-legend {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-top: 28px;
+    animation: fadeUp 0.5s 0.5s ease both;
+  }
+  .legend-title { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; }
+  .legend-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(275px, 1fr)); gap: 8px; }
+  .legend-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 13px; }
+  .legend-code { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent2); margin-bottom: 4px; }
+  .legend-code.new { color: var(--accent-bright); }
+  .legend-desc { font-size: 11px; color: var(--muted); line-height: 1.45; }
+
+  /* Review bar */
+  .review-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(15,17,23,0.96);
+    border-top: 1px solid var(--border);
+    backdrop-filter: blur(14px);
+    padding: 13px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .review-text { font-size: 12px; color: var(--muted); }
+  .review-text strong { color: var(--text); }
+  .review-btn {
+    background: var(--accent-bright);
+    color: #0f1117;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+  }
+  .review-btn:hover { opacity: 0.85; }
+
+  .c1 { background: rgba(232,80,106,0.12); }
+  .c2 { background: rgba(160,126,224,0.12); }
+  .c3 { background: rgba(245,166,35,0.1); }
+  .c4 { background: rgba(91,141,238,0.1); }
+  .c5 { background: rgba(78,205,196,0.1); }
+
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="breadcrumb">Engineering Pathway · <span>Year 2 of 8</span> · Semester 4</div>
+    <h1>8th Grade <em>Spring</em><br>AI-Assisted Coding & Arduino Electronics</h1>
+    <p class="subtitle">Students learn to use AI as a coding collaborator — and critically, how to fact-check and verify AI-generated JavaScript. They also wire and program their first Arduino circuits, connecting physical electronics to the code they've been building all year.</p>
+    <div class="meta-row">
+      <div class="meta-chip"><strong>Grade:</strong> 8th</div>
+      <div class="meta-chip"><strong>Semester:</strong> Spring (4 of 16)</div>
+      <div class="meta-chip"><strong>Schedule:</strong> A/B Block · 45–50 min</div>
+      <div class="meta-chip"><strong>~20 class days</strong></div>
+      <div class="meta-chip"><strong>New Hardware:</strong> Arduino Uno</div>
+      <div class="meta-chip"><strong>New Skill:</strong> AI Code Review</div>
+    </div>
+  </div>
+
+  <!-- Callouts -->
+  <div class="callout callout-warn">
+    <span>⚠️</span>
+    <span><strong>AI Use Philosophy:</strong> This semester students use AI tools to assist with coding for the first time — but only after demonstrating baseline JS competency in Semester 3's unaided assessment. The emphasis is always on <em>understanding</em> AI output, not accepting it blindly. Fact-checking AI code is treated as a core engineering skill equal in importance to writing code from scratch.</span>
+  </div>
+  <div class="callout callout-info">
+    <span>🔗</span>
+    <span><strong>Semester 3 Bridge:</strong> Students bring their JavaScript foundations (variables, functions, conditionals, loops, DOM) and their SolidWorks/Inventor skills. Arduino introduces a new context — physical computing — where code controls real-world outputs for the first time.</span>
+  </div>
+
+  <!-- Progress Arc -->
+  <div class="arc-bar">
+    <div class="arc-label">8-Year Pathway — Semester 4 of 16</div>
+    <div class="arc-track">
+      <div class="arc-seg done" style="background:#4ecdc4;"></div>
+      <div class="arc-seg done" style="background:#4ecdc4;"></div>
+      <div class="arc-seg done" style="background:#4ecdc4;"></div>
+      <div class="arc-seg active" style="background:#ef7a90;"></div>
+      <div class="arc-seg future" style="background:#5b8dee;"></div>
+      <div class="arc-seg future" style="background:#5b8dee;"></div>
+      <div class="arc-seg future" style="background:#5b8dee;"></div>
+      <div class="arc-seg future" style="background:#5b8dee;"></div>
+      <div class="arc-seg future" style="background:#f5a623;"></div>
+      <div class="arc-seg future" style="background:#f5a623;"></div>
+      <div class="arc-seg future" style="background:#f5a623;"></div>
+      <div class="arc-seg future" style="background:#f5a623;"></div>
+      <div class="arc-seg future" style="background:#a07ee0;"></div>
+      <div class="arc-seg future" style="background:#a07ee0;"></div>
+      <div class="arc-seg future" style="background:#a07ee0;"></div>
+      <div class="arc-seg future" style="background:#a07ee0;"></div>
+    </div>
+    <div class="arc-names">
+      <div class="arc-name done">7F</div>
+      <div class="arc-name done">7S</div>
+      <div class="arc-name done">8F</div>
+      <div class="arc-name active">8S ←</div>
+      <div class="arc-name">9F</div>
+      <div class="arc-name">9S</div>
+      <div class="arc-name">10F</div>
+      <div class="arc-name">10S</div>
+      <div class="arc-name">11F</div>
+      <div class="arc-name">11S</div>
+      <div class="arc-name">12F</div>
+      <div class="arc-name">12S</div>
+      <div class="arc-name">FrF</div>
+      <div class="arc-name">FrS</div>
+      <div class="arc-name">SoF</div>
+      <div class="arc-name">SoS</div>
+    </div>
+  </div>
+
+  <!-- Skill Stack -->
+  <div class="skill-stack">
+    <div class="skill-stack-label">Cumulative Skill Stack — Incoming + New This Semester</div>
+    <div class="skill-pills">
+      <span class="skill-pill pill-done">EDP Framework</span>
+      <span class="skill-pill pill-done">Isometric &amp; Ortho Drawing</span>
+      <span class="skill-pill pill-done">Inventor + SolidWorks</span>
+      <span class="skill-pill pill-done">3D Printing</span>
+      <span class="skill-pill pill-done">JS Variables &amp; Functions</span>
+      <span class="skill-pill pill-done">DOM Manipulation</span>
+      <span class="skill-pill pill-done">Debugging</span>
+      <span class="skill-pill pill-new">AI-Assisted Coding</span>
+      <span class="skill-pill pill-new">AI Code Fact-Checking</span>
+      <span class="skill-pill pill-new">Arduino Wiring</span>
+      <span class="skill-pill pill-new">Arduino Programming (C++)</span>
+      <span class="skill-pill pill-new">Sensors &amp; Actuators</span>
+      <span class="skill-pill pill-new">Serial Communication</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════ UNIT 1 ══════════════════════ -->
+  <div class="unit" id="unit1">
+    <div class="unit-header" onclick="toggleUnit('unit1')">
+      <div class="unit-num">01</div>
+      <div class="unit-icon c2">🤖</div>
+      <div class="unit-info">
+        <div class="unit-title">AI as a Coding Collaborator — Use It, But Verify It</div>
+        <div class="unit-meta">Days 1–5 · ~5 class sessions · Critical AI Literacy + JS</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 1</div>
+            <div class="lesson-title">What Can AI Do With Code? — Demo, Discussion & Ground Rules</div>
+            <div class="lesson-type type-intro">Intro</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Teacher demonstrates AI code generation live: prompt an AI tool to write a simple JS function, then show the class the output. Immediately: "Does this work? How would we know?" Students discuss what they'd need to understand to verify it. Class establishes a shared AI Use Policy for the course: AI is a tool like a calculator — powerful but not infallible. You are always the engineer responsible for the output. Students write their own "AI Use Commitment" in their notebooks.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag new-std">IAS-CS 8.IC.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.3</span>
+                <div class="standard-explain"><strong>IAS-CS 8.IC.1 (Impacts of Computing):</strong> Evaluate the beneficial and harmful effects of computing innovations. AI code generation is a direct and current example — students analyze its benefits (speed, scaffold) and risks (errors, over-reliance, academic integrity).</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Notebook Entry</div>
+                <div class="standard-explain">Students write their "AI Use Commitment": 3 rules they personally commit to when using AI for coding. These are revisited and reflected on at the end of the semester.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 2</div>
+            <div class="lesson-title">The Fact-Checking Framework — 5 Steps to Verify AI Code</div>
+            <div class="lesson-type type-intro">Intro</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Teacher introduces the course's AI Code Fact-Checking Framework — a 5-step process students will use every time they work with AI-generated code. Students annotate the framework in their notebooks and apply it to two provided AI-generated code snippets: one correct, one with a subtle bug. They must find the bug using the framework before running the code.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">IAS-CS 8.AP.3</span>
+                <span class="standard-tag">IAS-CS 8.IC.1</span>
+                <div class="standard-explain"><strong>IAS-CS 8.AP.3:</strong> Identify and fix errors in algorithms and programs. The fact-checking framework is a systematic debugging methodology applied specifically to AI-generated code — making error-detection a deliberate, structured skill.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">The 5-Step Framework</div>
+                <div class="ai-framework">
+                  <div class="ai-framework-label">AI Code Fact-Check Protocol</div>
+                  <div class="ai-step"><div class="ai-step-num">1</div><span>Read every line — can you explain what each line does?</span></div>
+                  <div class="ai-step"><div class="ai-step-num">2</div><span>Trace the logic — follow one input through to its output by hand</span></div>
+                  <div class="ai-step"><div class="ai-step-num">3</div><span>Test edge cases — what happens with 0, negatives, or empty input?</span></div>
+                  <div class="ai-step"><div class="ai-step-num">4</div><span>Check names — are variables and functions named meaningfully?</span></div>
+                  <div class="ai-step"><div class="ai-step-num">5</div><span>Run it — compare actual output to your predicted output</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 3</div>
+            <div class="lesson-title">Prompt Engineering — Getting Useful Code From AI</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students learn that AI output quality is directly tied to prompt quality. They practice writing engineering-specific prompts: specifying inputs/outputs, naming conventions, constraints, and expected behavior. They compare outputs from a vague prompt vs. a precise prompt for the same function. Class compiles a "Good Prompt Checklist" that lives in their notebooks. Key message: writing a good prompt requires you to already understand the problem — the same skill as writing a good problem statement in the EDP.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">IAS-CS 8.AP.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.2</span>
+                <span class="standard-tag">IAS-CS 8.IC.1</span>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <div class="standard-explain">Prompt engineering is an extension of the EDP's "Define the Problem" step (CTE-TE 3.1) — students must specify constraints, criteria, and expected outputs in their prompt just as they would in a design brief.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Prompt includes input/output spec</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Prompt produces usable code</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Output verified with framework</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-scale">
+                  <div class="rubric-scale-item"><div class="dot f"></div> Beginning</div>
+                  <div class="rubric-scale-item"><div class="dot p"></div> Developing</div>
+                  <div class="rubric-scale-item"><div class="dot s"></div> Proficient</div>
+                  <div class="rubric-scale-item"><div class="dot e"></div> Exemplary</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 4</div>
+            <div class="lesson-title">AI-Assisted JS Project — Build a Unit Converter</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students use AI to help build a multi-function engineering unit converter (mm↔in, kg↔lbs, °C↔°F, PSI↔kPa). They must: write a detailed prompt, receive AI-generated code, apply the full 5-step fact-checking framework with written notes, identify and fix any issues, and then extend the converter with one original conversion not suggested by AI. The extension must be written entirely by the student — no AI for that section. This two-part structure ensures AI is an accelerator, not a replacement.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">IAS-CS 8.AP.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.2</span>
+                <span class="standard-tag">IAS-CS 8.AP.3</span>
+                <span class="standard-tag">IAS-CS 8.IC.1</span>
+                <span class="standard-tag">IAS-Math 8.EE</span>
+                <div class="standard-explain">Unit conversion is both a coding task (functions, DOM) and a math task (IAS-Math 8.EE — applying proportional reasoning). The hybrid AI+manual approach ensures both standards are genuinely met.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Project Rubric (Formal)</div>
+                <div class="rubric-row"><div class="rubric-label">All 4 conversions work correctly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Fact-check notes submitted</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Original extension written by student</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">UI is clean and usable</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 5</div>
+            <div class="lesson-title">AI Code Review Assessment — Find the Bugs</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Formal assessment: students receive 3 AI-generated JavaScript functions (each with 1–2 intentional bugs of varying subtlety). Working individually, they must apply the fact-checking framework, annotate each line, identify all bugs, explain why each is wrong, and write the corrected code. Graded on completeness of annotation, accuracy of bug identification, and quality of correction. No AI tools permitted — this assesses whether students can truly read and understand code.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">IAS-CS 8.AP.3</span>
+                <span class="standard-tag">IAS-CS 8.IC.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.1</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Formal Rubric</div>
+                <div class="rubric-row"><div class="rubric-label">All lines annotated</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Bugs correctly identified</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Corrections written correctly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Explanations are clear</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════ UNIT 2 ══════════════════════ -->
+  <div class="unit" id="unit2">
+    <div class="unit-header" onclick="toggleUnit('unit2')">
+      <div class="unit-num">02</div>
+      <div class="unit-icon c1">⚡</div>
+      <div class="unit-info">
+        <div class="unit-title">Introduction to Arduino — Physical Computing Begins</div>
+        <div class="unit-meta">Days 6–11 · ~6 class sessions · Hardware + C++ Basics</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 6</div>
+            <div class="lesson-title">What is a Microcontroller? — Arduino Hardware Orientation</div>
+            <div class="lesson-type type-intro">Intro</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students unbox their Arduino Uno kits and identify all components: the board, USB cable, breadboard, jumper wires, LEDs, resistors, and sensors. Teacher explains the difference between a microcontroller (Arduino) and a computer — focused single-purpose processing vs. general computing. Students label a diagram of the Uno in their notebooks: digital pins, analog pins, power pins (5V, 3.3V, GND), TX/RX, reset. Safety rules for electronics are established: never connect power without a resistor on an LED; always double-check wiring before powering.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag new-std">CTE-TE 7.1</span>
+                <span class="standard-tag">IAS-Sci 8.PS</span>
+                <div class="standard-explain"><strong>CTE-TE 7.1:</strong> Apply principles of electricity and electronics to engineering systems. This standard anchors all Arduino work. IAS-Sci 8.PS connects through Ohm's Law — students calculate required resistor values for their LED circuits.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Vocabulary</div>
+                <span class="standard-tag">microcontroller</span>
+                <span class="standard-tag">digital pin</span>
+                <span class="standard-tag">analog pin</span>
+                <span class="standard-tag">GND</span>
+                <span class="standard-tag">5V rail</span>
+                <span class="standard-tag">breadboard</span>
+                <span class="standard-tag">resistor</span>
+                <span class="standard-tag">Ohm's Law</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 7</div>
+            <div class="lesson-title">Blink — Hello World of Hardware</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students wire their first circuit (LED + resistor to digital pin 13) and upload the classic Blink sketch. Teacher introduces the Arduino IDE and the structure of every Arduino program: setup() runs once, loop() runs forever. Students modify delay() values to change blink speed, then write their own version from scratch that blinks in a pattern (long-short-long = SOS). Notebook entry: wiring diagram drawn in the same format as technical drawings — labeled components, pin numbers, and wire colors.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 7.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.1</span>
+                <span class="standard-tag">IAS-Sci 8.PS</span>
+                <div class="standard-explain">The loop() function is a direct physical manifestation of a programming loop (IAS-CS 8.AP.1) — students see the connection immediately. The LED + resistor circuit applies Ohm's Law from IAS-Sci 8.PS.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Circuit Notation Preview</div>
+                <div class="wiring-diagram">
+                  <span class="wire-pin">Pin 13</span> ──── 220Ω resistor ──── <span class="wire-vcc">LED (+)</span><br>
+                  <span class="wire-vcc">LED (–)</span> ──────────────────── <span class="wire-gnd">GND</span><br>
+                  <br>
+                  <span class="cm">// Students draw this format in their notebook</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 8</div>
+            <div class="lesson-title">Digital Input — Buttons, Pull-up Resistors & Conditionals</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students add a pushbutton to their circuit and use digitalRead() to detect presses. Introduction to pull-up resistors and why floating pins cause unreliable readings. Students write a sketch that turns an LED on when the button is held and off when released, then extends it to toggle on/off with each press (requiring a state variable). The state variable concept directly reinforces Semester 3's JavaScript variable work — the same logic, new environment.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 7.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.2</span>
+                <span class="standard-tag">IAS-Sci 8.PS</span>
+                <div class="standard-explain">The toggle requires both a conditional (IAS-CS 8.AP.1) and a state variable (IAS-CS 8.AP.2) — students apply both CS concepts in a physical context for the first time. Pull-up resistors connect to circuit analysis in IAS-Sci 8.PS.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Button circuit wired correctly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Toggle logic works</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">State variable used correctly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 9</div>
+            <div class="lesson-title">Analog Input — Reading Sensors with analogRead()</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students wire a potentiometer (or light sensor / temperature sensor depending on kit) to an analog pin and use analogRead() to get values 0–1023. They learn to map() this range to useful outputs (e.g., 0–255 for LED brightness using analogWrite() PWM). Students use Serial.println() to print sensor readings to the Serial Monitor — their first use of serial communication for debugging. Notebook entry: graph of sensor values vs. physical position sketched by hand.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 7.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.2</span>
+                <span class="standard-tag">IAS-Math 8.F</span>
+                <div class="standard-explain"><strong>IAS-Math 8.F (Functions):</strong> The map() function is a direct application of a linear function — input range mapped proportionally to output range. Students connect Arduino's map() to y = mx + b from math class.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Code Concept Preview</div>
+                <div class="code-preview">
+                  <span class="kw">int</span> raw = <span class="fn">analogRead</span>(<span class="num">A0</span>);<br>
+                  <span class="kw">int</span> brightness = <span class="fn">map</span>(raw, <span class="num">0</span>, <span class="num">1023</span>, <span class="num">0</span>, <span class="num">255</span>);<br>
+                  <span class="fn">analogWrite</span>(<span class="num">9</span>, brightness);<br>
+                  <span class="fn">Serial</span>.<span class="fn">println</span>(raw);
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 10</div>
+            <div class="lesson-title">AI-Assisted Arduino — Prompt, Verify, Deploy</div>
+            <div class="lesson-type type-skill">Skill</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students use AI to generate an Arduino sketch for a specified behavior (e.g., "LED blinks faster as light level increases"), then apply the 5-step fact-checking framework to the C++ output before uploading. Key challenge: AI sometimes generates syntactically correct code that doesn't match the intended behavior — students must trace logic, not just syntax. This is the first time the AI framework is applied to a language other than JavaScript, reinforcing that the verification mindset is language-agnostic.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">IAS-CS 8.AP.3</span>
+                <span class="standard-tag">IAS-CS 8.IC.1</span>
+                <span class="standard-tag">CTE-TE 7.1</span>
+                <div class="standard-explain">Applying the fact-checking framework to C++/Arduino code fulfills IAS-CS 8.AP.3 in a new language context. Students discover that logic errors (wrong behavior) are harder to catch than syntax errors — a key engineering insight.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">Prompt is specific and complete</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Fact-check notes written</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Circuit behaves as intended</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 11</div>
+            <div class="lesson-title">Arduino Assessment — Wire, Code & Verify</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Formal assessment: students receive a written behavioral spec ("Build a circuit where pressing button A turns on a red LED; pressing button B turns on a green LED; pressing both turns on a yellow LED"). They must wire the circuit, write the sketch from scratch (no AI), upload it, and demonstrate correct behavior to the teacher. Graded on circuit correctness, code logic, variable use, and live demonstration. Wiring diagram must be drawn in notebook before powering the circuit.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 7.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.2</span>
+                <span class="standard-tag">IAS-Sci 8.PS</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Formal Arduino Rubric</div>
+                <div class="rubric-row"><div class="rubric-label">Circuit wired correctly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">All 3 behaviors work</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Wiring diagram in notebook</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Code logic clean + commented</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════ UNIT 3 ══════════════════════ -->
+  <div class="unit" id="unit3">
+    <div class="unit-header" onclick="toggleUnit('unit3')">
+      <div class="unit-num">03</div>
+      <div class="unit-icon c4">🔗</div>
+      <div class="unit-info">
+        <div class="unit-title">Connecting Worlds — Arduino + CAD Integration</div>
+        <div class="unit-meta">Days 12–16 · ~5 class sessions · Multi-Discipline Project</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 12</div>
+            <div class="lesson-title">Project Launch — Design an Enclosure for Your Arduino Circuit</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students are challenged to design and 3D-print a functional enclosure for one of their Arduino circuits in SolidWorks. This is the first project that truly integrates all skills: EDP documentation, SolidWorks modeling, 3D printing, and electronics. They must measure their components (Arduino board, breadboard, LED placement), sketch the enclosure design by hand in their notebook using orthographic views, then model it in SolidWorks. Constraints: must have a lid, cable opening, and visible LED window.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <span class="standard-tag">CTE-TE 3.2</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <span class="standard-tag">CTE-TE 7.1</span>
+                <div class="standard-explain">This project fulfills the most standards of any assignment so far — it is a genuine multi-discipline engineering task. Five CTE-TE standards are simultaneously addressed: design process, modeling, drawing, digital tools, and electronics. A portfolio-worthy moment.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Project Checklist (Days 12–15)</div>
+                <div class="rubric-row"><div class="rubric-label">EDP documented in notebook</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Hand sketch (ortho views)</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">SolidWorks model complete</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">All constraints met</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Days 13–14</div>
+            <div class="lesson-title">Model, Iterate & Print — Enclosure Fabrication</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students complete their SolidWorks model and submit for printing. While prints run, students refine their Arduino sketch — adding a feature that wasn't in their original circuit (e.g., a startup LED pattern, a blink-speed sensor, a button-triggered message to Serial Monitor). This parallel workflow (CAD fabrication + code refinement) mirrors real product development where hardware and software teams work concurrently. AI may be used for the code feature with full fact-check documentation.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.2</span>
+                <span class="standard-tag">CTE-TE 6.2</span>
+                <span class="standard-tag">CTE-TE 7.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.1</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Assessment (Informal)</div>
+                <div class="rubric-row"><div class="rubric-label">New code feature added</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">AI use documented (if used)</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Print submitted for fabrication</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 15</div>
+            <div class="lesson-title">Assembly Day — Fit Circuit Into Enclosure</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students receive printed enclosures and test fit their circuits. Many will discover fit issues — components slightly too large, holes misaligned, LED window in the wrong position. This is intentional: students document fit issues in their notebooks, modify their SolidWorks model, and re-print if time allows. If not, they write a detailed "v2 improvement plan." The engineering lesson: real parts rarely fit perfectly the first time — iteration is normal and expected.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <span class="standard-tag">CTE-TE 3.2</span>
+                <span class="standard-tag">CTE-TE 6.2</span>
+                <div class="standard-explain">Fit issues and iteration directly fulfill CTE-TE 3.1 and 3.2 — the design and prototype evaluation loop. Students experience why manufacturing tolerances (introduced in Semester 2) matter in the context of a real assembly.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Iteration Documentation (Formal)</div>
+                <div class="rubric-row"><div class="rubric-label">Fit issues identified + measured</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Model modifications documented</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">v2 plan or reprint submitted</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 16</div>
+            <div class="lesson-title">Enclosure Project — Final Submission & Peer Review</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students submit their completed enclosure project: SolidWorks files, drawing package, printed enclosure (v1 or v2), working Arduino circuit inside, updated code, and full EDP notebook documentation. Peer review using a structured rubric. Teacher-graded formal rubric focuses on the completeness of the engineering process — not just whether the circuit works. A non-working circuit that is well-documented and iterated can score higher than a working circuit with no process documentation.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 3.1</span>
+                <span class="standard-tag">CTE-TE 5.2</span>
+                <span class="standard-tag">CTE-TE 6.1</span>
+                <span class="standard-tag">CTE-TE 6.2</span>
+                <span class="standard-tag">CTE-TE 7.1</span>
+                <span class="standard-tag">IAS-CS 8.AP.1</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Formal Enclosure Rubric</div>
+                <div class="rubric-row"><div class="rubric-label">EDP fully documented</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">SolidWorks model + drawing</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Physical enclosure present</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Circuit functional inside enclosure</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Iteration documented</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════ UNIT 4 ══════════════════════ -->
+  <div class="unit" id="unit4">
+    <div class="unit-header" onclick="toggleUnit('unit4')">
+      <div class="unit-num">04</div>
+      <div class="unit-icon c5">🎓</div>
+      <div class="unit-info">
+        <div class="unit-title">Year 2 Capstone — Portfolio, Showcase & Looking Ahead</div>
+        <div class="unit-meta">Days 17–20 · ~4 class sessions · Synthesis + Reflection</div>
+      </div>
+      <div class="unit-toggle">⌄</div>
+    </div>
+    <div class="unit-body">
+      <div class="lessons-grid">
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Days 17–18</div>
+            <div class="lesson-title">Year 2 Portfolio Capstone — Documenting the Full Arc</div>
+            <div class="lesson-type type-project">Project</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students spend two sessions building out their Year 2 portfolio section. Required artifacts: (1) Inventor assembly + exploded drawing, (2) SolidWorks independent design + drawing, (3) Unit converter web app (JS + AI fact-check notes), (4) Arduino circuit photo + code, (5) Arduino enclosure project (all files), (6) "AI Reflections" page documenting 3 times AI helped and 1 time AI misled them this semester. The AI Reflections page becomes increasingly important as they advance — it builds meta-awareness of AI as a tool.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 4.1</span>
+                <span class="standard-tag">CTE-TE 4.2</span>
+                <span class="standard-tag">IAS-CS 8.IC.1</span>
+                <span class="standard-tag">IAS-ELA 8.W</span>
+                <div class="standard-explain">The AI Reflections page addresses IAS-CS 8.IC.1 (evaluating computing innovations) through personal, documented experience rather than theory — the most meaningful form of this standard.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Portfolio Rubric (Formal)</div>
+                <div class="rubric-row"><div class="rubric-label">All 6 artifact sections present</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Captions explain each artifact</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">AI Reflections substantive</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Layout professional</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 19</div>
+            <div class="lesson-title">Year 2 Showcase — Live Demo Day</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students present their enclosure project in a 3-minute live demo: show the physical enclosure + working circuit, explain one design decision, describe one thing they would change in v2, and demonstrate their unit converter web app. Peer feedback forms completed. Optional: students who went above and beyond (reprint, extra code features, extra portfolio content) present for up to 5 minutes and are recognized with an "Engineering Excellence" note in their portfolio.</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">CTE-TE 4.1</span>
+                <span class="standard-tag">CTE-TE 4.2</span>
+                <span class="standard-tag">IAS-ELA 8.SL</span>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Showcase Rubric (Formal)</div>
+                <div class="rubric-row"><div class="rubric-label">Live circuit demo works</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Design decision explained clearly</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">v2 improvement identified</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Web app demonstrated</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson" onclick="toggleLesson(this)">
+          <div class="lesson-top">
+            <div class="lesson-day">Day 20</div>
+            <div class="lesson-title">AI Commitment Review + Year 3 Preview</div>
+            <div class="lesson-type type-assess">Assess</div>
+          </div>
+          <div class="lesson-detail">
+            <div class="lesson-desc">Students revisit the "AI Use Commitment" they wrote on Day 1 and write a 1-page reflection: Did they keep their commitments? What surprised them about working with AI? What would they tell a younger student about using AI for engineering? These are saved in portfolios and revisited every year. Class closes with a Year 3 preview: "You now design in two CAD platforms, write and verify code in two languages, and build real electronics. In 9th grade, we'll push all of these deeper — and you'll start learning how to talk to the people your designs are meant to help."</div>
+            <div class="detail-sections">
+              <div class="detail-box">
+                <div class="detail-box-label">Indiana Standards</div>
+                <span class="standard-tag">IAS-CS 8.IC.1</span>
+                <span class="standard-tag">CTE-TE 4.1</span>
+                <span class="standard-tag">IAS-ELA 8.W</span>
+                <div class="standard-explain">The AI reflection essay directly fulfills IAS-CS 8.IC.1 (evaluating computing innovations) through personal critical analysis, and IAS-ELA 8.W through argumentative/reflective writing.</div>
+              </div>
+              <div class="detail-box">
+                <div class="detail-box-label">Final Year 2 Grade Components</div>
+                <div class="rubric-row"><div class="rubric-label">AI reflection essay</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Year 2 portfolio complete</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Showcase presentation</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+                <div class="rubric-row"><div class="rubric-label">Full-year notebook</div><div class="dot-legend"><div class="dot f"></div><div class="dot p"></div><div class="dot s"></div><div class="dot e"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Standards Legend -->
+  <div class="standards-legend">
+    <div class="legend-title">📋 Indiana Standards Reference — Semester 4 (New ★ + Continued)</div>
+    <div class="legend-grid">
+      <div class="legend-item">
+        <div class="legend-code new">CTE-TE 7.1 ★ NEW</div>
+        <div class="legend-desc">Apply principles of electricity and electronics to engineering systems. Core standard for all Arduino/electronics work through the rest of the pathway.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code new">IAS-CS 8.IC.1 ★ NEW</div>
+        <div class="legend-desc">Evaluate beneficial and harmful effects of computing innovations. Applied specifically to AI code generation — benefits (speed, scaffolding) vs. risks (errors, over-reliance).</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-CS 8.AP.1</div>
+        <div class="legend-desc">Sequences, selections, loops — now applied in both JavaScript (web) and C++ (Arduino).</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-CS 8.AP.2</div>
+        <div class="legend-desc">Variables and assignments — state variables in Arduino toggle logic; sensor value storage.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-CS 8.AP.3</div>
+        <div class="legend-desc">Identify and fix errors — the 5-step AI fact-checking framework operationalizes this standard fully.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-Math 8.F</div>
+        <div class="legend-desc">Functions — Arduino's map() function directly models a linear function (y = mx + b).</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-Math 8.EE</div>
+        <div class="legend-desc">Expressions & equations — unit conversion formulas in JS; Ohm's Law calculations for resistor selection.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-Sci 8.PS</div>
+        <div class="legend-desc">Physical Science — Ohm's Law, circuit behavior, pull-up resistors, current through LEDs.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 3.1 / 3.2</div>
+        <div class="legend-desc">Design process and modeling — enclosure project requires full EDP documentation + physical iteration.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 5.2 / 6.1 / 6.2</div>
+        <div class="legend-desc">Technical drawing, digital tools, fabrication — all three converge in the enclosure project.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">CTE-TE 4.1 / 4.2</div>
+        <div class="legend-desc">Technical communication — portfolio AI Reflections page; Year 2 live showcase with dual demo.</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-code">IAS-ELA 8.W / 8.SL</div>
+        <div class="legend-desc">Writing (AI reflection essay, portfolio captions) and Speaking & Listening (3–5 min live showcase).</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Review Bar -->
+<div class="review-bar">
+  <div class="review-text"><strong>Semester 4 — 8th Grade Spring</strong> · 4 units · 20 class days · Year 2 Complete ✓</div>
+  <button class="review-btn" onclick="alert('✅ Year 2 complete! Tell Claude to continue to Semester 5 — 9th Grade Fall.')">✅ Approve & Continue to Semester 5 →</button>
+</div>
+
+<script>
+  function toggleUnit(id) { document.getElementById(id).classList.toggle('open'); }
+  function toggleLesson(el) { el.classList.toggle('open'); }
+  document.getElementById('unit1').classList.add('open');
+</script>
+</body>
+</html>
